@@ -4,10 +4,12 @@ import android.annotation.TargetApi;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.support.internal.view.ReflectionUtils;
 import android.support.internal.view.ViewOverlayImpl;
 import android.support.internal.view.ViewOverlayWrapper;
+import android.support.util.CompatUtils;
 import android.view.View;
+
+import java.lang.reflect.Method;
 
 public class ViewCompat {
 	interface ViewCompatImpl {
@@ -25,6 +27,7 @@ public class ViewCompat {
 	static class BaseViewCompatImpl implements ViewCompatImpl {
 		@Override
 		public float getTransitionAlpha(View v) {
+			// TODO: Implement support behavior
 			return 1;
 		}
 
@@ -35,15 +38,18 @@ public class ViewCompat {
 
 		@Override
 		public boolean isLaidOut(View v) {
+			// TODO: Implement support behavior
 			return true;
 		}
 
 		@Override
 		public void setClipBounds(View v, Rect clipBounds) {
+			// TODO: Implement support behavior
 		}
 
 		@Override
 		public void setTransitionAlpha(View v, float alpha) {
+			// TODO: Implement support behavior
 		}
 	}
 
@@ -51,7 +57,7 @@ public class ViewCompat {
 	static class JellyBeanMR2ViewCompatImpl extends BaseViewCompatImpl {
 		@Override
 		public void setClipBounds(View v, Rect clipBounds) {
-			v.setClipBounds(clipBounds);
+			ViewCompatJellybeanMr2.setClipBounds(v, clipBounds);
 		}
 
 		@Override
@@ -64,19 +70,17 @@ public class ViewCompat {
 	static class KitKatViewCompatImpl extends JellyBeanMR2ViewCompatImpl {
 		@Override
 		public float getTransitionAlpha(View v) {
-			return (Float) ReflectionUtils.safeInvokeMethod(v, "getTransitionAlpha");
+			return ViewCompatKitKat.getTransitionAlpha(v);
 		}
 
 		@Override
 		public boolean isLaidOut(View v) {
-			return v.isLaidOut();
+			return ViewCompatKitKat.isLaidOut(v);
 		}
 
 		@Override
 		public void setTransitionAlpha(View v, float alpha) {
-			ReflectionUtils.safeInvokeMethod(v, "setTransitionAlpha",
-					new Class<?>[] { float.class },
-					new Object[] { alpha });
+			ViewCompatKitKat.setTransitionAlpha(v, alpha);
 		}
 	}
 

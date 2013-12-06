@@ -3,7 +3,6 @@ package android.support.view;
 import android.annotation.TargetApi;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.support.internal.view.ReflectionUtils;
 import android.support.internal.view.ViewGroupOverlayImpl;
 import android.support.internal.view.ViewGroupOverlayWrapper;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ public class ViewGroupCompat extends ViewCompat {
 
 		@Override
 		public void suppressLayout(ViewGroup group, boolean suppress) {
+			// TODO: Implement support behavior
 		}
 	}
 
@@ -38,9 +38,7 @@ public class ViewGroupCompat extends ViewCompat {
 	static class KitKatViewGroupCompatImpl extends BaseViewGroupCompatImpl {
 		@Override
 		public void suppressLayout(ViewGroup group, boolean suppress) {
-			ReflectionUtils.safeInvokeMethod(group, "suppressLayout",
-					new Class<?>[] { boolean.class },
-					new Object[] { suppress });
+			ViewGroupCompatKitKat.suppressLayout(group, suppress);
 		}
 	}
 
