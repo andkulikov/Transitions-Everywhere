@@ -60,6 +60,7 @@ public final class Scene {
         }
         Scene scene = scenes.get(layoutId);
         if (scene != null) {
+            scene.mSceneRoot = sceneRoot; //Fix when you recreate the same layout on configuration change
             return scene;
         } else {
             scene = new Scene(sceneRoot, layoutId, context);
