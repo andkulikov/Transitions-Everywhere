@@ -20,8 +20,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.support.animation.AnimatorCompat;
+import android.support.util.OverlayCompatibilityHelper;
 import android.support.view.ViewCompat;
-import android.support.view.ViewGroupCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -242,11 +242,8 @@ public class Fade extends Visibility {
             // TODO: Need to do this for general case of adding to overlay
             int screenX = (Integer) startValues.values.get(PROPNAME_SCREEN_X);
             int screenY = (Integer) startValues.values.get(PROPNAME_SCREEN_Y);
-            int[] loc = new int[2];
-            sceneRoot.getLocationOnScreen(loc);
-            overlayView.offsetLeftAndRight((screenX - loc[0]) - overlayView.getLeft());
-            overlayView.offsetTopAndBottom((screenY - loc[1]) - overlayView.getTop());
-            ViewGroupCompat.getSupportOverlay(sceneRoot).add(overlayView);
+            OverlayCompatibilityHelper.addViewOverlay(sceneRoot, overlayView, screenX, screenY);
+
             // TODO: add automatic facility to Visibility superclass for keeping views around
             final float startAlpha = 1;
             float endAlpha = 0;
@@ -257,28 +254,22 @@ public class Fade extends Visibility {
             final AnimatorListenerAdapter endListener = new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-					ViewCompat.setTransitionAlpha(finalView, startAlpha);
+                    ViewCompat.setTransitionAlpha(finalView, startAlpha);
                     // TODO: restore view offset from overlay repositioning
                     if (finalViewToKeep != null) {
                         finalViewToKeep.setVisibility(finalVisibility);
                     }
-                    if (finalOverlayView != null) {
-						ViewGroupCompat.getSupportOverlay(finalSceneRoot).remove(finalOverlayView);
-                    }
+                    OverlayCompatibilityHelper.removeViewOverlay(finalSceneRoot, finalOverlayView);
                 }
 
                 @Override
                 public void onAnimationPause(Animator animation) {
-                    if (finalOverlayView != null) {
-						ViewGroupCompat.getSupportOverlay(finalSceneRoot).remove(finalOverlayView);
-                    }
+                    OverlayCompatibilityHelper.removeViewOverlay(finalSceneRoot, finalOverlayView);
                 }
 
                 @Override
                 public void onAnimationResume(Animator animation) {
-                    if (finalOverlayView != null) {
-						ViewGroupCompat.getSupportOverlay(finalSceneRoot).add(finalOverlayView);
-                    }
+                    OverlayCompatibilityHelper.addViewOverlay(finalSceneRoot, finalOverlayView);
                 }
             };
             return createAnimation(view, startAlpha, endAlpha, endListener);
@@ -332,9 +323,8 @@ public class Fade extends Visibility {
                     if (finalViewToKeep != null && !mCanceled) {
                         finalViewToKeep.setVisibility(finalVisibility);
                     }
-                    if (finalOverlayView != null) {
-						ViewGroupCompat.getSupportOverlay(finalSceneRoot).remove(finalOverlayView);
-                    }
+
+                    OverlayCompatibilityHelper.removeViewOverlay(finalSceneRoot, finalOverlayView);
                 }
             };
             return createAnimation(view, startAlpha, endAlpha, endListener);

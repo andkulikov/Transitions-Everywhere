@@ -25,6 +25,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.animation.RectEvaluator;
+import android.support.util.OverlayCompatibilityHelper;
 import android.support.view.ViewCompat;
 import android.support.view.ViewGroupCompat;
 import android.view.View;
@@ -286,9 +287,10 @@ public class ChangeBounds extends Transition {
                         Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
                 view.draw(canvas);
-                final BitmapDrawable drawable = new BitmapDrawable(bitmap);
+                final BitmapDrawable drawable = new BitmapDrawable(
+                        sceneRoot.getContext().getResources(), bitmap);
                 view.setVisibility(View.INVISIBLE);
-                ViewGroupCompat.getSupportOverlay(sceneRoot).add(drawable);
+                OverlayCompatibilityHelper.addViewOverlay(sceneRoot, drawable);
                 Rect startBounds1 = new Rect(startX - tempLocation[0], startY - tempLocation[1],
                         startX - tempLocation[0] + view.getWidth(),
                         startY - tempLocation[1] + view.getHeight());
@@ -300,7 +302,7 @@ public class ChangeBounds extends Transition {
                 anim.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-						ViewGroupCompat.getSupportOverlay(sceneRoot).remove(drawable);
+                        OverlayCompatibilityHelper.removeViewOverlay(sceneRoot, drawable);
                         view.setVisibility(View.VISIBLE);
                     }
                 });

@@ -4,18 +4,11 @@ import android.annotation.TargetApi;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.support.internal.view.ViewOverlayImpl;
-import android.support.internal.view.ViewOverlayWrapper;
-import android.support.util.CompatUtils;
 import android.view.View;
-
-import java.lang.reflect.Method;
 
 public class ViewCompat {
 	interface ViewCompatImpl {
 		float getTransitionAlpha(View v);
-
-		ViewOverlay getSupportViewOverlay(View v);
 
 		boolean isLaidOut(View v);
 
@@ -29,11 +22,6 @@ public class ViewCompat {
 		public float getTransitionAlpha(View v) {
 			// TODO: Implement support behavior
 			return 1;
-		}
-
-		@Override
-		public ViewOverlay getSupportViewOverlay(View v) {
-			return new ViewOverlayImpl(v.getContext(), v);
 		}
 
 		@Override
@@ -59,12 +47,7 @@ public class ViewCompat {
 		public void setClipBounds(View v, Rect clipBounds) {
 			ViewCompatJellybeanMr2.setClipBounds(v, clipBounds);
 		}
-
-		@Override
-		public ViewOverlay getSupportViewOverlay(View v) {
-			return new ViewOverlayWrapper(v);
-		}
-	}
+    }
 
 	@TargetApi(VERSION_CODES.KITKAT)
 	static class KitKatViewCompatImpl extends JellyBeanMR2ViewCompatImpl {
@@ -101,10 +84,6 @@ public class ViewCompat {
 
 	public static float getTransitionAlpha(View v) {
 		return IMPL.getTransitionAlpha(v);
-	}
-
-	public static ViewOverlay getSupportOverlay(View v) {
-		return IMPL.getSupportViewOverlay(v);
 	}
 
 	public static boolean isLaidOut(View v) {
