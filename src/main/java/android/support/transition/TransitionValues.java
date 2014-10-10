@@ -31,7 +31,7 @@ import java.util.Map;
  * such as the convention project:transition_name:property_name. For
  * example, the platform might store a property "alpha" in a transition
  * "Fader" as "android:fader:alpha".
- *
+ * <p/>
  * <p>These values are cached during the
  * {@link Transition#captureStartValues(android.support.transition.TransitionValues)}
  * capture} phases of a scene change, once when the start values are captured
@@ -66,7 +66,7 @@ public class TransitionValues {
 
     @Override
     public int hashCode() {
-        return 31*view.hashCode() + values.hashCode();
+        return 31 * view.hashCode() + values.hashCode();
     }
 
     @Override

@@ -47,7 +47,7 @@ import java.util.List;
  * changes to those values. For example, the {@link Fade} transition tracks
  * changes to visibility-related properties and is able to construct and run
  * animations that fade items in or out based on changes to those properties.
- *
+ * <p/>
  * <p>Note: Transitions may not work correctly with either {@link SurfaceView}
  * or {@link TextureView}, due to the way that these views are displayed
  * on the screen. For SurfaceView, the problem is that the view is updated from
@@ -57,23 +57,23 @@ import java.util.List;
  * specific transitions (such as {@link Fade}) may not be compatible
  * with TextureView because they rely on {@link ViewOverlay} functionality,
  * which does not currently work with TextureView.</p>
- *
+ * <p/>
  * <p>Transitions can be declared in XML resource files inside the <code>res/transition</code>
  * directory. Transition resources consist of a tag name for one of the Transition
  * subclasses along with attributes to define some of the attributes of that transition.
  * For example, here is a minimal resource file that declares a {@link ChangeBounds} transition:</p>
- *
+ * <p/>
  * {@sample development/samples/ApiDemos/res/transition/changebounds.xml ChangeBounds}
- *
+ * <p/>
  * <p>Note that attributes for the transition are not required, just as they are
  * optional when declared in code; Transitions created from XML resources will use
  * the same defaults as their code-created equivalents. Here is a slightly more
  * elaborate example which declares a {@link TransitionSet} transition with
  * {@link ChangeBounds} and {@link Fade} child transitions:</p>
- *
+ * <p/>
  * {@sample
  * development/samples/ApiDemos/res/transition/changebounds_fadeout_sequential.xml TransitionSet}
- *
+ * <p/>
  * <p>In this example, the transitionOrdering attribute is used on the TransitionSet
  * object to change from the default {@link TransitionSet#ORDERING_TOGETHER} behavior
  * to be {@link TransitionSet#ORDERING_SEQUENTIAL} instead. Also, the {@link Fade}
@@ -85,18 +85,17 @@ import java.util.List;
  * attributes on unchanging views, or limiting the types of animations run on specific views.
  * In this case, we know that only the <code>grayscaleContainer</code> will be
  * disappearing, so we choose to limit the {@link Fade} transition to only that view.</p>
- *
+ * <p/>
  * Further information on XML resource descriptions for transitions can be found for
  * {@link android.support.transition.R.styleable#Transition}, {@link android.support.transition.R.styleable#TransitionSet},
  * {@link android.support.transition.R.styleable#TransitionTarget}, and {@link android.support.transition.R.styleable#Fade}.
- *
  */
 public abstract class Transition implements Cloneable {
 
     private static final String LOG_TAG = "Transition";
     static final boolean DBG = false;
 
-    private String mName = getClass().getName();
+    private String mName = ((Object) this).getClass().getName();
 
     long mStartDelay = -1;
     long mDuration = -1;
@@ -156,7 +155,8 @@ public abstract class Transition implements Cloneable {
      * (if the transition is not contained in a TransitionSet), or all target
      * objects passed down from its parent (if it is in a TransitionSet).
      */
-    public Transition() {}
+    public Transition() {
+    }
 
     /**
      * Sets the duration of this transition. By default, there is no duration
@@ -250,7 +250,7 @@ public abstract class Transition implements Cloneable {
      * then the old animation is canceled since the new transition will start a new
      * animation to these new values. If the values are equal, the old animation is
      * allowed to continue and no new animation is started for that transition.
-     *
+     * <p/>
      * <p>A transition does not need to override this method. However, not doing so
      * will mean that the cancellation logic outlined in the previous paragraph
      * will be skipped for that transition, possibly leading to artifacts as
@@ -270,7 +270,7 @@ public abstract class Transition implements Cloneable {
      * earlier for the start and end scenes. Subclasses of Transition should override
      * this method. The method should only be called by the transition system; it is
      * not intended to be called from external classes.
-     *
+     * <p/>
      * <p>This method is called by the transition's parent (all the way up to the
      * topmost Transition in the hierarchy) with the sceneRoot and start/end
      * values that the transition may need to set up initial target values
@@ -286,32 +286,31 @@ public abstract class Transition implements Cloneable {
      * change that triggers the Transition will automatically set the end-scene
      * on all target views, so a Transition that wants to animate from a
      * different value should set that value prior to returning from this method.</p>
-     *
+     * <p/>
      * <p>Additionally, a Transition can perform logic to determine whether
      * the transition needs to run on the given target and start/end values.
      * For example, a transition that resizes objects on the screen may wish
      * to avoid running for views which are not present in either the start
      * or end scenes.</p>
-     *
+     * <p/>
      * <p>If there is an animator created and returned from this method, the
      * transition mechanism will apply any applicable duration, startDelay,
      * and interpolator to that animation and start it. A return value of
      * <code>null</code> indicates that no animation should run. The default
      * implementation returns null.</p>
-     *
+     * <p/>
      * <p>The method is called for every applicable target object, which is
      * stored in the {@link TransitionValues#view} field.</p>
      *
-     *
-     * @param sceneRoot The root of the transition hierarchy.
+     * @param sceneRoot   The root of the transition hierarchy.
      * @param startValues The values for a specific target in the start scene.
-     * @param endValues The values for the target in the end scene.
+     * @param endValues   The values for the target in the end scene.
      * @return A Animator to be started at the appropriate time in the
      * overall transition for this scene change. A null value means no animation
      * should be run.
      */
     public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-            TransitionValues endValues) {
+                                   TransitionValues endValues) {
         return null;
     }
 
@@ -327,7 +326,7 @@ public abstract class Transition implements Cloneable {
      * @hide
      */
     protected void createAnimators(ViewGroup sceneRoot, TransitionValuesMaps startValues,
-            TransitionValuesMaps endValues) {
+                                   TransitionValuesMaps endValues) {
         if (DBG) {
             Log.d(LOG_TAG, "createAnimators() for " + this);
         }
@@ -455,7 +454,7 @@ public abstract class Transition implements Cloneable {
                                 Object endValue = end.values.get(key);
                                 if (startValue != endValue && !startValue.equals(endValue)) {
                                     Log.d(LOG_TAG, "    " + key + ": start(" + startValue +
-                                            "), end(" + endValue +")");
+                                            "), end(" + endValue + ")");
                                 }
                             }
                         }
@@ -485,7 +484,7 @@ public abstract class Transition implements Cloneable {
                                     AnimationInfo info = runningAnimators.get(anim);
                                     if (info.values != null && info.view == view &&
                                             ((info.name == null && getName() == null) ||
-                                            info.name.equals(getName()))) {
+                                                    info.name.equals(getName()))) {
                                         if (info.values.equals(infoValues)) {
                                             // Favor the old animator
                                             animator = null;
@@ -590,7 +589,7 @@ public abstract class Transition implements Cloneable {
     }
 
     private void runAnimator(Animator animator,
-            final ArrayMap<Animator, AnimationInfo> runningAnimators) {
+                             final ArrayMap<Animator, AnimationInfo> runningAnimators) {
         if (animator != null) {
             // TODO: could be a single listener instance for all of them since it uses the param
             animator.addListener(new AnimatorListenerAdapter() {
@@ -598,6 +597,7 @@ public abstract class Transition implements Cloneable {
                 public void onAnimationStart(Animator animation) {
                     mCurrentAnimators.add(animation);
                 }
+
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     runningAnimators.remove(animation);
@@ -619,19 +619,18 @@ public abstract class Transition implements Cloneable {
      * later during the
      * {@link #createAnimator(android.view.ViewGroup, TransitionValues, TransitionValues)}
      * method to determine what, if any, animations, should be run.
-     *
+     * <p/>
      * <p>Subclasses must implement this method. The method should only be called by the
      * transition system; it is not intended to be called from external classes.</p>
      *
      * @param transitionValues The holder for any values that the Transition
-     * wishes to store. Values are stored in the <code>values</code> field
-     * of this TransitionValues object and are keyed from
-     * a String value. For example, to store a view's rotation value,
-     * a transition might call
-     * <code>transitionValues.values.put("appname:transitionname:rotation",
-     * view.getRotation())</code>. The target view will already be stored in
-     * the transitionValues structure when this method is called.
-     *
+     *                         wishes to store. Values are stored in the <code>values</code> field
+     *                         of this TransitionValues object and are keyed from
+     *                         a String value. For example, to store a view's rotation value,
+     *                         a transition might call
+     *                         <code>transitionValues.values.put("appname:transitionname:rotation",
+     *                         view.getRotation())</code>. The target view will already be stored in
+     *                         the transitionValues structure when this method is called.
      * @see #captureEndValues(TransitionValues)
      * @see #createAnimator(ViewGroup, TransitionValues, TransitionValues)
      */
@@ -648,19 +647,18 @@ public abstract class Transition implements Cloneable {
      * later during the
      * {@link #createAnimator(android.view.ViewGroup, TransitionValues, TransitionValues)}
      * method to determine what, if any, animations, should be run.
-     *
+     * <p/>
      * <p>Subclasses must implement this method. The method should only be called by the
      * transition system; it is not intended to be called from external classes.</p>
      *
      * @param transitionValues The holder for any values that the Transition
-     * wishes to store. Values are stored in the <code>values</code> field
-     * of this TransitionValues object and are keyed from
-     * a String value. For example, to store a view's rotation value,
-     * a transition might call
-     * <code>transitionValues.values.put("appname:transitionname:rotation",
-     * view.getRotation())</code>. The target view will already be stored in
-     * the transitionValues structure when this method is called.
-     *
+     *                         wishes to store. Values are stored in the <code>values</code> field
+     *                         of this TransitionValues object and are keyed from
+     *                         a String value. For example, to store a view's rotation value,
+     *                         a transition might call
+     *                         <code>transitionValues.values.put("appname:transitionname:rotation",
+     *                         view.getRotation())</code>. The target view will already be stored in
+     *                         the transitionValues structure when this method is called.
      * @see #captureStartValues(TransitionValues)
      * @see #createAnimator(ViewGroup, TransitionValues, TransitionValues)
      */
@@ -673,16 +671,16 @@ public abstract class Transition implements Cloneable {
      * of the Scene being transitioned into. Setting targetIds constrains
      * the Transition to only listen for, and act on, views with these IDs.
      * Views with different IDs, or no IDs whatsoever, will be ignored.
-     *
+     * <p/>
      * <p>Note that using ids to specify targets implies that ids should be unique
      * within the view hierarchy underneat the scene root.</p>
      *
-     * @see View#getId()
      * @param targetId The id of a target view, must be a positive number.
      * @return The Transition to which the targetId is added.
      * Returning the same object makes it easier to chain calls during
      * construction, such as
      * <code>transitionSet.addTransitions(new Fade()).addTarget(someId);</code>
+     * @see View#getId()
      */
     public Transition addTarget(int targetId) {
         if (targetId > 0) {
@@ -712,7 +710,7 @@ public abstract class Transition implements Cloneable {
      * Whether to add the given id to the list of target ids to exclude from this
      * transition. The <code>exclude</code> parameter specifies whether the target
      * should be added to or removed from the excluded list.
-     *
+     * <p/>
      * <p>Excluding targets is a general mechanism for allowing transitions to run on
      * a view hierarchy while skipping target views that should not be part of
      * the transition. For example, you may want to avoid animating children
@@ -720,14 +718,13 @@ public abstract class Transition implements Cloneable {
      * id, or by their instance reference, or by the Class of that view
      * (eg, {@link Spinner}).</p>
      *
+     * @param targetId The id of a target to ignore when running this transition.
+     * @param exclude  Whether to add the target to or remove the target from the
+     *                 current list of excluded targets.
+     * @return This transition object.
      * @see #excludeChildren(int, boolean)
      * @see #excludeTarget(View, boolean)
      * @see #excludeTarget(Class, boolean)
-     *
-     * @param targetId The id of a target to ignore when running this transition.
-     * @param exclude Whether to add the target to or remove the target from the
-     * current list of excluded targets.
-     * @return This transition object.
      */
     public Transition excludeTarget(int targetId, boolean exclude) {
         mTargetIdExcludes = excludeId(mTargetIdExcludes, targetId, exclude);
@@ -741,7 +738,7 @@ public abstract class Transition implements Cloneable {
      * Excluding children in this way provides a simple mechanism for excluding all
      * children of specific targets, rather than individually excluding each
      * child individually.
-     *
+     * <p/>
      * <p>Excluding targets is a general mechanism for allowing transitions to run on
      * a view hierarchy while skipping target views that should not be part of
      * the transition. For example, you may want to avoid animating children
@@ -749,15 +746,14 @@ public abstract class Transition implements Cloneable {
      * id, or by their instance reference, or by the Class of that view
      * (eg, {@link Spinner}).</p>
      *
+     * @param targetId The id of a target whose children should be ignored when running
+     *                 this transition.
+     * @param exclude  Whether to add the target to or remove the target from the
+     *                 current list of excluded-child targets.
+     * @return This transition object.
      * @see #excludeTarget(int, boolean)
      * @see #excludeChildren(View, boolean)
      * @see #excludeChildren(Class, boolean)
-     *
-     * @param targetId The id of a target whose children should be ignored when running
-     * this transition.
-     * @param exclude Whether to add the target to or remove the target from the
-     * current list of excluded-child targets.
-     * @return This transition object.
      */
     public Transition excludeChildren(int targetId, boolean exclude) {
         mTargetIdChildExcludes = excludeId(mTargetIdChildExcludes, targetId, exclude);
@@ -783,7 +779,7 @@ public abstract class Transition implements Cloneable {
      * Whether to add the given target to the list of targets to exclude from this
      * transition. The <code>exclude</code> parameter specifies whether the target
      * should be added to or removed from the excluded list.
-     *
+     * <p/>
      * <p>Excluding targets is a general mechanism for allowing transitions to run on
      * a view hierarchy while skipping target views that should not be part of
      * the transition. For example, you may want to avoid animating children
@@ -791,14 +787,13 @@ public abstract class Transition implements Cloneable {
      * id, or by their instance reference, or by the Class of that view
      * (eg, {@link Spinner}).</p>
      *
+     * @param target  The target to ignore when running this transition.
+     * @param exclude Whether to add the target to or remove the target from the
+     *                current list of excluded targets.
+     * @return This transition object.
      * @see #excludeChildren(View, boolean)
      * @see #excludeTarget(int, boolean)
      * @see #excludeTarget(Class, boolean)
-     *
-     * @param target The target to ignore when running this transition.
-     * @param exclude Whether to add the target to or remove the target from the
-     * current list of excluded targets.
-     * @return This transition object.
      */
     public Transition excludeTarget(View target, boolean exclude) {
         mTargetExcludes = excludeView(mTargetExcludes, target, exclude);
@@ -809,7 +804,7 @@ public abstract class Transition implements Cloneable {
      * Whether to add the children of given target to the list of target children
      * to exclude from this transition. The <code>exclude</code> parameter specifies
      * whether the target should be added to or removed from the excluded list.
-     *
+     * <p/>
      * <p>Excluding targets is a general mechanism for allowing transitions to run on
      * a view hierarchy while skipping target views that should not be part of
      * the transition. For example, you may want to avoid animating children
@@ -817,14 +812,13 @@ public abstract class Transition implements Cloneable {
      * id, or by their instance reference, or by the Class of that view
      * (eg, {@link Spinner}).</p>
      *
+     * @param target  The target to ignore when running this transition.
+     * @param exclude Whether to add the target to or remove the target from the
+     *                current list of excluded targets.
+     * @return This transition object.
      * @see #excludeTarget(View, boolean)
      * @see #excludeChildren(int, boolean)
      * @see #excludeChildren(Class, boolean)
-     *
-     * @param target The target to ignore when running this transition.
-     * @param exclude Whether to add the target to or remove the target from the
-     * current list of excluded targets.
-     * @return This transition object.
      */
     public Transition excludeChildren(View target, boolean exclude) {
         mTargetChildExcludes = excludeView(mTargetChildExcludes, target, exclude);
@@ -850,7 +844,7 @@ public abstract class Transition implements Cloneable {
      * Whether to add the given type to the list of types to exclude from this
      * transition. The <code>exclude</code> parameter specifies whether the target
      * type should be added to or removed from the excluded list.
-     *
+     * <p/>
      * <p>Excluding targets is a general mechanism for allowing transitions to run on
      * a view hierarchy while skipping target views that should not be part of
      * the transition. For example, you may want to avoid animating children
@@ -858,14 +852,13 @@ public abstract class Transition implements Cloneable {
      * id, or by their instance reference, or by the Class of that view
      * (eg, {@link Spinner}).</p>
      *
+     * @param type    The type to ignore when running this transition.
+     * @param exclude Whether to add the target type to or remove it from the
+     *                current list of excluded target types.
+     * @return This transition object.
      * @see #excludeChildren(Class, boolean)
      * @see #excludeTarget(int, boolean)
      * @see #excludeTarget(View, boolean)
-     *
-     * @param type The type to ignore when running this transition.
-     * @param exclude Whether to add the target type to or remove it from the
-     * current list of excluded target types.
-     * @return This transition object.
      */
     public Transition excludeTarget(Class type, boolean exclude) {
         mTargetTypeExcludes = excludeType(mTargetTypeExcludes, type, exclude);
@@ -877,7 +870,7 @@ public abstract class Transition implements Cloneable {
      * be excluded from this transition. The <code>exclude</code> parameter
      * specifies whether the target type should be added to or removed from
      * the excluded list.
-     *
+     * <p/>
      * <p>Excluding targets is a general mechanism for allowing transitions to run on
      * a view hierarchy while skipping target views that should not be part of
      * the transition. For example, you may want to avoid animating children
@@ -885,14 +878,13 @@ public abstract class Transition implements Cloneable {
      * id, or by their instance reference, or by the Class of that view
      * (eg, {@link Spinner}).</p>
      *
+     * @param type    The type to ignore when running this transition.
+     * @param exclude Whether to add the target type to or remove it from the
+     *                current list of excluded target types.
+     * @return This transition object.
      * @see #excludeTarget(Class, boolean)
      * @see #excludeChildren(int, boolean)
      * @see #excludeChildren(View, boolean)
-     *
-     * @param type The type to ignore when running this transition.
-     * @param exclude Whether to add the target type to or remove it from the
-     * current list of excluded target types.
-     * @return This transition object.
      */
     public Transition excludeChildren(Class type, boolean exclude) {
         mTargetTypeChildExcludes = excludeType(mTargetTypeChildExcludes, type, exclude);
@@ -921,7 +913,7 @@ public abstract class Transition implements Cloneable {
      * of the Scene being transitioned into. Setting targets constrains
      * the Transition to only listen for, and act on, these views.
      * All other views will be ignored.
-     *
+     * <p/>
      * <p>The target list is like the {@link #addTarget(int) targetId}
      * list except this list specifies the actual View instances, not the ids
      * of the views. This is an important distinction when scene changes involve
@@ -933,12 +925,12 @@ public abstract class Transition implements Cloneable {
      * necessarily have ids set on them, then the target list of views may be more
      * convenient.</p>
      *
-     * @see #addTarget(int)
      * @param target A View on which the Transition will act, must be non-null.
      * @return The Transition to which the target is added.
      * Returning the same object makes it easier to chain calls during
      * construction, such as
      * <code>transitionSet.addTransitions(new Fade()).addTarget(someView);</code>
+     * @see #addTarget(int)
      */
     public Transition addTarget(View target) {
         mTargets.add(target);
@@ -991,9 +983,10 @@ public abstract class Transition implements Cloneable {
     /**
      * Recursive method that captures values for the given view and the
      * hierarchy underneath it.
+     *
      * @param sceneRoot The root of the view hierarchy being captured
-     * @param start true if this capture is happening before the scene change,
-     * false otherwise
+     * @param start     true if this capture is happening before the scene change,
+     *                  false otherwise
      */
     void captureValues(ViewGroup sceneRoot, boolean start) {
         if (start) {
@@ -1061,10 +1054,10 @@ public abstract class Transition implements Cloneable {
      * starting at some root view. Transitions without targetIDs will use this
      * method to capture values for all possible views.
      *
-     * @param view The view for which to capture values. Children of this View
-     * will also be captured, recursively down to the leaf nodes.
+     * @param view  The view for which to capture values. Children of this View
+     *              will also be captured, recursively down to the leaf nodes.
      * @param start true if values are being captured in the start scene, false
-     * otherwise.
+     *              otherwise.
      */
     private void captureHierarchy(View view, boolean start) {
         if (view == null) {
@@ -1305,7 +1298,6 @@ public abstract class Transition implements Cloneable {
      * animation, and, when the animator ends, calls {@link #end()}.
      *
      * @param animator The Animator to be run during this transition.
-     *
      * @hide
      */
     protected void animate(Animator animator) {
@@ -1381,14 +1373,14 @@ public abstract class Transition implements Cloneable {
                 TransitionValues tv = mStartValues.itemIdValues.valueAt(i);
                 View v = tv.view;
                 if (ViewCompat.hasTransientState(v)) {
-					ViewCompat.setHasTransientState(v, false);
+                    ViewCompat.setHasTransientState(v, false);
                 }
             }
             for (int i = 0; i < mEndValues.itemIdValues.size(); ++i) {
                 TransitionValues tv = mEndValues.itemIdValues.valueAt(i);
                 View v = tv.view;
                 if (ViewCompat.hasTransientState(v)) {
-					ViewCompat.setHasTransientState(v, false);
+                    ViewCompat.setHasTransientState(v, false);
                 }
             }
             mEnded = true;
@@ -1421,7 +1413,7 @@ public abstract class Transition implements Cloneable {
      * life of an animation, such as start, repeat, and end.
      *
      * @param listener the listener to be added to the current set of listeners
-     * for this animation.
+     *                 for this animation.
      * @return This transition object.
      */
     public Transition addListener(TransitionListener listener) {
@@ -1436,7 +1428,7 @@ public abstract class Transition implements Cloneable {
      * Removes a listener from the set listening to this animation.
      *
      * @param listener the listener to be removed from the current set of
-     * listeners for this transition.
+     *                 listeners for this transition.
      * @return This transition object.
      */
     public Transition removeListener(TransitionListener listener) {
@@ -1472,7 +1464,8 @@ public abstract class Transition implements Cloneable {
             clone.mAnimators = new ArrayList<Animator>();
             clone.mStartValues = new TransitionValuesMaps();
             clone.mEndValues = new TransitionValuesMaps();
-        } catch (CloneNotSupportedException e) {}
+        } catch (CloneNotSupportedException e) {
+        }
 
         return clone;
     }
@@ -1483,7 +1476,7 @@ public abstract class Transition implements Cloneable {
      * For example, a ChangeBounds running on the same target view as another ChangeBounds
      * should determine whether the old transition is animating to different end values
      * and should be canceled in favor of the new transition.
-     *
+     * <p/>
      * <p>By default, a Transition's name is simply the value of {@link Class#getName()},
      * but subclasses are free to override and return something different.</p>
      *
@@ -1494,8 +1487,8 @@ public abstract class Transition implements Cloneable {
     }
 
     String toString(String indent) {
-        String result = indent + getClass().getSimpleName() + "@" +
-                Integer.toHexString(hashCode()) + ": ";
+        String result = indent + ((Object) this).getClass().getSimpleName() + "@" +
+                Integer.toHexString(((Object) this).hashCode()) + ": ";
         if (mDuration != -1) {
             result += "dur(" + mDuration + ") ";
         }
@@ -1592,7 +1585,7 @@ public abstract class Transition implements Cloneable {
      * whenever someone just wants to listen for a single event.
      *
      * @hide
-     * */
+     */
     public static class TransitionListenerAdapter implements TransitionListener {
         @Override
         public void onTransitionStart(Transition transition) {
@@ -1650,7 +1643,7 @@ public abstract class Transition implements Cloneable {
          * Add the specified item to the list, returning the resulting list.
          * The returned list can either the be same list passed in or, if that
          * list was null, the new list that was created.
-         *
+         * <p/>
          * Note that the list holds unique items; if the item already exists in the
          * list, the list is not modified.
          */

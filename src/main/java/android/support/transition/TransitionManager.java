@@ -37,7 +37,7 @@ import java.util.ArrayList;
  * situations. Specifying other transitions for particular scene changes is
  * only necessary if the application wants different transition behavior
  * in these situations.
- *
+ * <p/>
  * <p>TransitionManagers can be declared in XML resource files inside the
  * <code>res/transition</code> directory. TransitionManager resources consist of
  * the <code>transitionManager</code>tag name, containing one or more
@@ -45,9 +45,9 @@ import java.util.ArrayList;
  * that transition to the from/to scene information in that tag.
  * For example, here is a resource file that declares several scene
  * transitions:</p>
- *
+ * <p/>
  * {@sample development/samples/ApiDemos/res/transition/transitions_mgr.xml TransitionManager}
- *
+ * <p/>
  * <p>For each of the <code>fromScene</code> and <code>toScene</code> attributes,
  * there is a reference to a standard XML layout file. This is equivalent to
  * creating a scene from a layout in code by calling
@@ -55,7 +55,7 @@ import java.util.ArrayList;
  * <code>transition</code> attribute, there is a reference to a resource
  * file in the <code>res/transition</code> directory which describes that
  * transition.</p>
- *
+ * <p/>
  * Information on XML resource descriptions for transitions can be found for
  * {@link android.support.transition.R.styleable#Transition}, {@link android.support.transition.R.styleable#TransitionSet},
  * {@link android.support.transition.R.styleable#TransitionTarget}, {@link android.support.transition.R.styleable#Fade},
@@ -83,7 +83,6 @@ public class TransitionManager {
      * an {@link AutoTransition} instance.
      *
      * @param transition The default transition to be used for scene changes.
-     *
      * @hide pending later changes
      */
     public void setDefaultTransition(Transition transition) {
@@ -95,9 +94,8 @@ public class TransitionManager {
      * AutoTransition} instance.
      *
      * @return The current default transition.
-     * @see #setDefaultTransition(Transition)
-     *
      * @hide pending later changes
+     * @see #setDefaultTransition(Transition)
      */
     public static Transition getDefaultTransition() {
         return sDefaultTransition;
@@ -106,11 +104,11 @@ public class TransitionManager {
     /**
      * Sets a specific transition to occur when the given scene is entered.
      *
-     * @param scene The scene which, when applied, will cause the given
-     * transition to run.
+     * @param scene      The scene which, when applied, will cause the given
+     *                   transition to run.
      * @param transition The transition that will play when the given scene is
-     * entered. A value of null will result in the default behavior of
-     * using the default transition instead.
+     *                   entered. A value of null will result in the default behavior of
+     *                   using the default transition instead.
      */
     public void setTransition(Scene scene, Transition transition) {
         mSceneTransitions.put(scene, transition);
@@ -120,13 +118,13 @@ public class TransitionManager {
      * Sets a specific transition to occur when the given pair of scenes is
      * exited/entered.
      *
-     * @param fromScene The scene being exited when the given transition will
-     * be run
-     * @param toScene The scene being entered when the given transition will
-     * be run
+     * @param fromScene  The scene being exited when the given transition will
+     *                   be run
+     * @param toScene    The scene being entered when the given transition will
+     *                   be run
      * @param transition The transition that will play when the given scene is
-     * entered. A value of null will result in the default behavior of
-     * using the default transition instead.
+     *                   entered. A value of null will result in the default behavior of
+     *                   using the default transition instead.
      */
     public void setTransition(Scene fromScene, Scene toScene, Transition transition) {
         ArrayMap<Scene, Transition> sceneTransitionMap = mScenePairTransitions.get(toScene);
@@ -174,7 +172,7 @@ public class TransitionManager {
      * the end values for the transition, and finally plays the
      * resulting values-populated transition.
      *
-     * @param scene The scene being entered
+     * @param scene      The scene being entered
      * @param transition The transition to play for this scene change
      */
     private static void changeScene(Scene scene, Transition transition) {
@@ -210,46 +208,46 @@ public class TransitionManager {
     }
 
     private static void sceneChangeRunTransition(final ViewGroup sceneRoot,
-            final Transition transition) {
+                                                 final Transition transition) {
         if (transition != null) {
             OverlayCompatibilityHelper.addViewOverlayCompat(sceneRoot);
             final ViewTreeObserver observer = sceneRoot.getViewTreeObserver();
             final ViewTreeObserver.OnPreDrawListener listener =
                     new ViewTreeObserver.OnPreDrawListener() {
-                public boolean onPreDraw() {
-                    sceneRoot.getViewTreeObserver().removeOnPreDrawListener(this);
-                    sPendingTransitions.remove(sceneRoot);
-                    // Add to running list, handle end to remove it
-                    final ArrayMap<ViewGroup, ArrayList<Transition>> runningTransitions =
-                            getRunningTransitions();
-                    ArrayList<Transition> currentTransitions = runningTransitions.get(sceneRoot);
-                    ArrayList<Transition> previousRunningTransitions = null;
-                    if (currentTransitions == null) {
-                        currentTransitions = new ArrayList<Transition>();
-                        runningTransitions.put(sceneRoot, currentTransitions);
-                    } else if (currentTransitions.size() > 0) {
-                        previousRunningTransitions = new ArrayList<Transition>(currentTransitions);
-                    }
-                    currentTransitions.add(transition);
-                    transition.addListener(new Transition.TransitionListenerAdapter() {
-                        @Override
-                        public void onTransitionEnd(Transition transition) {
-                            ArrayList<Transition> currentTransitions =
-                                    runningTransitions.get(sceneRoot);
-                            currentTransitions.remove(transition);
-                        }
-                    });
-                    transition.captureValues(sceneRoot, false);
-                    if (previousRunningTransitions != null) {
-                        for (Transition runningTransition : previousRunningTransitions) {
-                            runningTransition.resume();
-                        }
-                    }
-                    transition.playTransition(sceneRoot);
+                        public boolean onPreDraw() {
+                            sceneRoot.getViewTreeObserver().removeOnPreDrawListener(this);
+                            sPendingTransitions.remove(sceneRoot);
+                            // Add to running list, handle end to remove it
+                            final ArrayMap<ViewGroup, ArrayList<Transition>> runningTransitions =
+                                    getRunningTransitions();
+                            ArrayList<Transition> currentTransitions = runningTransitions.get(sceneRoot);
+                            ArrayList<Transition> previousRunningTransitions = null;
+                            if (currentTransitions == null) {
+                                currentTransitions = new ArrayList<Transition>();
+                                runningTransitions.put(sceneRoot, currentTransitions);
+                            } else if (currentTransitions.size() > 0) {
+                                previousRunningTransitions = new ArrayList<Transition>(currentTransitions);
+                            }
+                            currentTransitions.add(transition);
+                            transition.addListener(new Transition.TransitionListenerAdapter() {
+                                @Override
+                                public void onTransitionEnd(Transition transition) {
+                                    ArrayList<Transition> currentTransitions =
+                                            runningTransitions.get(sceneRoot);
+                                    currentTransitions.remove(transition);
+                                }
+                            });
+                            transition.captureValues(sceneRoot, false);
+                            if (previousRunningTransitions != null) {
+                                for (Transition runningTransition : previousRunningTransitions) {
+                                    runningTransition.resume();
+                                }
+                            }
+                            transition.playTransition(sceneRoot);
 
-                    return true;
-                }
-            };
+                            return true;
+                        }
+                    };
             observer.addOnPreDrawListener(listener);
         }
     }
@@ -304,16 +302,16 @@ public class TransitionManager {
     /**
      * Convenience method to simply change to the given scene using
      * the given transition.
-     *
+     * <p/>
      * <p>Passing in <code>null</code> for the transition parameter will
      * result in the scene changing without any transition running, and is
      * equivalent to calling {@link Scene#exit()} on the scene root's
      * current scene, followed by {@link Scene#enter()} on the scene
      * specified by the <code>scene</code> parameter.</p>
      *
-     * @param scene The Scene to change to
+     * @param scene      The Scene to change to
      * @param transition The transition to use for this scene change. A
-     * value of null causes the scene change to happen with no transition.
+     *                   value of null causes the scene change to happen with no transition.
      */
     public static void go(Scene scene, Transition transition) {
         changeScene(scene, transition);
@@ -341,19 +339,19 @@ public class TransitionManager {
      * will be animated. There is no need to create a Scene; it is implied by
      * changes which take place between calling this method and the next frame when
      * the transition begins.
-     *
+     * <p/>
      * <p>Calling this method several times before the next frame (for example, if
      * unrelated code also wants to make dynamic changes and run a transition on
      * the same scene root), only the first call will trigger capturing values
      * and exiting the current scene. Subsequent calls to the method with the
      * same scene root during the same frame will be ignored.</p>
-     *
+     * <p/>
      * <p>Passing in <code>null</code> for the transition parameter will
      * cause the TransitionManager to use its default transition.</p>
      *
-     * @param sceneRoot The root of the View hierarchy to run the transition on.
+     * @param sceneRoot  The root of the View hierarchy to run the transition on.
      * @param transition The transition to use for this change. A
-     * value of null causes the TransitionManager to use the default transition.
+     *                   value of null causes the TransitionManager to use the default transition.
      */
     public static void beginDelayedTransition(final ViewGroup sceneRoot, Transition transition) {
         if (!sPendingTransitions.contains(sceneRoot) && ViewGroupCompat.isLaidOut(sceneRoot)) {

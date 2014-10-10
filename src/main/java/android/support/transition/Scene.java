@@ -46,10 +46,10 @@ public final class Scene {
      * by {@link TransitionManager} XML resource files.
      *
      * @param sceneRoot The root of the hierarchy in which scene changes
-     * and transitions will take place.
-     * @param layoutId The id of a standard layout resource file.
-     * @param context The context used in the process of inflating
-     * the layout resource.
+     *                  and transitions will take place.
+     * @param layoutId  The id of a standard layout resource file.
+     * @param context   The context used in the process of inflating
+     *                  the layout resource.
      * @return
      */
     public static Scene getSceneForLayout(ViewGroup sceneRoot, int layoutId, Context context) {
@@ -77,7 +77,7 @@ public final class Scene {
      * {@link #setExitAction(Runnable)}.
      *
      * @param sceneRoot The root of the hierarchy in which scene changes
-     * and transitions will take place.
+     *                  and transitions will take place.
      */
     public Scene(ViewGroup sceneRoot) {
         mSceneRoot = sceneRoot;
@@ -87,16 +87,16 @@ public final class Scene {
      * Constructs a Scene which, when entered, will remove any
      * children from the sceneRoot container and will inflate and add
      * the hierarchy specified by the layoutId resource file.
-     *
+     * <p/>
      * <p>This method is hidden because layoutId-based scenes should be
      * created by the caching factory method {@link android.support.transition.Scene#getCurrentScene(View)}.</p>
      *
      * @param sceneRoot The root of the hierarchy in which scene changes
-     * and transitions will take place.
-     * @param layoutId The id of a resource file that defines the view
-     * hierarchy of this scene.
-     * @param context The context used in the process of inflating
-     * the layout resource.
+     *                  and transitions will take place.
+     * @param layoutId  The id of a resource file that defines the view
+     *                  hierarchy of this scene.
+     * @param context   The context used in the process of inflating
+     *                  the layout resource.
      */
     private Scene(ViewGroup sceneRoot, int layoutId, Context context) {
         mContext = context;
@@ -110,9 +110,9 @@ public final class Scene {
      * object as a new child of that container.
      *
      * @param sceneRoot The root of the hierarchy in which scene changes
-     * and transitions will take place.
-     * @param layout The view hierarchy of this scene, added as a child
-     * of sceneRoot when this scene is entered.
+     *                  and transitions will take place.
+     * @param layout    The view hierarchy of this scene, added as a child
+     *                  of sceneRoot when this scene is entered.
      */
     public Scene(ViewGroup sceneRoot, ViewGroup layout) {
         mSceneRoot = sceneRoot;
@@ -213,7 +213,7 @@ public final class Scene {
      * be played.
      *
      * @param action The runnable whose {@link Runnable#run() run()} method will
-     * be called when this scene is entered
+     *               be called when this scene is entered
      * @see #setExitAction(Runnable)
      * @see android.support.transition.Scene#Scene(ViewGroup, int, Context)
      * @see android.support.transition.Scene#Scene(ViewGroup, ViewGroup)

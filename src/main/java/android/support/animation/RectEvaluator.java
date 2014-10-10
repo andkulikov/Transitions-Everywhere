@@ -34,13 +34,13 @@ public class RectEvaluator implements TypeEvaluator<Rect> {
      * @param startValue The start Rect
      * @param endValue   The end Rect
      * @return A linear interpolation between the start and end values, given the
-     *         <code>fraction</code> parameter.
+     * <code>fraction</code> parameter.
      */
     @Override
     public Rect evaluate(float fraction, Rect startValue, Rect endValue) {
-        return new Rect(startValue.left + (int)((endValue.left - startValue.left) * fraction),
-                startValue.top + (int)((endValue.top - startValue.top) * fraction),
-                startValue.right + (int)((endValue.right - startValue.right) * fraction),
-                startValue.bottom + (int)((endValue.bottom - startValue.bottom) * fraction));
+        return new Rect(startValue.left + (int) ((endValue.left - startValue.left) * fraction),
+                startValue.top + (int) ((endValue.top - startValue.top) * fraction),
+                startValue.right + (int) ((endValue.right - startValue.right) * fraction),
+                startValue.bottom + (int) ((endValue.bottom - startValue.bottom) * fraction));
     }
 }

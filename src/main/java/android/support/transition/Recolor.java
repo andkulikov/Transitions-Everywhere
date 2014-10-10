@@ -45,7 +45,7 @@ public class Recolor extends Transition {
         transitionValues.values.put(PROPNAME_BACKGROUND, transitionValues.view.getBackground());
         if (transitionValues.view instanceof TextView) {
             transitionValues.values.put(PROPNAME_TEXT_COLOR,
-                    ((TextView)transitionValues.view).getCurrentTextColor());
+                    ((TextView) transitionValues.view).getCurrentTextColor());
         }
     }
 
@@ -61,7 +61,7 @@ public class Recolor extends Transition {
 
     @Override
     public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-            TransitionValues endValues) {
+                                   TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
         }

@@ -40,8 +40,8 @@ public class Slide extends Visibility {
 
     @Override
     public Animator onAppear(ViewGroup sceneRoot,
-            TransitionValues startValues, int startVisibility,
-            TransitionValues endValues, int endVisibility) {
+                             TransitionValues startValues, int startVisibility,
+                             TransitionValues endValues, int endVisibility) {
         View endView = (endValues != null) ? endValues.view : null;
         endView.setTranslationY(-2 * endView.getHeight());
         ObjectAnimator anim = ObjectAnimator.ofFloat(endView, View.TRANSLATION_Y,
@@ -52,8 +52,8 @@ public class Slide extends Visibility {
 
     @Override
     public Animator onDisappear(ViewGroup sceneRoot,
-            TransitionValues startValues, int startVisibility,
-            TransitionValues endValues, int endVisibility) {
+                                TransitionValues startValues, int startVisibility,
+                                TransitionValues endValues, int endVisibility) {
         View startView = (startValues != null) ? startValues.view : null;
         startView.setTranslationY(0);
         ObjectAnimator anim = ObjectAnimator.ofFloat(startView, View.TRANSLATION_Y, 0,

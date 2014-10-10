@@ -43,7 +43,7 @@ public class Rotate extends Transition {
 
     @Override
     public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-            TransitionValues endValues) {
+                                   TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
         }

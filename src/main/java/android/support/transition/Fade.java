@@ -32,7 +32,7 @@ import android.view.ViewGroup;
  * or non-visible. Visibility is determined by both the
  * {@link View#setVisibility(int)} state of the view as well as whether it
  * is parented in the current view hierarchy.
- *
+ * <p/>
  * <p>The ability of this transition to fade out a particular view, and the
  * way that that fading operation takes place, is based on
  * the situation of the view in the view hierarchy. For example, if a view was
@@ -50,12 +50,11 @@ import android.view.ViewGroup;
  * {@link Scene#getSceneForLayout(android.view.ViewGroup, int, android.content.Context)
  * created from a layout resource file}, then it is considered safe to un-parent
  * the starting scene view in order to fade it out.</p>
- *
+ * <p/>
  * <p>A Fade transition can be described in a resource file by using the
  * tag <code>fade</code>, along with the standard
  * attributes of {@link android.support.transition.R.styleable#Fade} and
  * {@link android.support.transition.R.styleable#Transition}.</p>
-
  */
 public class Fade extends Visibility {
 
@@ -92,7 +91,7 @@ public class Fade extends Visibility {
      * and/or out, according to the value of fadingMode.
      *
      * @param fadingMode The behavior of this transition, a combination of
-     * {@link #IN} and {@link #OUT}.
+     *                   {@link #IN} and {@link #OUT}.
      */
     public Fade(int fadingMode) {
         mFadingMode = fadingMode;
@@ -102,7 +101,7 @@ public class Fade extends Visibility {
      * Utility method to handle creating and running the Animator.
      */
     private Animator createAnimation(View view, float startAlpha, float endAlpha,
-            AnimatorListenerAdapter listener) {
+                                     AnimatorListenerAdapter listener) {
         if (startAlpha == endAlpha) {
             // run listener if we're noop'ing the animation, to get the end-state results now
             if (listener != null) {
@@ -137,8 +136,8 @@ public class Fade extends Visibility {
 
     @Override
     public Animator onAppear(ViewGroup sceneRoot,
-            TransitionValues startValues, int startVisibility,
-            TransitionValues endValues, int endVisibility) {
+                             TransitionValues startValues, int startVisibility,
+                             TransitionValues endValues, int endVisibility) {
         if ((mFadingMode & IN) != IN || endValues == null) {
             return null;
         }
@@ -148,7 +147,7 @@ public class Fade extends Visibility {
             Log.d(LOG_TAG, "Fade.onAppear: startView, startVis, endView, endVis = " +
                     startView + ", " + startVisibility + ", " + endView + ", " + endVisibility);
         }
-		ViewCompat.setTransitionAlpha(endView, 0);
+        ViewCompat.setTransitionAlpha(endView, 0);
         TransitionListener transitionListener = new TransitionListenerAdapter() {
             boolean mCanceled = false;
             float mPausedAlpha;
@@ -162,19 +161,19 @@ public class Fade extends Visibility {
             @Override
             public void onTransitionEnd(Transition transition) {
                 if (!mCanceled) {
-					ViewCompat.setTransitionAlpha(endView, 1);
+                    ViewCompat.setTransitionAlpha(endView, 1);
                 }
             }
 
             @Override
             public void onTransitionPause(Transition transition) {
                 mPausedAlpha = ViewCompat.getTransitionAlpha(endView);
-				ViewCompat.setTransitionAlpha(endView, 1);
+                ViewCompat.setTransitionAlpha(endView, 1);
             }
 
             @Override
             public void onTransitionResume(Transition transition) {
-				ViewCompat.setTransitionAlpha(endView, mPausedAlpha);
+                ViewCompat.setTransitionAlpha(endView, mPausedAlpha);
             }
         };
         addListener(transitionListener);
@@ -183,8 +182,8 @@ public class Fade extends Visibility {
 
     @Override
     public Animator onDisappear(ViewGroup sceneRoot,
-            TransitionValues startValues, int startVisibility,
-            TransitionValues endValues, int endVisibility) {
+                                TransitionValues startValues, int startVisibility,
+                                TransitionValues endValues, int endVisibility) {
         if ((mFadingMode & OUT) != OUT) {
             return null;
         }
@@ -193,7 +192,7 @@ public class Fade extends Visibility {
         View endView = (endValues != null) ? endValues.view : null;
         if (DBG) {
             Log.d(LOG_TAG, "Fade.onDisappear: startView, startVis, endView, endVis = " +
-                        startView + ", " + startVisibility + ", " + endView + ", " + endVisibility);
+                    startView + ", " + startVisibility + ", " + endView + ", " + endVisibility);
         }
         View overlayView = null;
         View viewToKeep = null;
@@ -303,21 +302,21 @@ public class Fade extends Visibility {
                     if (finalViewToKeep != null && !mCanceled) {
                         finalViewToKeep.setVisibility(View.VISIBLE);
                     }
-					ViewCompat.setTransitionAlpha(finalView, mPausedAlpha);
+                    ViewCompat.setTransitionAlpha(finalView, mPausedAlpha);
                 }
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
                     mCanceled = true;
                     if (mPausedAlpha >= 0) {
-						ViewCompat.setTransitionAlpha(finalView, mPausedAlpha);
+                        ViewCompat.setTransitionAlpha(finalView, mPausedAlpha);
                     }
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (!mCanceled) {
-						ViewCompat.setTransitionAlpha(finalView, startAlpha);
+                        ViewCompat.setTransitionAlpha(finalView, startAlpha);
                     }
                     // TODO: restore view offset from overlay repositioning
                     if (finalViewToKeep != null && !mCanceled) {

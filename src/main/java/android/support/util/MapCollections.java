@@ -25,6 +25,7 @@ import java.util.Set;
 /**
  * Helper for writing standard Java collection interfaces to a data
  * structure like {@link android.util.ArrayMap}.
+ *
  * @hide
  */
 abstract class MapCollections<K, V> {
@@ -53,7 +54,7 @@ abstract class MapCollections<K, V> {
             Object res = colGetEntry(mIndex, mOffset);
             mIndex++;
             mCanRemove = true;
-            return (T)res;
+            return (T) res;
         }
 
         @Override
@@ -107,7 +108,7 @@ abstract class MapCollections<K, V> {
                 throw new IllegalStateException(
                         "This container does not support retaining Map.Entry objects");
             }
-            return (K)colGetEntry(mIndex, 0);
+            return (K) colGetEntry(mIndex, 0);
         }
 
         @Override
@@ -116,7 +117,7 @@ abstract class MapCollections<K, V> {
                 throw new IllegalStateException(
                         "This container does not support retaining Map.Entry objects");
             }
-            return (V)colGetEntry(mIndex, 1);
+            return (V) colGetEntry(mIndex, 1);
         }
 
         @Override
@@ -252,15 +253,17 @@ abstract class MapCollections<K, V> {
         @Override
         public int hashCode() {
             int result = 0;
-            for (int i=colGetSize()-1; i>=0; i--) {
+            for (int i = colGetSize() - 1; i >= 0; i--) {
                 final Object key = colGetEntry(i, 0);
                 final Object value = colGetEntry(i, 1);
-                result += ( (key == null ? 0 : key.hashCode()) ^
-                        (value == null ? 0 : value.hashCode()) );
+                result += ((key == null ? 0 : key.hashCode()) ^
+                        (value == null ? 0 : value.hashCode()));
             }
             return result;
         }
-    };
+    }
+
+    ;
 
     final class KeySet implements Set<K> {
 
@@ -342,13 +345,15 @@ abstract class MapCollections<K, V> {
         @Override
         public int hashCode() {
             int result = 0;
-            for (int i=colGetSize()-1; i>=0; i--) {
+            for (int i = colGetSize() - 1; i >= 0; i--) {
                 Object obj = colGetEntry(i, 0);
                 result += obj == null ? 0 : obj.hashCode();
             }
             return result;
         }
-    };
+    }
+
+    ;
 
     final class ValuesCollection implements Collection<V> {
 
@@ -407,7 +412,7 @@ abstract class MapCollections<K, V> {
         public boolean removeAll(Collection<?> collection) {
             int N = colGetSize();
             boolean changed = false;
-            for (int i=0; i<N; i++) {
+            for (int i = 0; i < N; i++) {
                 Object cur = colGetEntry(i, 1);
                 if (collection.contains(cur)) {
                     colRemoveAt(i);
@@ -423,7 +428,7 @@ abstract class MapCollections<K, V> {
         public boolean retainAll(Collection<?> collection) {
             int N = colGetSize();
             boolean changed = false;
-            for (int i=0; i<N; i++) {
+            for (int i = 0; i < N; i++) {
                 Object cur = colGetEntry(i, 1);
                 if (!collection.contains(cur)) {
                     colRemoveAt(i);
@@ -449,7 +454,9 @@ abstract class MapCollections<K, V> {
         public <T> T[] toArray(T[] array) {
             return toArrayHelper(array, 1);
         }
-    };
+    }
+
+    ;
 
     public static <K, V> boolean containsAllHelper(Map<K, V> map, Collection<?> collection) {
         Iterator<?> it = collection.iterator();
@@ -484,21 +491,21 @@ abstract class MapCollections<K, V> {
     public Object[] toArrayHelper(int offset) {
         final int N = colGetSize();
         Object[] result = new Object[N];
-        for (int i=0; i<N; i++) {
+        for (int i = 0; i < N; i++) {
             result[i] = colGetEntry(i, offset);
         }
         return result;
     }
 
     public <T> T[] toArrayHelper(T[] array, int offset) {
-        final int N  = colGetSize();
+        final int N = colGetSize();
         if (array.length < N) {
             @SuppressWarnings("unchecked") T[] newArray
-                = (T[]) Array.newInstance(array.getClass().getComponentType(), N);
+                    = (T[]) Array.newInstance(array.getClass().getComponentType(), N);
             array = newArray;
         }
-        for (int i=0; i<N; i++) {
-            array[i] = (T)colGetEntry(i, offset);
+        for (int i = 0; i < N; i++) {
+            array[i] = (T) colGetEntry(i, offset);
         }
         if (array.length > N) {
             array[N] = null;
@@ -546,12 +553,20 @@ abstract class MapCollections<K, V> {
     }
 
     protected abstract int colGetSize();
+
     protected abstract Object colGetEntry(int index, int offset);
+
     protected abstract int colIndexOfKey(Object key);
+
     protected abstract int colIndexOfValue(Object key);
+
     protected abstract Map<K, V> colGetMap();
+
     protected abstract void colPut(K key, V value);
+
     protected abstract V colSetValue(int index, V value);
+
     protected abstract void colRemoveAt(int index);
+
     protected abstract void colClear();
 }

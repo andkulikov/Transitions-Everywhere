@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * This transition captures the layout bounds of target views before and after
  * the scene change and animates those changes during the transition.
- *
+ * <p/>
  * <p>A ChangeBounds transition can be described in a resource file by using the
  * tag <code>changeBounds</code>, along with the other standard
  * attributes of {@link android.support.transition.R.styleable#Transition}.</p>
@@ -78,7 +78,7 @@ public class ChangeBounds extends Transition {
      * the transition to determine which parents are the same.
      *
      * @param reparent true if the transition should track the parent
-     * container of target views and animate parent changes.
+     *                 container of target views and animate parent changes.
      */
     public void setReparent(boolean reparent) {
         mReparent = reparent;
@@ -106,7 +106,7 @@ public class ChangeBounds extends Transition {
 
     @Override
     public Animator createAnimator(final ViewGroup sceneRoot, TransitionValues startValues,
-            TransitionValues endValues) {
+                                   TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
         }
@@ -177,25 +177,25 @@ public class ChangeBounds extends Transition {
 
                             @Override
                             public void onTransitionCancel(Transition transition) {
-								ViewGroupCompat.suppressLayout(parent, false);
+                                ViewGroupCompat.suppressLayout(parent, false);
                                 mCanceled = true;
                             }
 
                             @Override
                             public void onTransitionEnd(Transition transition) {
                                 if (!mCanceled) {
-									ViewGroupCompat.suppressLayout(parent, false);
+                                    ViewGroupCompat.suppressLayout(parent, false);
                                 }
                             }
 
                             @Override
                             public void onTransitionPause(Transition transition) {
-								ViewGroupCompat.suppressLayout(parent, false);
+                                ViewGroupCompat.suppressLayout(parent, false);
                             }
 
                             @Override
                             public void onTransitionResume(Transition transition) {
-								ViewGroupCompat.suppressLayout(parent, true);
+                                ViewGroupCompat.suppressLayout(parent, true);
                             }
                         };
                         addListener(transitionListener);
@@ -237,31 +237,31 @@ public class ChangeBounds extends Transition {
                     ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(view, pvh);
                     if (view.getParent() instanceof ViewGroup) {
                         final ViewGroup parent = (ViewGroup) view.getParent();
-						ViewGroupCompat.suppressLayout(parent, true);
+                        ViewGroupCompat.suppressLayout(parent, true);
                         TransitionListener transitionListener = new TransitionListenerAdapter() {
                             boolean mCanceled = false;
 
                             @Override
                             public void onTransitionCancel(Transition transition) {
-								ViewGroupCompat.suppressLayout(parent, false);
+                                ViewGroupCompat.suppressLayout(parent, false);
                                 mCanceled = true;
                             }
 
                             @Override
                             public void onTransitionEnd(Transition transition) {
                                 if (!mCanceled) {
-									ViewGroupCompat.suppressLayout(parent, false);
+                                    ViewGroupCompat.suppressLayout(parent, false);
                                 }
                             }
 
                             @Override
                             public void onTransitionPause(Transition transition) {
-								ViewGroupCompat.suppressLayout(parent, false);
+                                ViewGroupCompat.suppressLayout(parent, false);
                             }
 
                             @Override
                             public void onTransitionResume(Transition transition) {
-								ViewGroupCompat.suppressLayout(parent, true);
+                                ViewGroupCompat.suppressLayout(parent, true);
                             }
                         };
                         addListener(transitionListener);

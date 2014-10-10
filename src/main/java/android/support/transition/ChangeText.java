@@ -100,7 +100,7 @@ public class ChangeText extends Transition {
      * {@link #CHANGE_BEHAVIOR_IN}, and {@link #CHANGE_BEHAVIOR_OUT_IN}.
      *
      * @param changeBehavior The type of fading animation to use when this
-     * transition is run.
+     *                       transition is run.
      * @return this textChange object.
      */
     public ChangeText setChangeBehavior(int changeBehavior) {
@@ -153,7 +153,7 @@ public class ChangeText extends Transition {
 
     @Override
     public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-            TransitionValues endValues) {
+                                   TransitionValues endValues) {
         if (startValues == null || endValues == null ||
                 !(startValues.view instanceof TextView) || !(endValues.view instanceof TextView)) {
             return null;

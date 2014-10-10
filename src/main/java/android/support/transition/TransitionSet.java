@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * others play {@link #ORDERING_SEQUENTIAL}. For example, {@link AutoTransition}
  * uses a TransitionSet to sequentially play a Fade(Fade.OUT), followed by
  * a {@link ChangeBounds}, followed by a Fade(Fade.OUT) transition.
- *
+ * <p/>
  * <p>A TransitionSet can be described in a resource file by using the
  * tag <code>transitionSet</code>, along with the standard
  * attributes of {@link android.support.transition.R.styleable#TransitionSet} and
@@ -80,8 +80,8 @@ public class TransitionSet extends Transition {
      * Sets the play order of this set's child transitions.
      *
      * @param ordering {@link #ORDERING_TOGETHER} to play this set's child
-     * transitions together, {@link #ORDERING_SEQUENTIAL} to play the child
-     * transitions in sequence.
+     *                 transitions together, {@link #ORDERING_SEQUENTIAL} to play the child
+     *                 transitions in sequence.
      * @return This transitionSet object.
      */
     public TransitionSet setOrdering(int ordering) {
@@ -105,7 +105,6 @@ public class TransitionSet extends Transition {
      *
      * @return {@link #ORDERING_TOGETHER} if child transitions will play at the same
      * time, {@link #ORDERING_SEQUENTIAL} if they will play in sequence.
-     *
      * @see #setOrdering(int)
      */
     public int getOrdering() {
@@ -117,7 +116,7 @@ public class TransitionSet extends Transition {
      * is added relative to other child transitions that are added, in addition to
      * the {@link #getOrdering() ordering} property, determines the
      * order in which the transitions are started.
-     *
+     * <p/>
      * <p>If this transitionSet has a {@link #getDuration() duration} set on it, the
      * child transition will inherit that duration. Transitions are assumed to have
      * a maximum of one transitionSet parent.</p>
@@ -226,9 +225,11 @@ public class TransitionSet extends Transition {
      */
     static class TransitionSetListener extends TransitionListenerAdapter {
         TransitionSet mTransitionSet;
+
         TransitionSetListener(TransitionSet transitionSet) {
             mTransitionSet = transitionSet;
         }
+
         @Override
         public void onTransitionStart(Transition transition) {
             if (!mTransitionSet.mStarted) {
@@ -254,7 +255,7 @@ public class TransitionSet extends Transition {
      */
     @Override
     protected void createAnimators(ViewGroup sceneRoot, TransitionValuesMaps startValues,
-            TransitionValuesMaps endValues) {
+                                   TransitionValuesMaps endValues) {
         for (Transition childTransition : mTransitions) {
             childTransition.createAnimators(sceneRoot, startValues, endValues);
         }
@@ -315,7 +316,9 @@ public class TransitionSet extends Transition {
         }
     }
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @Override
     public void pause() {
         super.pause();
@@ -325,7 +328,9 @@ public class TransitionSet extends Transition {
         }
     }
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @Override
     public void resume() {
         super.resume();
@@ -335,7 +340,9 @@ public class TransitionSet extends Transition {
         }
     }
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @Override
     protected void cancel() {
         super.cancel();

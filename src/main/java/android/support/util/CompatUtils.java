@@ -39,7 +39,7 @@ public final class CompatUtils {
     }
 
     public static Method getMethod(final Class<?> targetClass, final String name,
-            final Class<?>... parameterTypes) {
+                                   final Class<?>... parameterTypes) {
         if (targetClass == null || TextUtils.isEmpty(name)) return null;
         try {
             return targetClass.getMethod(name, parameterTypes);
@@ -64,7 +64,7 @@ public final class CompatUtils {
     }
 
     public static Constructor<?> getConstructor(final Class<?> targetClass,
-            final Class<?> ... types) {
+                                                final Class<?>... types) {
         if (targetClass == null || types == null) return null;
         try {
             return targetClass.getConstructor(types);
@@ -76,7 +76,7 @@ public final class CompatUtils {
         return null;
     }
 
-    public static Object newInstance(final Constructor<?> constructor, final Object ... args) {
+    public static Object newInstance(final Constructor<?> constructor, final Object... args) {
         if (constructor == null) return null;
         try {
             return constructor.newInstance(args);
@@ -87,7 +87,7 @@ public final class CompatUtils {
     }
 
     public static Object invoke(final Object receiver, final Object defaultValue,
-            final Method method, final Object... args) {
+                                final Method method, final Object... args) {
         if (method == null) return defaultValue;
         try {
             return method.invoke(receiver, args);
@@ -98,7 +98,7 @@ public final class CompatUtils {
     }
 
     public static Object getFieldValue(final Object receiver, final Object defaultValue,
-            final Field field) {
+                                       final Field field) {
         if (field == null) return defaultValue;
         try {
             return field.get(receiver);

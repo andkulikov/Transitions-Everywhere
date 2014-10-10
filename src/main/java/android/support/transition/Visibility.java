@@ -81,7 +81,7 @@ public abstract class Visibility extends Transition {
      * determines it for the actual animation.
      *
      * @param values The TransitionValues object that holds the information by
-     * which visibility is determined.
+     *               which visibility is determined.
      * @return True if the view reference by <code>values</code> is visible,
      * false otherwise.
      */
@@ -96,7 +96,7 @@ public abstract class Visibility extends Transition {
     }
 
     private VisibilityInfo getVisibilityChangeInfo(TransitionValues startValues,
-            TransitionValues endValues) {
+                                                   TransitionValues endValues) {
         final VisibilityInfo visInfo = new VisibilityInfo();
         visInfo.visibilityChange = false;
         visInfo.fadeIn = false;
@@ -151,7 +151,7 @@ public abstract class Visibility extends Transition {
 
     @Override
     public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-            TransitionValues endValues) {
+                                   TransitionValues endValues) {
         VisibilityInfo visInfo = getVisibilityChangeInfo(startValues, endValues);
         if (visInfo.visibilityChange) {
             // Only transition views that are either targets of this transition
@@ -184,18 +184,18 @@ public abstract class Visibility extends Transition {
      * The method should only be called by the Visibility class; it is
      * not intended to be called from external classes.
      *
-     * @param sceneRoot The root of the transition hierarchy
-     * @param startValues The target values in the start scene
+     * @param sceneRoot       The root of the transition hierarchy
+     * @param startValues     The target values in the start scene
      * @param startVisibility The target visibility in the start scene
-     * @param endValues The target values in the end scene
-     * @param endVisibility The target visibility in the end scene
+     * @param endValues       The target values in the end scene
+     * @param endVisibility   The target visibility in the end scene
      * @return An Animator to be started at the appropriate time in the
      * overall transition for this scene change. A null value means no animation
      * should be run.
      */
     public Animator onAppear(ViewGroup sceneRoot,
-            TransitionValues startValues, int startVisibility,
-            TransitionValues endValues, int endVisibility) {
+                             TransitionValues startValues, int startVisibility,
+                             TransitionValues endValues, int endVisibility) {
         return null;
     }
 
@@ -205,19 +205,18 @@ public abstract class Visibility extends Transition {
      * The method should only be called by the Visibility class; it is
      * not intended to be called from external classes.
      *
-     *
-     * @param sceneRoot The root of the transition hierarchy
-     * @param startValues The target values in the start scene
+     * @param sceneRoot       The root of the transition hierarchy
+     * @param startValues     The target values in the start scene
      * @param startVisibility The target visibility in the start scene
-     * @param endValues The target values in the end scene
-     * @param endVisibility The target visibility in the end scene
+     * @param endValues       The target values in the end scene
+     * @param endVisibility   The target visibility in the end scene
      * @return An Animator to be started at the appropriate time in the
      * overall transition for this scene change. A null value means no animation
      * should be run.
      */
     public Animator onDisappear(ViewGroup sceneRoot,
-            TransitionValues startValues, int startVisibility,
-            TransitionValues endValues, int endVisibility) {
+                                TransitionValues startValues, int startVisibility,
+                                TransitionValues endValues, int endVisibility) {
         return null;
     }
 }

@@ -7,7 +7,7 @@ import android.view.View;
 
 @TargetApi(VERSION_CODES.JELLY_BEAN_MR2)
 public class ViewCompatJellybeanMr2 {
-	public static void setClipBounds(View v, Rect clipBounds) {
-		v.setClipBounds(clipBounds);
-	}
+    public static void setClipBounds(View v, Rect clipBounds) {
+        v.setClipBounds(clipBounds);
+    }
 }

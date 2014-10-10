@@ -39,7 +39,7 @@ import java.util.Map;
 /**
  * This transition captures bitmap representations of target views before and
  * after the scene change and fades between them.
- *
+ * <p/>
  * <p>Note: This transition is not compatible with {@link TextureView}
  * or {@link SurfaceView}.</p>
  *
@@ -120,7 +120,7 @@ public class Crossfade extends Transition {
      * {@link #FADE_BEHAVIOR_CROSSFADE} and {@link #FADE_BEHAVIOR_REVEAL}.
      *
      * @param fadeBehavior The type of fading animation to use when this
-     * transition is run.
+     *                     transition is run.
      */
     public Crossfade setFadeBehavior(int fadeBehavior) {
         if (fadeBehavior >= FADE_BEHAVIOR_CROSSFADE && fadeBehavior <= FADE_BEHAVIOR_OUT_IN) {
@@ -145,7 +145,7 @@ public class Crossfade extends Transition {
      * {@link #RESIZE_BEHAVIOR_SCALE}.
      *
      * @param resizeBehavior The type of resizing behavior to use when this
-     * transition is run.
+     *                       transition is run.
      */
     public Crossfade setResizeBehavior(int resizeBehavior) {
         if (resizeBehavior >= RESIZE_BEHAVIOR_NONE && resizeBehavior <= RESIZE_BEHAVIOR_SCALE) {
@@ -166,7 +166,7 @@ public class Crossfade extends Transition {
 
     @Override
     public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-            TransitionValues endValues) {
+                                   TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
         }
@@ -228,7 +228,7 @@ public class Crossfade extends Transition {
             anim.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                         ViewOverlay overlay = useParentOverlay ?
                                 ((ViewGroup) view.getParent()).getOverlay() : view.getOverlay();
                         overlay.remove(startDrawable);
