@@ -15,13 +15,14 @@ public class ViewCompat {
         void setClipBounds(View v, Rect clipBounds);
 
         void setTransitionAlpha(View v, float alpha);
+
+        String getAlphaProperty();
     }
 
     static class BaseViewCompatImpl implements ViewCompatImpl {
         @Override
         public float getTransitionAlpha(View v) {
-            // TODO: Implement support behavior
-            return 1;
+            return v.getAlpha();
         }
 
         @Override
@@ -37,7 +38,12 @@ public class ViewCompat {
 
         @Override
         public void setTransitionAlpha(View v, float alpha) {
-            // TODO: Implement support behavior
+            v.setAlpha(alpha);
+        }
+
+        @Override
+        public String getAlphaProperty() {
+            return "alpha";
         }
     }
 
@@ -64,6 +70,11 @@ public class ViewCompat {
         @Override
         public void setTransitionAlpha(View v, float alpha) {
             ViewCompatKitKat.setTransitionAlpha(v, alpha);
+        }
+
+        @Override
+        public String getAlphaProperty() {
+            return "transitionAlpha";
         }
     }
 
@@ -94,5 +105,9 @@ public class ViewCompat {
 
     public static void setTransitionAlpha(View v, float alpha) {
         IMPL.setTransitionAlpha(v, alpha);
+    }
+
+    public static String getAlphaProperty() {
+        return IMPL.getAlphaProperty();
     }
 }
