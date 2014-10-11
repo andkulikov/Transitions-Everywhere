@@ -1,4 +1,4 @@
-package android.support.animation;
+package android.support.compat;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorPauseListener;

@@ -1,4 +1,4 @@
-package android.support.util;
+package android.support.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,7 +7,10 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +18,19 @@ import java.util.List;
 /**
  * Created by stephane on 11/10/13.
  */
-public class ViewOverlayCompat extends View {
+public class ViewOverlayPreJellybean extends View {
 
-    public ViewOverlayCompat(Context context) {
+    public ViewOverlayPreJellybean(Context context) {
         super(context);
         init();
     }
 
-    public ViewOverlayCompat(Context context, AttributeSet attrs) {
+    public ViewOverlayPreJellybean(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ViewOverlayCompat(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ViewOverlayPreJellybean(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -94,6 +97,33 @@ public class ViewOverlayCompat extends View {
 
         ViewCompat.postInvalidateOnAnimation(this);
 
+    }
+
+    public static ViewOverlayPreJellybean getOverlay(ViewGroup sceneRoot) {
+        View group = sceneRoot;
+        while (group != null && !(group.getId() == android.R.id.content)) {
+            group = (View) group.getParent();
+        }
+
+        if (group != null) {
+            ViewOverlayPreJellybean viewOverlayPreJellybean = null;
+            for (int i = 0; i < ((FrameLayout) group).getChildCount(); i++) {
+                View childAt = ((FrameLayout) group).getChildAt(i);
+                if (childAt instanceof ViewOverlayPreJellybean) {
+                    viewOverlayPreJellybean = (ViewOverlayPreJellybean) childAt;
+                    break;
+                }
+            }
+
+            if (viewOverlayPreJellybean == null) {
+                viewOverlayPreJellybean = new ViewOverlayPreJellybean(sceneRoot.getContext());
+                final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                params.gravity = Gravity.FILL;
+                ((FrameLayout) group).addView(viewOverlayPreJellybean, params);
+            }
+            return viewOverlayPreJellybean;
+        }
+        return null;
     }
 
     private class ViewWithBounds {

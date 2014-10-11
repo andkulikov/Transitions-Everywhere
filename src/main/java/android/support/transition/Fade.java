@@ -19,9 +19,9 @@ package android.support.transition;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.support.animation.AnimatorCompat;
-import android.support.util.OverlayCompatibilityHelper;
-import android.support.view.ViewCompat;
+import android.support.compat.AnimatorCompat;
+import android.support.compat.ViewCompat;
+import android.support.compat.ViewGroupOverlayCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -241,7 +241,7 @@ public class Fade extends Visibility {
             // TODO: Need to do this for general case of adding to overlay
             int screenX = (Integer) startValues.values.get(PROPNAME_SCREEN_X);
             int screenY = (Integer) startValues.values.get(PROPNAME_SCREEN_Y);
-            OverlayCompatibilityHelper.addViewOverlay(sceneRoot, overlayView, screenX, screenY);
+            ViewGroupOverlayCompat.addOverlay(sceneRoot, overlayView, screenX, screenY);
 
             // TODO: add automatic facility to Visibility superclass for keeping views around
             final float startAlpha = 1;
@@ -258,17 +258,17 @@ public class Fade extends Visibility {
                     if (finalViewToKeep != null) {
                         finalViewToKeep.setVisibility(finalVisibility);
                     }
-                    OverlayCompatibilityHelper.removeViewOverlay(finalSceneRoot, finalOverlayView);
+                    ViewGroupOverlayCompat.removeOverlay(finalSceneRoot, finalOverlayView);
                 }
 
                 @Override
                 public void onAnimationPause(Animator animation) {
-                    OverlayCompatibilityHelper.removeViewOverlay(finalSceneRoot, finalOverlayView);
+                    ViewGroupOverlayCompat.removeOverlay(finalSceneRoot, finalOverlayView);
                 }
 
                 @Override
                 public void onAnimationResume(Animator animation) {
-                    OverlayCompatibilityHelper.addViewOverlay(finalSceneRoot, finalOverlayView);
+                    ViewGroupOverlayCompat.addOverlay(finalSceneRoot, finalOverlayView);
                 }
             };
             return createAnimation(view, startAlpha, endAlpha, endListener);
@@ -323,7 +323,7 @@ public class Fade extends Visibility {
                         finalViewToKeep.setVisibility(finalVisibility);
                     }
 
-                    OverlayCompatibilityHelper.removeViewOverlay(finalSceneRoot, finalOverlayView);
+                    ViewGroupOverlayCompat.removeOverlay(finalSceneRoot, finalOverlayView);
                 }
             };
             return createAnimation(view, startAlpha, endAlpha, endListener);

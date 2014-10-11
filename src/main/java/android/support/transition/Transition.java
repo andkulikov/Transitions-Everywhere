@@ -19,7 +19,7 @@ package android.support.transition;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
-import android.support.animation.AnimatorCompat;
+import android.support.compat.AnimatorCompat;
 import android.support.util.ArrayMap;
 import android.support.v4.util.LongSparseArray;
 import android.support.v4.view.ViewCompat;

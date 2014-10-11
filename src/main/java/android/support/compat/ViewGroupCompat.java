@@ -1,11 +1,11 @@
-package android.support.view;
+package android.support.compat;
 
 import android.annotation.TargetApi;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.ViewGroup;
 
-public class ViewGroupCompat extends ViewCompat {
+public class ViewGroupCompat {
     interface ViewGroupCompatImpl {
         void suppressLayout(ViewGroup group, boolean suppress);
     }

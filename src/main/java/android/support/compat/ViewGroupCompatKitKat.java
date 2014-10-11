@@ -1,4 +1,4 @@
-package android.support.view;
+package android.support.compat;
 
 import android.annotation.TargetApi;
 import android.os.Build.VERSION_CODES;

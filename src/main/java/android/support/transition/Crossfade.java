@@ -26,7 +26,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.support.animation.RectEvaluator;
+import android.support.util.RectEvaluator;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;

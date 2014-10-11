@@ -18,8 +18,8 @@ package android.support.transition;
 
 import android.content.Context;
 import android.support.util.ArrayMap;
-import android.support.util.OverlayCompatibilityHelper;
-import android.support.view.ViewGroupCompat;
+import android.support.compat.ViewCompat;
+import android.support.compat.ViewGroupOverlayCompat;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -210,7 +210,7 @@ public class TransitionManager {
     private static void sceneChangeRunTransition(final ViewGroup sceneRoot,
                                                  final Transition transition) {
         if (transition != null) {
-            OverlayCompatibilityHelper.addViewOverlayCompat(sceneRoot);
+            ViewGroupOverlayCompat.addOverlayIfNeeded(sceneRoot);
             final ViewTreeObserver observer = sceneRoot.getViewTreeObserver();
             final ViewTreeObserver.OnPreDrawListener listener =
                     new ViewTreeObserver.OnPreDrawListener() {
@@ -354,7 +354,7 @@ public class TransitionManager {
      *                   value of null causes the TransitionManager to use the default transition.
      */
     public static void beginDelayedTransition(final ViewGroup sceneRoot, Transition transition) {
-        if (!sPendingTransitions.contains(sceneRoot) && ViewGroupCompat.isLaidOut(sceneRoot)) {
+        if (!sPendingTransitions.contains(sceneRoot) && ViewCompat.isLaidOut(sceneRoot)) {
             if (Transition.DBG) {
                 Log.d(LOG_TAG, "beginDelayedTransition: root, transition = " +
                         sceneRoot + ", " + transition);
