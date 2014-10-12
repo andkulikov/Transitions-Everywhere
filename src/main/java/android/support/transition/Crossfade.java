@@ -25,14 +25,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
+import android.support.compat.ViewGroupOverlayCompat;
 import android.support.util.RectEvaluator;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOverlay;
 
 import java.util.Map;
 
@@ -185,17 +184,8 @@ public class Crossfade extends Transition {
                     " for start, end: " + startBitmap + ", " + endBitmap);
         }
         if (startDrawable != null && endDrawable != null && !startBitmap.sameAs(endBitmap)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                ViewOverlay overlay = useParentOverlay ?
-                        ((ViewGroup) view.getParent()).getOverlay() : view.getOverlay();
-                if (mFadeBehavior == FADE_BEHAVIOR_REVEAL) {
-                    overlay.add(endDrawable);
-                }
-                overlay.add(startDrawable);
-            } else {
-                //TODO ViewOverlay
-            }
-
+            ViewGroupOverlayCompat.addCrossfadeOverlay(useParentOverlay, view,
+                    mFadeBehavior, startDrawable, endDrawable);
             // The transition works by placing the end drawable under the start drawable and
             // gradually fading out the start drawable. So it's not really a cross-fade, but rather
             // a reveal of the end scene over time. Also, animate the bounds of both drawables
@@ -228,16 +218,8 @@ public class Crossfade extends Transition {
             anim.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                        ViewOverlay overlay = useParentOverlay ?
-                                ((ViewGroup) view.getParent()).getOverlay() : view.getOverlay();
-                        overlay.remove(startDrawable);
-                        if (mFadeBehavior == FADE_BEHAVIOR_REVEAL) {
-                            overlay.remove(endDrawable);
-                        }
-                    } else {
-                        //TODO ViewOverlay
-                    }
+                    ViewGroupOverlayCompat.removeCrossfadeOverlay(useParentOverlay, view,
+                            mFadeBehavior, startDrawable, endDrawable);
                 }
             });
             AnimatorSet set = new AnimatorSet();

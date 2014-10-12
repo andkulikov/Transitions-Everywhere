@@ -1,11 +1,14 @@
 package android.support.compat;
 
 import android.annotation.TargetApi;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.support.transition.Crossfade;
 import android.support.view.ViewOverlayPreJellybean;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOverlay;
 import android.widget.FrameLayout;
 
 public abstract class ViewGroupOverlayCompat {
@@ -16,6 +19,12 @@ public abstract class ViewGroupOverlayCompat {
         void removeOverlay(ViewGroup sceneRoot, View overlayView);
 
         void addOverlayIfNeeded(View view);
+
+        void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
+                                 BitmapDrawable startDrawable, BitmapDrawable endDrawable);
+
+        void removeCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
+                                    BitmapDrawable startDrawable, BitmapDrawable endDrawable);
     }
 
     static class BaseViewGroupOverlayCompatImpl implements ViewGroupOverlayCompatImpl {
@@ -39,26 +48,36 @@ public abstract class ViewGroupOverlayCompat {
             }
             if (view != null && view instanceof FrameLayout) {
                 FrameLayout contentLayout = (FrameLayout) view;
-                if (contentLayout != null) {
-                    ViewOverlayPreJellybean viewOverlay = null;
-                    for (int i = 0; i < contentLayout.getChildCount(); i++) {
-                        View child = contentLayout.getChildAt(i);
-                        if (child instanceof ViewOverlayPreJellybean) {
-                            viewOverlay = (ViewOverlayPreJellybean) child;
-                            break;
-                        }
-                    }
-
-                    if (viewOverlay == null) {
-                        viewOverlay = new ViewOverlayPreJellybean(view.getContext());
-                        final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
-                        params.gravity = Gravity.FILL;
-                        contentLayout.addView(viewOverlay, params);
+                ViewOverlayPreJellybean viewOverlay = null;
+                for (int i = 0; i < contentLayout.getChildCount(); i++) {
+                    View child = contentLayout.getChildAt(i);
+                    if (child instanceof ViewOverlayPreJellybean) {
+                        viewOverlay = (ViewOverlayPreJellybean) child;
+                        break;
                     }
                 }
+
+                if (viewOverlay == null) {
+                    viewOverlay = new ViewOverlayPreJellybean(view.getContext());
+                    final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    params.gravity = Gravity.FILL;
+                    contentLayout.addView(viewOverlay, params);
+                }
             }
+        }
+
+        @Override
+        public void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
+                                        BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
+            //TODO ViewOverlay
+        }
+
+        @Override
+        public void removeCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
+                                           BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
+            //TODO ViewOverlay
         }
     }
 
@@ -83,6 +102,30 @@ public abstract class ViewGroupOverlayCompat {
         @Override
         public void addOverlayIfNeeded(View v) {
             // do nothing
+        }
+
+        @Override
+        public void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
+                                        BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
+            ViewOverlay overlay = getViewOverlay(useParentOverlay, view);
+            overlay.remove(startDrawable);
+            if (fadeBehavior == Crossfade.FADE_BEHAVIOR_REVEAL) {
+                overlay.remove(endDrawable);
+            }
+        }
+
+        @Override
+        public void removeCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
+                                           BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
+            ViewOverlay overlay = getViewOverlay(useParentOverlay, view);
+            if (fadeBehavior == Crossfade.FADE_BEHAVIOR_REVEAL) {
+                overlay.add(endDrawable);
+            }
+            overlay.add(startDrawable);
+        }
+
+        private static ViewOverlay getViewOverlay(boolean useParentOverlay, View view) {
+            return useParentOverlay ? ((ViewGroup) view.getParent()).getOverlay() : view.getOverlay();
         }
 
     }
@@ -117,5 +160,15 @@ public abstract class ViewGroupOverlayCompat {
         if (view != null) {
             IMPL.addOverlayIfNeeded(view);
         }
+    }
+
+    public static void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
+                             BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
+        IMPL.addCrossfadeOverlay(useParentOverlay, view, fadeBehavior, startDrawable, endDrawable);
+    }
+
+    public static void removeCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
+                                BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
+        IMPL.removeCrossfadeOverlay(useParentOverlay, view, fadeBehavior, startDrawable, endDrawable);
     }
 }
