@@ -7,11 +7,14 @@ buildscript {
     }
 }
 
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 dependencies {
     compile 'com.android.support:support-v4:20.0.+'
 }
+
+def int versionCode = 1;
+def String versionName = '1.0.0';
 
 android {
     compileSdkVersion 19
@@ -20,5 +23,7 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
+        versionCode = versionCode
+        versionName = versionName
     }
 }

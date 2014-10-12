@@ -154,6 +154,7 @@ public class TransitionInflater {
                         android.support.transition.R.styleable.Fade);
                 int fadingMode = a.getInt(android.support.transition.R.styleable.Fade_fadingMode,
                         Fade.IN | Fade.OUT);
+                a.recycle();
                 transition = new Fade(fadingMode);
                 newTransition = true;
             } else if ("changeBounds".equals(name)) {
@@ -224,6 +225,7 @@ public class TransitionInflater {
                         android.support.transition.R.styleable.TransitionTarget);
                 int id = a.getResourceId(
                         android.support.transition.R.styleable.TransitionTarget_targetId, -1);
+                a.recycle();
                 if (id >= 0) {
                     targetIds.add(id);
                 }
