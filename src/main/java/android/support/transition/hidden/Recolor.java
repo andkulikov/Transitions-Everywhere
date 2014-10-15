@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.transition;
+package android.support.transition.hidden;
 
 import android.animation.Animator;
 import android.animation.ArgbEvaluator;
@@ -23,6 +23,8 @@ import android.annotation.TargetApi;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.transition.Transition;
+import android.support.transition.TransitionValues;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;

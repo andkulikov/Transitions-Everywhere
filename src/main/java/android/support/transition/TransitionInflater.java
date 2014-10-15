@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
+import android.support.transition.hidden.Recolor;
+import android.support.transition.hidden.Slide;
 import android.support.util.ArrayMap;
 import android.util.AttributeSet;
 import android.util.SparseArray;

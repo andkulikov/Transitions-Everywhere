@@ -3,7 +3,7 @@ package android.support.compat;
 import android.annotation.TargetApi;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.support.transition.Crossfade;
+import android.support.transition.hidden.Crossfade;
 import android.support.view.ViewOverlayPreJellybean;
 import android.view.Gravity;
 import android.view.View;

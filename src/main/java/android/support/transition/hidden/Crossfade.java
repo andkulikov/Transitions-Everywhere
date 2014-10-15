@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.transition;
+package android.support.transition.hidden;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -28,6 +28,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.compat.ViewGroupOverlayCompat;
+import android.support.transition.Transition;
+import android.support.transition.TransitionValues;
 import android.support.util.RectEvaluator;
 import android.util.Log;
 import android.view.SurfaceView;

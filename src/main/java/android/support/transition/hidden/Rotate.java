@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package android.support.transition;
+package android.support.transition.hidden;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.transition.Transition;
+import android.support.transition.TransitionValues;
 import android.view.View;
 import android.view.ViewGroup;
 
