@@ -1,10 +1,12 @@
 package android.support.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -18,6 +20,7 @@ import java.util.List;
 /**
  * Created by stephane on 11/10/13.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ViewOverlayPreJellybean extends View {
 
     public ViewOverlayPreJellybean(Context context) {

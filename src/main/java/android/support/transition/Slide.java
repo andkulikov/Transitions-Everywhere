@@ -19,6 +19,8 @@ package android.support.transition;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -28,9 +30,8 @@ import android.view.animation.DecelerateInterpolator;
  * This transition captures the visibility of target objects before and
  * after a scene change and animates any changes by sliding the target
  * objects into or out of place.
- *
- * @hide
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Slide extends Visibility {
 
     // TODO: Add parameter for sliding factor - it's hard-coded below
@@ -44,7 +45,7 @@ public class Slide extends Visibility {
                              TransitionValues endValues, int endVisibility) {
         View endView = (endValues != null) ? endValues.view : null;
         endView.setTranslationY(-2 * endView.getHeight());
-        ObjectAnimator anim = ObjectAnimator.ofFloat(endView, View.TRANSLATION_Y,
+        ObjectAnimator anim = ObjectAnimator.ofFloat(endView, "translationY",
                 -2 * endView.getHeight(), 0);
         anim.setInterpolator(sDecelerator);
         return anim;
@@ -56,7 +57,7 @@ public class Slide extends Visibility {
                                 TransitionValues endValues, int endVisibility) {
         View startView = (startValues != null) ? startValues.view : null;
         startView.setTranslationY(0);
-        ObjectAnimator anim = ObjectAnimator.ofFloat(startView, View.TRANSLATION_Y, 0,
+        ObjectAnimator anim = ObjectAnimator.ofFloat(startView, "translationY", 0,
                 -2 * startView.getHeight());
         anim.setInterpolator(sAccelerator);
         return anim;

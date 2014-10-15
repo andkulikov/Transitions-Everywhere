@@ -19,8 +19,10 @@ package android.support.transition;
 import android.animation.Animator;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -33,9 +35,8 @@ import android.widget.TextView;
  * {@link TextView#setTextColor(android.content.res.ColorStateList)
  * color} of the text for target TextViews. If the color changes between
  * scenes, the color change is animated.
- *
- * @hide
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Recolor extends Transition {
 
     private static final String PROPNAME_BACKGROUND = "android:recolor:background";

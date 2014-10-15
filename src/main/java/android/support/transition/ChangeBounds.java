@@ -20,10 +20,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.support.util.RectEvaluator;
 import android.support.compat.ViewCompat;
 import android.support.compat.ViewGroupCompat;
@@ -41,6 +43,7 @@ import java.util.Map;
  * tag <code>changeBounds</code>, along with the other standard
  * attributes of {@link android.support.transition.R.styleable#Transition}.</p>
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ChangeBounds extends Transition {
 
     private static final String PROPNAME_BOUNDS = "android:changeBounds:bounds";
@@ -59,7 +62,7 @@ public class ChangeBounds extends Transition {
     boolean mReparent = false;
     private static final String LOG_TAG = "ChangeBounds";
 
-    private static RectEvaluator sRectEvaluator = new RectEvaluator();
+    private static RectEvaluator sRectEvaluator;
 
     @Override
     public String[] getTransitionProperties() {
@@ -109,6 +112,9 @@ public class ChangeBounds extends Transition {
                                    TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
+        }
+        if (sRectEvaluator == null) {
+            sRectEvaluator = new RectEvaluator();
         }
         Map<String, Object> startParentVals = startValues.values;
         Map<String, Object> endParentVals = endValues.values;

@@ -20,7 +20,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -34,9 +36,8 @@ import java.util.Map;
  * starting text stays until the transition ends, at which point it changes
  * to the end text.  This is useful in situations where you want to resize a
  * text view to its new size before displaying the text that goes there.
- *
- * @hide
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ChangeText extends Transition {
 
     private static final String LOG_TAG = "TextChange";

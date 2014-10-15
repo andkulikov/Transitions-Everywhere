@@ -16,11 +16,14 @@
 package android.support.util;
 
 import android.animation.TypeEvaluator;
+import android.annotation.TargetApi;
 import android.graphics.Rect;
+import android.os.Build;
 
 /**
  * This evaluator can be used to perform type interpolation between <code>Rect</code> values.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class RectEvaluator implements TypeEvaluator<Rect> {
 
     /**

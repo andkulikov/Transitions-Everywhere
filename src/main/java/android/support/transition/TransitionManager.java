@@ -17,6 +17,7 @@
 package android.support.transition;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.util.ArrayMap;
 import android.support.compat.ViewCompat;
 import android.support.compat.ViewGroupOverlayCompat;
@@ -179,12 +180,15 @@ public class TransitionManager {
 
         final ViewGroup sceneRoot = scene.getSceneRoot();
 
-        Transition transitionClone = transition.clone();
-        transitionClone.setSceneRoot(sceneRoot);
+        Transition transitionClone = null;
+        if (isTransitionsAllowed()) {
+            transitionClone = transition.clone();
+            transitionClone.setSceneRoot(sceneRoot);
 
-        Scene oldScene = Scene.getCurrentScene(sceneRoot);
-        if (oldScene != null && oldScene.isCreatedFromLayoutResource()) {
-            transitionClone.setCanRemoveViews(true);
+            Scene oldScene = Scene.getCurrentScene(sceneRoot);
+            if (oldScene != null && oldScene.isCreatedFromLayoutResource()) {
+                transitionClone.setCanRemoveViews(true);
+            }
         }
 
         sceneChangeSetup(sceneRoot, transitionClone);
@@ -209,7 +213,7 @@ public class TransitionManager {
 
     private static void sceneChangeRunTransition(final ViewGroup sceneRoot,
                                                  final Transition transition) {
-        if (transition != null) {
+        if (transition != null && isTransitionsAllowed()) {
             ViewGroupOverlayCompat.addOverlayIfNeeded(sceneRoot);
             final ViewTreeObserver observer = sceneRoot.getViewTreeObserver();
             final ViewTreeObserver.OnPreDrawListener listener =
@@ -253,18 +257,19 @@ public class TransitionManager {
     }
 
     private static void sceneChangeSetup(ViewGroup sceneRoot, Transition transition) {
+        if (isTransitionsAllowed()) {
+            // Capture current values
+            ArrayList<Transition> runningTransitions = getRunningTransitions().get(sceneRoot);
 
-        // Capture current values
-        ArrayList<Transition> runningTransitions = getRunningTransitions().get(sceneRoot);
-
-        if (runningTransitions != null && runningTransitions.size() > 0) {
-            for (Transition runningTransition : runningTransitions) {
-                runningTransition.pause();
+            if (runningTransitions != null && runningTransitions.size() > 0) {
+                for (Transition runningTransition : runningTransitions) {
+                    runningTransition.pause();
+                }
             }
-        }
 
-        if (transition != null) {
-            transition.captureValues(sceneRoot, true);
+            if (transition != null) {
+                transition.captureValues(sceneRoot, true);
+            }
         }
 
         // Notify previous scene that it is being exited
@@ -368,5 +373,9 @@ public class TransitionManager {
             Scene.setCurrentScene(sceneRoot, null);
             sceneChangeRunTransition(sceneRoot, transitionClone);
         }
+    }
+
+    public static boolean isTransitionsAllowed() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
     }
 }

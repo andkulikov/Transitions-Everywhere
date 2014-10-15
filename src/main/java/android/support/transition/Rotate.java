@@ -18,15 +18,16 @@ package android.support.transition;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 
 /**
  * This transition captures the rotation property of targets before and after
  * the scene change and animates any changes.
- *
- * @hide
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Rotate extends Transition {
 
     private static final String PROPNAME_ROTATION = "android:rotate:rotation";
@@ -52,7 +53,7 @@ public class Rotate extends Transition {
         float endRotation = (Float) endValues.values.get(PROPNAME_ROTATION);
         if (startRotation != endRotation) {
             view.setRotation(startRotation);
-            return ObjectAnimator.ofFloat(view, View.ROTATION,
+            return ObjectAnimator.ofFloat(view, "rotation",
                     startRotation, endRotation);
         }
         return null;

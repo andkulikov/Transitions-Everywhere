@@ -19,6 +19,8 @@ package android.support.transition;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.compat.AnimatorCompat;
 import android.support.compat.ViewCompat;
 import android.support.compat.ViewGroupOverlayCompat;
@@ -56,6 +58,7 @@ import android.view.ViewGroup;
  * attributes of {@link android.support.transition.R.styleable#Fade} and
  * {@link android.support.transition.R.styleable#Transition}.</p>
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Fade extends Visibility {
 
     private static boolean DBG = Transition.DBG && false;

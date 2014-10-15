@@ -21,10 +21,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.support.compat.ViewGroupOverlayCompat;
 import android.support.util.RectEvaluator;
 import android.util.Log;
@@ -41,9 +43,8 @@ import java.util.Map;
  * <p/>
  * <p>Note: This transition is not compatible with {@link TextureView}
  * or {@link SurfaceView}.</p>
- *
- * @hide
  */
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Crossfade extends Transition {
     // TODO: Add a hook that lets a Transition call user code to query whether it should run on
     // a given target view. This would save bitmap comparisons in this transition, for example.
@@ -54,7 +55,7 @@ public class Crossfade extends Transition {
     private static final String PROPNAME_DRAWABLE = "android:crossfade:drawable";
     private static final String PROPNAME_BOUNDS = "android:crossfade:bounds";
 
-    private static RectEvaluator sRectEvaluator = new RectEvaluator();
+    private static RectEvaluator sRectEvaluator;
 
     private int mFadeBehavior = FADE_BEHAVIOR_REVEAL;
     private int mResizeBehavior = RESIZE_BEHAVIOR_SCALE;
@@ -166,8 +167,12 @@ public class Crossfade extends Transition {
     @Override
     public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
                                    TransitionValues endValues) {
-        if (startValues == null || endValues == null) {
+        if (startValues == null || endValues == null ||
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return null;
+        }
+        if (sRectEvaluator == null) {
+            sRectEvaluator = new RectEvaluator();
         }
         final boolean useParentOverlay = mFadeBehavior != FADE_BEHAVIOR_REVEAL;
         final View view = endValues.view;
@@ -250,6 +255,9 @@ public class Crossfade extends Transition {
     }
 
     private void captureValues(TransitionValues transitionValues) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            return;
+        }
         View view = transitionValues.view;
         Rect bounds = new Rect(0, 0, view.getWidth(), view.getHeight());
         if (mFadeBehavior != FADE_BEHAVIOR_REVEAL) {

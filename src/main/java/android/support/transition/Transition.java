@@ -19,6 +19,8 @@ package android.support.transition;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.compat.AnimatorCompat;
 import android.support.util.ArrayMap;
 import android.support.v4.util.LongSparseArray;
@@ -90,6 +92,7 @@ import java.util.List;
  * {@link android.support.transition.R.styleable#Transition}, {@link android.support.transition.R.styleable#TransitionSet},
  * {@link android.support.transition.R.styleable#TransitionTarget}, and {@link android.support.transition.R.styleable#Fade}.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class Transition implements Cloneable {
 
     private static final String LOG_TAG = "Transition";
@@ -1271,7 +1274,7 @@ public abstract class Transition implements Cloneable {
                         }
                     }
                     if (cancel) {
-                        if (anim.isRunning() || anim.isStarted()) {
+                        if (anim.isRunning() || isAnimatorStarted(anim)) {
                             if (DBG) {
                                 Log.d(LOG_TAG, "Canceling anim " + anim);
                             }
@@ -1289,6 +1292,12 @@ public abstract class Transition implements Cloneable {
 
         createAnimators(sceneRoot, mStartValues, mEndValues);
         runAnimators();
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private boolean isAnimatorStarted(Animator anim) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
+                anim.isStarted();
     }
 
     /**

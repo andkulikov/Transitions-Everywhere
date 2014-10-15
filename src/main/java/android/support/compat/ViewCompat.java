@@ -6,6 +6,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
 
+@TargetApi(VERSION_CODES.HONEYCOMB)
 public class ViewCompat {
     interface ViewCompatImpl {
         float getTransitionAlpha(View v);
