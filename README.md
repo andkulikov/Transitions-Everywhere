@@ -24,6 +24,10 @@ For Android versions <b>>= 2.2</b> and < <b>3.0</b> scene to scene layout change
 
 <b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find those classes in package `android.support.transition.hidden`. But i don't recommend to use them because they can work unstable.
 
+Thanks for github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>  
+
 [1]: http://developer.android.com/reference/android/transition/package-summary.html
 [2]: https://www.youtube.com/watch?v=S3H7nJ4QaD8
 [3]: https://developer.android.com/samples/BasicTransition/index.html
+[4]: https://github.com/pardom/TransitionSupportLibrary
+[5]: https://github.com/guerwan/TransitionsBackport
