@@ -7,15 +7,19 @@ About Transitions API
 [Video - DevBytes: Android 4.4 Transitions][2]<br>
 [Sample project from Google][3] 
 
+Example
+============
+<img src="http://www.doubleencore.com/wp-content/uploads/2013/11/transitionSample.gif"/>
+
 Usage
 ============
-Add in build.gradle:
+Gradle:
 ```
 dependencies {
     compile "com.github.andkulikov:transitions-everywhere:1.0.0"
 }
 ```
-And now you need to use classes from package `android.support.transition.XXX`, as against `android.transition.XXX` from 4.4 Transitions API.
+Use transitions classes from package `android.support.transition.*`, as against `android.transition.*` from 4.4 Transitions API.
 
 About library
 ============
@@ -24,7 +28,7 @@ For Android versions <b>>= 2.2</b> and < <b>3.0</b> scene to scene layout change
 
 <b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find those classes in package `android.support.transition.hidden`. But i don't recommend to use them because they can work unstable.
 
-Thanks for github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>  
+Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>  
 
 [1]: http://developer.android.com/reference/android/transition/package-summary.html
 [2]: https://www.youtube.com/watch?v=S3H7nJ4QaD8
