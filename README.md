@@ -7,7 +7,7 @@ About Transitions API
 [Video - DevBytes: Android 4.4 Transitions][2]<br>
 [Sample project from Google][3] 
 
-Example
+Simple example
 ============
 <img src="http://www.doubleencore.com/wp-content/uploads/2013/11/transitionSample.gif"/>
 
