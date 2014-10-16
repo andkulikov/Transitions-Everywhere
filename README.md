@@ -19,14 +19,14 @@ dependencies {
     compile "com.github.andkulikov:transitions-everywhere:1.0.0"
 }
 ```
-Use transitions classes from package `android.support.transition.*`, as against `android.transition.*` from 4.4 Transitions API.
+Use transition classes from package `android.support.transition.*` instead of `android.transition.*` from 4.4 Transitions API.
 
 About library
 ============
-Transitions animations backported to <b>Android 3.0</b>.<br>
-For Android versions <b>>= 2.2</b> and < <b>3.0</b> scene to scene (layout to layout) changes correctly works with the same API but without animations.
+Transition animations backported to <b>Android 3.0</b>.<br>
+For Android ver. <b>>= 2.2</b> and < <b>3.0</b> scene to scene (layout to layout) changes is executed by the same API  but without animations.
 
-<b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find those classes in package `android.support.transition.hidden`. But i don't recommend to use them because they can work unstable.
+<b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find it in package  `android.support.transition.hidden`. But i don't recommend to use them because they can work unstable.
 
 Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>  
 
