@@ -24,7 +24,7 @@ Use transitions classes from package `android.support.transition.*`, as against 
 About library
 ============
 Transitions animations backported to <b>Android 3.0</b>.<br>
-For Android versions <b>>= 2.2</b> and < <b>3.0</b> scene to scene layout changes works correctly with the same API just without animations.
+For Android versions <b>>= 2.2</b> and < <b>3.0</b> scene to scene (layout to layout) changes correctly works with the same API but without animations.
 
 <b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find those classes in package `android.support.transition.hidden`. But i don't recommend to use them because they can work unstable.
 
