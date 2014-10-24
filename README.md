@@ -7,6 +7,10 @@ About Transitions API
 [Video - DevBytes: Android 4.4 Transitions][2]<br>
 [Sample project from Google][3] 
 
+Cooming soon
+============
+Port of new transitions from Android 5.0 Lolipop
+
 Simple example
 ============
 <img src="http://www.doubleencore.com/wp-content/uploads/2013/11/transitionSample.gif"/>
@@ -35,3 +39,6 @@ Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>
 [3]: https://developer.android.com/samples/BasicTransition/index.html
 [4]: https://github.com/pardom/TransitionSupportLibrary
 [5]: https://github.com/guerwan/TransitionsBackport
+
+<br>
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-transitions--everywhere-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1050)
