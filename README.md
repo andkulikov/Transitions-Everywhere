@@ -7,7 +7,7 @@ About Transitions API
 [Video - DevBytes: Android 4.4 Transitions][2]<br>
 [Sample project from Google][3] 
 
-Cooming soon
+Coming soon
 ============
 Port of new transitions from Android 5.0 Lolipop
 
