@@ -19,6 +19,7 @@ package android.support.util;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public final class ReflectionUtils {
@@ -26,6 +27,14 @@ public final class ReflectionUtils {
 
     private ReflectionUtils() {
         // This utility class is not publicly instantiable.
+    }
+
+    public static Class<?> getClass(final String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
     }
 
     public static Method getMethod(final Class<?> targetClass, final String name,
@@ -50,6 +59,31 @@ public final class ReflectionUtils {
             Log.e(TAG, "Exception in invoke", e);
         }
         return defaultValue;
+    }
+
+    public static Field getPrivateField(final Class<?> targetClass, final String name) {
+        if (targetClass == null || TextUtils.isEmpty(name)) return null;
+        try {
+            Field field = targetClass.getDeclaredField(name);
+            field.setAccessible(true);
+            return field;
+        } catch (SecurityException e) {
+            e.printStackTrace();
+            // ignore
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            // ignore
+        }
+        return null;
+    }
+
+    public static void setFieldValue(final Object receiver, final Field field, final Object value) {
+        if (field == null) return;
+        try {
+            field.set(receiver, value);
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in setFieldValue", e);
+        }
     }
 
 }

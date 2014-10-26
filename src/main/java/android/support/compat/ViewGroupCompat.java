@@ -25,7 +25,7 @@ public class ViewGroupCompat {
         }
     }
 
-    static final ViewGroupCompatImpl IMPL;
+    private static final ViewGroupCompatImpl IMPL;
 
     static {
         final int version = VERSION.SDK_INT;

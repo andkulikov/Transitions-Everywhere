@@ -130,7 +130,7 @@ public abstract class ViewGroupOverlayCompat {
 
     }
 
-    static final ViewGroupOverlayCompatImpl IMPL;
+    private static final ViewGroupOverlayCompatImpl IMPL;
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {

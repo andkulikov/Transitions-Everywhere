@@ -42,7 +42,7 @@ public abstract class ViewOverlayCompat {
         }
     }
 
-    static final ViewOverlayCompatImpl IMPL;
+    private static final ViewOverlayCompatImpl IMPL;
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
