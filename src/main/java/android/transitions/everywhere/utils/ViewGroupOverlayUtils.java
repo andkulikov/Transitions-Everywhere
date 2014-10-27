@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
 
 public class ViewGroupOverlayUtils {
 
-    interface ViewGroupOverlayCompatImpl {
+    interface ViewGroupOverlayUtilsImpl {
         void addOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY);
 
         void removeOverlay(ViewGroup sceneRoot, View overlayView);
@@ -26,7 +26,7 @@ public class ViewGroupOverlayUtils {
                                     BitmapDrawable startDrawable, BitmapDrawable endDrawable);
     }
 
-    static class BaseViewGroupOverlayCompatImpl implements ViewGroupOverlayCompatImpl {
+    static class BaseViewGroupOverlayUtilsImpl implements ViewGroupOverlayUtilsImpl {
 
         @Override
         public void addOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
@@ -81,7 +81,7 @@ public class ViewGroupOverlayUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    static class JellyBeanMR2ViewGroupCompatImpl implements ViewGroupOverlayCompatImpl {
+    static class JellyBeanMR2ViewGroupUtilsImpl implements ViewGroupOverlayUtilsImpl {
         @Override
         public void addOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
             if (screenX != 0 && screenY != 0) {
@@ -129,13 +129,13 @@ public class ViewGroupOverlayUtils {
 
     }
 
-    private static final ViewGroupOverlayCompatImpl IMPL;
+    private static final ViewGroupOverlayUtilsImpl IMPL;
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            IMPL = new JellyBeanMR2ViewGroupCompatImpl();
+            IMPL = new JellyBeanMR2ViewGroupUtilsImpl();
         } else {
-            IMPL = new BaseViewGroupOverlayCompatImpl();
+            IMPL = new BaseViewGroupOverlayUtilsImpl();
         }
     }
 
