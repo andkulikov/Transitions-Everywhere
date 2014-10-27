@@ -18,4 +18,8 @@
 -->
 <resources>
     <item type="id" name="current_scene"/>
+    <item type="id" name="transitionPosition" />
+    <item type="id" name="transitionTransform" />
+    <item type="id" name="transitionName" />
+    <item type="id" name="parentMatrix" />
 </resources>
