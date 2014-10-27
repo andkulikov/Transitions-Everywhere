@@ -22,6 +22,7 @@ import android.transitions.everywhere.utils.ArrayMap;
 import android.transitions.everywhere.utils.ViewGroupOverlayUtils;
 import android.transitions.everywhere.utils.ViewUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
@@ -379,7 +380,34 @@ public class TransitionManager {
         }
     }
 
+    /**
+     * Returns is transition animations enabled. Animations was disabled
+     * for Android versions < 3.0
+     */
     public static boolean isTransitionsAllowed() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
+
+    /**
+     * Sets the name of the View to be used to identify Views in Transitions.
+     * Names should be unique in the View hierarchy.
+     *
+     * @param transitionName The name of the View to uniquely identify it for Transitions.
+     */
+    public static void setTransitionName(View v, String transitionName) {
+        ViewUtils.setTransitionName(v, transitionName);
+    }
+
+    /**
+     * Returns the name of the View to be used to identify Views in Transitions.
+     * Names should be unique in the View hierarchy.
+     *
+     * <p>This returns null if the View has not been given a name.</p>
+     *
+     * @return The name used of the View to be used to identify Views in Transitions or null
+     * if no name has been given.
+     */
+    public static String getTransitionName(View v) {
+        return ViewUtils.getTransitionName(v);
     }
 }

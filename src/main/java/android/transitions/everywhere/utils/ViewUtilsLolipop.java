@@ -52,6 +52,11 @@ class ViewUtilsLolipop extends ViewUtils.ViewUtilsJellyBeanMR2 {
     }
 
     @Override
+    public void setTransitionName(View v, String name) {
+        v.setTransitionName(name);
+    }
+
+    @Override
     public String getTransitionName(View v) {
         return v.getTransitionName();
     }

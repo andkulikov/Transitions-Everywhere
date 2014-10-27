@@ -5,6 +5,7 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.transitions.everywhere.R;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +19,8 @@ public class ViewUtils {
         void setClipBounds(View v, Rect clipBounds);
 
         Rect getClipBounds(View v);
+
+        void setTransitionName(View v, String name);
 
         String getTransitionName(View v);
 
@@ -66,8 +69,13 @@ public class ViewUtils {
         }
 
         @Override
+        public void setTransitionName(View v, String name) {
+            v.setTag(R.id.transitionName, name);
+        }
+
+        @Override
         public String getTransitionName(View v) {
-            return null;
+            return (String) v.getTag(R.id.transitionName);
         }
 
         @Override
@@ -177,6 +185,10 @@ public class ViewUtils {
 
     public static String getAlphaProperty() {
         return IMPL.getAlphaProperty();
+    }
+
+    public static void setTransitionName(View v, String name) {
+        IMPL.setTransitionName(v, name);
     }
 
     public static String getTransitionName(View v) {

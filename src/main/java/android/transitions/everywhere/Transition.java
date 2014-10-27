@@ -809,8 +809,9 @@ public abstract class Transition implements Cloneable {
                 }
             }
         }
-        if (mTargetNameExcludes != null && target != null && ViewUtils.getTransitionName(target) != null) {
-            if (mTargetNameExcludes.contains(ViewUtils.getTransitionName(target))) {
+        final String transitionName = ViewUtils.getTransitionName(target);
+        if (mTargetNameExcludes != null && target != null && transitionName != null) {
+            if (mTargetNameExcludes.contains(transitionName)) {
                 return false;
             }
         }
@@ -822,7 +823,7 @@ public abstract class Transition implements Cloneable {
         if (mTargetIds.contains(targetId) || mTargets.contains(target)) {
             return true;
         }
-        if (mTargetNames != null && mTargetNames.contains(ViewUtils.getTransitionName(target))) {
+        if (mTargetNames != null && mTargetNames.contains(transitionName)) {
             return true;
         }
         if (mTargetTypes != null) {
