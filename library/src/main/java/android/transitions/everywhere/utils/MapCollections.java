@@ -16,8 +16,6 @@
 
 package android.transitions.everywhere.utils;
 
-import android.transitions.everywhere.utils.Objects;
-
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Iterator;

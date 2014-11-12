@@ -1,29 +1,10 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.+'
-    }
-}
 
-apply plugin: 'com.android.library'
 
-dependencies {
-    compile 'com.android.support:support-v4:21.0.+'
-}
 
-def int versionCode = 2;
-def String versionName = '1.1.0';
 
-android {
-    compileSdkVersion 21
-    buildToolsVersion '20.0.0'
 
-    defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 21
-        versionCode = versionCode
-        versionName = versionName
-    }
-}
+
+
+
+
+
