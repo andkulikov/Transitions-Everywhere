@@ -322,7 +322,7 @@ public class ChangeBounds extends Transition {
                     }
                     Path topLeftPath = getPathMotion().getPath(startX - tempLocation[0],
                             startY - tempLocation[1], endX - tempLocation[0], endY - tempLocation[1]);
-                    PropertyValuesHolder origin = PropertyValuesHolder.ofObject(
+                    PropertyValuesHolder origin = AnimatorUtils.pvhOfObject(
                             sDrawableOriginProperty, null, topLeftPath);
                     anim = ObjectAnimator.ofPropertyValuesHolder(drawable, origin);
                 } else {

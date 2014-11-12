@@ -28,8 +28,7 @@ public class ViewGroupUtils {
     private static final ViewGroupUtilsImpl IMPL;
 
     static {
-        final int version = VERSION.SDK_INT;
-        if (version >= VERSION_CODES.KITKAT) {
+        if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
             IMPL = new KitKatViewGroupUtilsImpl();
         } else {
             IMPL = new BaseViewGroupUtilsImpl();

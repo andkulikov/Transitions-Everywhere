@@ -141,12 +141,6 @@ public class Fade extends Visibility {
         return createAnimation(view, 1, 0);
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private static boolean hasOverlappingRendering(View view) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&
-                view.hasOverlappingRendering();
-    }
-
     private static class FadeAnimatorListener extends AnimatorListenerAdapter {
         private final View mView;
         private boolean mCanceled = false;
@@ -159,7 +153,8 @@ public class Fade extends Visibility {
 
         @Override
         public void onAnimationStart(Animator animator) {
-            if (hasOverlappingRendering(mView) && mView.getLayerType() == View.LAYER_TYPE_NONE) {
+            if (AnimatorUtils.hasOverlappingRendering(mView) &&
+                    mView.getLayerType() == View.LAYER_TYPE_NONE) {
                 mLayerTypeChanged = true;
                 mView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
             }

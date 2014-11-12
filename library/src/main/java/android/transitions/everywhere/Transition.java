@@ -1737,7 +1737,7 @@ public abstract class Transition implements Cloneable {
                     boolean cancel = (startValues != null || endValues != null) &&
                             oldInfo.transition.areValuesChanged(oldValues, endValues);
                     if (cancel) {
-                        if (anim.isRunning() || isAnimatorStarted(anim)) {
+                        if (anim.isRunning() || AnimatorUtils.isAnimatorStarted(anim)) {
                             if (DBG) {
                                 Log.d(LOG_TAG, "Canceling anim " + anim);
                             }
@@ -1755,12 +1755,6 @@ public abstract class Transition implements Cloneable {
 
         createAnimators(sceneRoot, mStartValues, mEndValues, mStartValuesList, mEndValuesList);
         runAnimators();
-    }
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private boolean isAnimatorStarted(Animator anim) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
-                anim.isStarted();
     }
 
     boolean areValuesChanged(TransitionValues oldValues, TransitionValues newValues) {
