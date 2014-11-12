@@ -1906,6 +1906,10 @@ public abstract class Transition implements Cloneable {
         }
     }
 
+    void onEndOfAllTransitions() {
+        // do nothing
+    }
+
     /**
      * This method cancels a transition that is currently running.
      *
