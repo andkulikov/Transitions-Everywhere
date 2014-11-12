@@ -269,7 +269,7 @@ public abstract class Transition implements Cloneable {
     public Transition(Context context, AttributeSet attrs) {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Transition);
-        long duration = a.getInt(R.styleable.Transition_duration, -1);
+        long duration = a.getInt(R.styleable.Transition_android_duration, -1);
         if (duration >= 0) {
             setDuration(duration);
         }
@@ -277,7 +277,7 @@ public abstract class Transition implements Cloneable {
         if (startDelay > 0) {
             setStartDelay(startDelay);
         }
-        final int resID = a.getResourceId(R.styleable.Animator_interpolator, 0);
+        final int resID = a.getResourceId(R.styleable.Animator_android_interpolator, 0);
         if (resID > 0) {
             setInterpolator(AnimationUtils.loadInterpolator(context, resID));
         }
