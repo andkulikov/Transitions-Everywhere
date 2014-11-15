@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:app="http://schemas.android.com/apk/res-auto"
+               app:transitionOrdering="together"
+               app:duration="400">
+    <changeBounds/>
+    <changeImageTransform/>
+    <fade
+        app:fadingMode="fade_in"
+        app:startDelay="200">
+        <targets>
+            <target app:targetId="@id/transition_title"/>
+        </targets>
+    </fade>
+</transitionSet>
