@@ -19,7 +19,7 @@ class ViewUtilsKitKat extends ViewUtils.ViewUtilsJellyBeanMR2 {
     }
 
     @Override
-    public boolean isLaidOut(View v) {
+    public boolean isLaidOut(View v, boolean defaultValue) {
         return v.isLaidOut();
     }
 

@@ -365,7 +365,7 @@ public class TransitionManager {
      *                   value of null causes the TransitionManager to use the default transition.
      */
     public static void beginDelayedTransition(final ViewGroup sceneRoot, Transition transition) {
-        if (!sPendingTransitions.contains(sceneRoot) && ViewUtils.isLaidOut(sceneRoot)) {
+        if (!sPendingTransitions.contains(sceneRoot) && ViewUtils.isLaidOut(sceneRoot, true)) {
             if (Transition.DBG) {
                 Log.d(LOG_TAG, "beginDelayedTransition: root, transition = " +
                         sceneRoot + ", " + transition);

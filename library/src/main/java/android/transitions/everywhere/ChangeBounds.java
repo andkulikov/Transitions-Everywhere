@@ -105,7 +105,7 @@ public class ChangeBounds extends Transition {
 
     private void captureValues(TransitionValues values) {
         View view = values.view;
-        if (ViewUtils.isLaidOut(view) || view.getWidth() != 0 || view.getHeight() != 0) {
+        if (ViewUtils.isLaidOut(view, false) || view.getWidth() != 0 || view.getHeight() != 0) {
             values.values.put(PROPNAME_BOUNDS, new Rect(view.getLeft(), view.getTop(),
                     view.getRight(), view.getBottom()));
             values.values.put(PROPNAME_PARENT, values.view.getParent());

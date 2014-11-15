@@ -14,7 +14,7 @@ public class ViewUtils {
     interface ViewUtilsImpl {
         float getTransitionAlpha(View v);
 
-        boolean isLaidOut(View v);
+        boolean isLaidOut(View v, boolean defaultValue);
 
         void setClipBounds(View v, Rect clipBounds);
 
@@ -52,9 +52,8 @@ public class ViewUtils {
         }
 
         @Override
-        public boolean isLaidOut(View v) {
-            // TODO: Implement support behavior
-            return true;
+        public boolean isLaidOut(View v, boolean defaultValue) {
+            return defaultValue;
         }
 
         @Override
@@ -167,8 +166,8 @@ public class ViewUtils {
         return IMPL.getTransitionAlpha(v);
     }
 
-    public static boolean isLaidOut(View v) {
-        return IMPL.isLaidOut(v);
+    public static boolean isLaidOut(View v, boolean defaultValue) {
+        return IMPL.isLaidOut(v, defaultValue);
     }
 
     public static void setClipBounds(View v, Rect clipBounds) {
