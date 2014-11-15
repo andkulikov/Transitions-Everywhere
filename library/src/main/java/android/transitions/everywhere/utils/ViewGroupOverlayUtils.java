@@ -4,11 +4,9 @@ import android.annotation.TargetApi;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.transitions.everywhere.hidden.Crossfade;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOverlay;
-import android.widget.FrameLayout;
 
 public class ViewGroupOverlayUtils {
 
@@ -16,8 +14,6 @@ public class ViewGroupOverlayUtils {
         void addOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY);
 
         void removeOverlay(ViewGroup sceneRoot, View overlayView);
-
-        void addOverlayIfNeeded(View view);
 
         void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                  BitmapDrawable startDrawable, BitmapDrawable endDrawable);
@@ -38,33 +34,6 @@ public class ViewGroupOverlayUtils {
         public void removeOverlay(ViewGroup sceneRoot, View overlayView) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
             viewOverlay.removeView(overlayView);
-        }
-
-        @Override
-        public void addOverlayIfNeeded(View view) {
-            while (view != null && !(view.getId() == android.R.id.content)) {
-                view = (View) view.getParent();
-            }
-            if (view != null && view instanceof FrameLayout) {
-                FrameLayout contentLayout = (FrameLayout) view;
-                ViewOverlayPreJellybean viewOverlay = null;
-                for (int i = 0; i < contentLayout.getChildCount(); i++) {
-                    View child = contentLayout.getChildAt(i);
-                    if (child instanceof ViewOverlayPreJellybean) {
-                        viewOverlay = (ViewOverlayPreJellybean) child;
-                        break;
-                    }
-                }
-
-                if (viewOverlay == null) {
-                    viewOverlay = new ViewOverlayPreJellybean(view.getContext());
-                    final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
-                    params.gravity = Gravity.FILL;
-                    contentLayout.addView(viewOverlay, params);
-                }
-            }
         }
 
         @Override
@@ -96,11 +65,6 @@ public class ViewGroupOverlayUtils {
         @Override
         public void removeOverlay(ViewGroup sceneRoot, View overlayView) {
             sceneRoot.getOverlay().remove(overlayView);
-        }
-
-        @Override
-        public void addOverlayIfNeeded(View v) {
-            // do nothing
         }
 
         @Override
@@ -139,10 +103,6 @@ public class ViewGroupOverlayUtils {
         }
     }
 
-    public static void addOverlay(ViewGroup sceneRoot, View overlayView) {
-        addOverlay(sceneRoot, overlayView, 0, 0);
-    }
-
     public static void addOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
         if (overlayView != null) {
             IMPL.addOverlay(sceneRoot, overlayView, screenX, screenY);
@@ -152,12 +112,6 @@ public class ViewGroupOverlayUtils {
     public static void removeOverlay(ViewGroup sceneRoot, View overlayView) {
         if (overlayView != null) {
             IMPL.removeOverlay(sceneRoot, overlayView);
-        }
-    }
-
-    public static void addOverlayIfNeeded(View view) {
-        if (view != null) {
-            IMPL.addOverlayIfNeeded(view);
         }
     }
 

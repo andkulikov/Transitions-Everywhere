@@ -63,9 +63,6 @@ class TranslationAnimationCreator {
 
         view.setTranslationX(startX);
         view.setTranslationY(startY);
-        if (startX == endX && startY == endY) {
-            return null;
-        }
         ObjectAnimator anim = AnimatorUtils.ofFloat(null, view,
                 "translationX", "translationY", startX, startY, endX, endY);
 
