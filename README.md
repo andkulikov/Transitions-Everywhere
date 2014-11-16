@@ -7,11 +7,10 @@ About Transitions API
 [Video - DevBytes: Android 4.4 Transitions][2]<br>
 [Sample project from Google][3] 
 
-Versions info
+Changelog
 ============
-<b>1.1.0</b>
-- Port of new transitions from <b>Android 5.0 Lolipop</b> (but some work are still in progress)
-- Package name changed from `android.support.transition` to `android.transitions.everywhere`!
+<b>1.2.0</b> - Bug fix<br>
+<b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lolipop</b>
 
 Simple example
 ============
@@ -22,11 +21,29 @@ Usage
 Gradle:
 ```
 dependencies {
-    compile "com.github.andkulikov:transitions-everywhere:1.1.0"
+    compile "com.github.andkulikov:transitions-everywhere:1.2.0"
 }
 ```
 Use transition classes from package `android.transitions.everywhere.*` instead of `android.transition.*` from 4.4 and 5.0 Transitions API.<br>
-If you use XML files to create your transitions you need to put them in the res/anim folder instead of the res/transition folder.
+
+Transitions via XML
+============
+If you use XML files to create your transitions you need to put them in the res/anim folder instead of the res/transition folder. You need to use application attributes namespase instead of `android:`. For example:
+```
+<transitionSet xmlns:app="http://schemas.android.com/apk/res-auto"
+               app:duration="400">
+    <changeBounds/>
+    <fade app:fadingMode="fade_in">
+        <targets>
+            <target app:targetId="@id/transition_title"/>
+        </targets>
+    </fade>
+</transitionSet>
+```
+
+Transition names of views
+============
+Android 5.0 adds new method `setTransitionName()` for `View` class. With this library you should call `TransitionManager.setTransitionName(View v, String transitionName)` method instead to provide backward compatibility.
 
 About library
 ============
