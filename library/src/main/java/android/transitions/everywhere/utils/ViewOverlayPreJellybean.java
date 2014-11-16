@@ -45,8 +45,10 @@ class ViewOverlayPreJellybean extends FrameLayout {
         final LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         final View parent = (View) getParent();
-        layoutParams.leftMargin = left - parent.getLeft();
-        layoutParams.topMargin = top - parent.getTop();
+        left -= parent.getLeft();
+        top -= parent.getTop();
+        layoutParams.leftMargin = left;
+        layoutParams.topMargin = top;
 
         view.setLeft(left);
         view.setTop(top);
