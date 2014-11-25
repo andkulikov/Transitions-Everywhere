@@ -10,11 +10,11 @@ About Transitions API
 Changelog
 ============
 <b>1.2.0</b> - Bug fix<br>
-<b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lolipop</b>
+<b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lollipop</b>
 
 Simple example
 ============
-<img src="http://www.doubleencore.com/wp-content/uploads/2013/11/transitionSample.gif"/>
+<img src="http://habrastorage.org/getpro/habr/post_images/e93/37c/0da/e9337c0dacc355523adddf1545b57e5a.gif"/>
 
 Usage
 ============
