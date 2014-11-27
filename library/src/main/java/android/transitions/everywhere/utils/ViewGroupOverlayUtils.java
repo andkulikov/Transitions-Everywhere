@@ -15,6 +15,8 @@ public class ViewGroupOverlayUtils {
 
         void removeOverlay(ViewGroup sceneRoot, View overlayView);
 
+        void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY);
+
         void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                  BitmapDrawable startDrawable, BitmapDrawable endDrawable);
 
@@ -37,6 +39,12 @@ public class ViewGroupOverlayUtils {
         }
 
         @Override
+        public void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
+            ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
+            viewOverlay.moveView(overlayView, screenX, screenY);
+        }
+
+        @Override
         public void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                         BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
             //TODO ViewOverlay
@@ -53,18 +61,23 @@ public class ViewGroupOverlayUtils {
     static class JellyBeanMR2ViewGroupUtilsImpl implements ViewGroupOverlayUtilsImpl {
         @Override
         public void addOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
-            if (screenX != 0 && screenY != 0) {
-                int[] loc = new int[2];
-                sceneRoot.getLocationOnScreen(loc);
-                overlayView.offsetLeftAndRight((screenX - loc[0]) - overlayView.getLeft());
-                overlayView.offsetTopAndBottom((screenY - loc[1]) - overlayView.getTop());
-            }
+            moveViewInOverlay(sceneRoot, overlayView, screenX, screenY);
             sceneRoot.getOverlay().add(overlayView);
         }
 
         @Override
         public void removeOverlay(ViewGroup sceneRoot, View overlayView) {
             sceneRoot.getOverlay().remove(overlayView);
+        }
+
+        @Override
+        public void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
+            if (screenX != 0 && screenY != 0) {
+                int[] loc = new int[2];
+                sceneRoot.getLocationOnScreen(loc);
+                overlayView.offsetLeftAndRight((screenX - loc[0]) - overlayView.getLeft());
+                overlayView.offsetTopAndBottom((screenY - loc[1]) - overlayView.getTop());
+            }
         }
 
         @Override
@@ -112,6 +125,12 @@ public class ViewGroupOverlayUtils {
     public static void removeOverlay(ViewGroup sceneRoot, View overlayView) {
         if (overlayView != null) {
             IMPL.removeOverlay(sceneRoot, overlayView);
+        }
+    }
+
+    public static void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
+        if (overlayView != null) {
+            IMPL.moveViewInOverlay(sceneRoot, overlayView, screenX, screenY);
         }
     }
 
