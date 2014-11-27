@@ -19,6 +19,8 @@ public class ViewGroupOverlayUtils {
 
         void initializeOverlay(View sceneRoot);
 
+        int[] getLocationOnScreenOfOverlayView(ViewGroup sceneRoot, View overlayView);
+
         void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                  BitmapDrawable startDrawable, BitmapDrawable endDrawable);
 
@@ -49,6 +51,13 @@ public class ViewGroupOverlayUtils {
         @Override
         public void initializeOverlay(View sceneRoot) {
             ViewOverlayPreJellybean.getOverlay(sceneRoot);
+        }
+
+        @Override
+        public int[] getLocationOnScreenOfOverlayView(ViewGroup sceneRoot, View overlayView) {
+            int[] location = new int[2];
+            overlayView.getLocationOnScreen(location);
+            return location;
         }
 
         @Override
@@ -103,6 +112,15 @@ public class ViewGroupOverlayUtils {
         }
 
         @Override
+        public int[] getLocationOnScreenOfOverlayView(ViewGroup sceneRoot, View overlayView) {
+            int[] location = new int[2];
+            sceneRoot.getLocationOnScreen(location);
+            location[0] += overlayView.getLeft();
+            location[1] += overlayView.getTop();
+            return location;
+        }
+
+        @Override
         public void removeCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                            BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
             ViewOverlay overlay = getViewOverlay(useParentOverlay, view);
@@ -147,6 +165,14 @@ public class ViewGroupOverlayUtils {
     public static void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
         if (overlayView != null) {
             IMPL.moveViewInOverlay(sceneRoot, overlayView, screenX, screenY);
+        }
+    }
+
+    public static int[] getLocationOnScreenOfOverlayView(ViewGroup sceneRoot, View overlayView) {
+        if (overlayView != null) {
+            return IMPL.getLocationOnScreenOfOverlayView(sceneRoot, overlayView);
+        } else {
+            return new int[2];
         }
     }
 
