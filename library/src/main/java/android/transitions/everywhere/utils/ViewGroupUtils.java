@@ -17,19 +17,19 @@ public class ViewGroupUtils {
         }
     }
 
-    @TargetApi(VERSION_CODES.KITKAT)
-    static class KitKatViewGroupUtilsImpl extends BaseViewGroupUtilsImpl {
+    @TargetApi(VERSION_CODES.JELLY_BEAN_MR2)
+    static class JellyBeanMr2ViewGroupUtilsImpl extends BaseViewGroupUtilsImpl {
         @Override
         public void suppressLayout(ViewGroup group, boolean suppress) {
-            ViewGroupUtilsKitKat.suppressLayout(group, suppress);
+            ViewGroupUtilsJellyBeanMr2.suppressLayout(group, suppress);
         }
     }
 
     private static final ViewGroupUtilsImpl IMPL;
 
     static {
-        if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
-            IMPL = new KitKatViewGroupUtilsImpl();
+        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
+            IMPL = new JellyBeanMr2ViewGroupUtilsImpl();
         } else {
             IMPL = new BaseViewGroupUtilsImpl();
         }

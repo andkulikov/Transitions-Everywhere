@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 
 import java.lang.reflect.Method;
 
-@TargetApi(VERSION_CODES.KITKAT)
-class ViewGroupUtilsKitKat {
+@TargetApi(VERSION_CODES.JELLY_BEAN_MR2)
+class ViewGroupUtilsJellyBeanMr2 {
     private static final Method METHOD_suppressLayout = ReflectionUtils.getMethod(ViewGroup.class, "suppressLayout",
             boolean.class);
 
