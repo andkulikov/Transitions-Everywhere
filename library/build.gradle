@@ -18,8 +18,8 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.+'
 }
 
-def int versionCode = 3;
-def String versionName = '1.2.0';
+def int versionCode = 4;
+def String versionName = '1.2.1';
 
 android {
     compileSdkVersion 21
