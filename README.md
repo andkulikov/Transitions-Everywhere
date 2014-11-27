@@ -9,7 +9,7 @@ About Transitions API
 
 Changelog
 ============
-<b>1.2.0</b> - Bug fix<br>
+<b>1.2.0 - 1.2.1</b> - Bug fix<br>
 <b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lollipop</b>
 
 Simple example
