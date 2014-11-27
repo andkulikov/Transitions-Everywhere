@@ -17,6 +17,8 @@ public class ViewGroupOverlayUtils {
 
         void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY);
 
+        void initializeOverlay(View sceneRoot);
+
         void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                  BitmapDrawable startDrawable, BitmapDrawable endDrawable);
 
@@ -42,6 +44,11 @@ public class ViewGroupOverlayUtils {
         public void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
             viewOverlay.moveView(overlayView, screenX, screenY);
+        }
+
+        @Override
+        public void initializeOverlay(View sceneRoot) {
+            ViewOverlayPreJellybean.getOverlay(sceneRoot);
         }
 
         @Override
@@ -78,6 +85,11 @@ public class ViewGroupOverlayUtils {
                 overlayView.offsetLeftAndRight((screenX - loc[0]) - overlayView.getLeft());
                 overlayView.offsetTopAndBottom((screenY - loc[1]) - overlayView.getTop());
             }
+        }
+
+        @Override
+        public void initializeOverlay(View sceneRoot) {
+            // do nothing
         }
 
         @Override
@@ -120,6 +132,10 @@ public class ViewGroupOverlayUtils {
         if (overlayView != null) {
             IMPL.addOverlay(sceneRoot, overlayView, screenX, screenY);
         }
+    }
+
+    public static void initializeOverlay(View sceneRoot) {
+        IMPL.initializeOverlay(sceneRoot);
     }
 
     public static void removeOverlay(ViewGroup sceneRoot, View overlayView) {

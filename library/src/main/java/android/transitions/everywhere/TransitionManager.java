@@ -19,6 +19,7 @@ package android.transitions.everywhere;
 import android.content.Context;
 import android.os.Build;
 import android.transitions.everywhere.utils.ArrayMap;
+import android.transitions.everywhere.utils.ViewGroupOverlayUtils;
 import android.transitions.everywhere.utils.ViewUtils;
 import android.util.Log;
 import android.view.View;
@@ -219,6 +220,7 @@ public class TransitionManager {
     private static void sceneChangeRunTransition(final ViewGroup sceneRoot,
                                                  final Transition transition) {
         if (transition != null && isTransitionsAllowed()) {
+            ViewGroupOverlayUtils.initializeOverlay(sceneRoot);
             final ViewTreeObserver observer = sceneRoot.getViewTreeObserver();
             final ViewTreeObserver.OnPreDrawListener listener =
                     new ViewTreeObserver.OnPreDrawListener() {
