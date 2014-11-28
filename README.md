@@ -21,7 +21,7 @@ Usage
 Gradle:
 ```
 dependencies {
-    compile "com.github.andkulikov:transitions-everywhere:1.2.0"
+    compile "com.github.andkulikov:transitions-everywhere:1.2.1"
 }
 ```
 Use transition classes from package `android.transitions.everywhere.*` instead of `android.transition.*` from 4.4 and 5.0 Transitions API.<br>
