@@ -1,23 +1,15 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.0'
-    }
-}
-
-repositories {
-    jcenter()
-}
-
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 dependencies {
     compile project(':library')
-    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.android.support:appcompat-v7:21.0.2'
 }
+
+// Version Information
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+def versionBuild = 1
 
 android {
     compileSdkVersion 21
@@ -26,8 +18,8 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 21
-        versionCode = 1
-        versionName = 1
+        versionCode versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
 }
 
