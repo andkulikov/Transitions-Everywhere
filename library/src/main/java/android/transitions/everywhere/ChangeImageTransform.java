@@ -169,13 +169,15 @@ public class ChangeImageTransform extends Transition {
     }
 
     private ObjectAnimator createNullAnimator(ImageView imageView) {
-        return createMatrixAnimator(imageView, null, null);
+        return AnimatorUtils.ofObject(new ImageAnimator(imageView),
+                new MatrixUtils.NullMatrixEvaluator(),
+                MatrixUtils.IDENTITY_MATRIX, MatrixUtils.IDENTITY_MATRIX);
     }
 
     private ObjectAnimator createMatrixAnimator(final ImageView imageView, Matrix startMatrix,
                                                 final Matrix endMatrix) {
         return AnimatorUtils.ofObject(new ImageAnimator(imageView),
-                new TransitionUtils.MatrixEvaluator(),
+                new MatrixUtils.MatrixEvaluator(),
                 startMatrix, endMatrix);
     }
 

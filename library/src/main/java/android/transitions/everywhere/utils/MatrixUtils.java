@@ -1,8 +1,11 @@
 package android.transitions.everywhere.utils;
 
+import android.animation.TypeEvaluator;
+import android.annotation.TargetApi;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.widget.ImageView;
 
 import java.lang.reflect.Field;
@@ -197,7 +200,8 @@ public class MatrixUtils {
 
     public static void animateTransform(ImageView imageView, Matrix matrix) {
         Drawable drawable = imageView.getDrawable();
-        if (matrix == null) {
+        if (matrix == null || drawable.getIntrinsicWidth() == -1
+                || drawable.getIntrinsicHeight() == -1) {
             drawable.setBounds(0, 0, imageView.getWidth(), imageView.getHeight());
         } else {
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
@@ -206,6 +210,36 @@ public class MatrixUtils {
             ReflectionUtils.setFieldValue(imageView, FIELD_DRAW_MATRIX, drawMatrix);
         }
         imageView.invalidate();
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class MatrixEvaluator implements TypeEvaluator<Matrix> {
+
+        float[] mTempStartValues = new float[9];
+
+        float[] mTempEndValues = new float[9];
+
+        Matrix mTempMatrix = new Matrix();
+
+        @Override
+        public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
+            startValue.getValues(mTempStartValues);
+            endValue.getValues(mTempEndValues);
+            for (int i = 0; i < 9; i++) {
+                float diff = mTempEndValues[i] - mTempStartValues[i];
+                mTempEndValues[i] = mTempStartValues[i] + (fraction * diff);
+            }
+            mTempMatrix.setValues(mTempEndValues);
+            return mTempMatrix;
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class NullMatrixEvaluator implements TypeEvaluator<Matrix> {
+        @Override
+        public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
+            return null;
+        }
     }
 
 }

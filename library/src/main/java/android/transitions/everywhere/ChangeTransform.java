@@ -268,7 +268,7 @@ public class ChangeTransform extends Transition {
         setIdentityTransforms(view);
 
         ObjectAnimator animator = ObjectAnimator.ofObject(view, ANIMATION_MATRIX_PROPERTY,
-                new TransitionUtils.MatrixEvaluator(), startMatrix, endMatrix);
+                new MatrixUtils.MatrixEvaluator(), startMatrix, endMatrix);
 
         final Matrix finalEndMatrix = endMatrix;
 

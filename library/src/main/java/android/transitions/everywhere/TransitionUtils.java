@@ -18,7 +18,6 @@ package android.transitions.everywhere;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
-import android.animation.TypeEvaluator;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -142,24 +141,4 @@ public class TransitionUtils {
         return bitmap;
     }
 
-    public static class MatrixEvaluator implements TypeEvaluator<Matrix> {
-
-        float[] mTempStartValues = new float[9];
-
-        float[] mTempEndValues = new float[9];
-
-        Matrix mTempMatrix = new Matrix();
-
-        @Override
-        public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
-            startValue.getValues(mTempStartValues);
-            endValue.getValues(mTempEndValues);
-            for (int i = 0; i < 9; i++) {
-                float diff = mTempEndValues[i] - mTempStartValues[i];
-                mTempEndValues[i] = mTempStartValues[i] + (fraction * diff);
-            }
-            mTempMatrix.setValues(mTempEndValues);
-            return mTempMatrix;
-        }
-    }
 }
