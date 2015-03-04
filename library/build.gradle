@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:support-v4:21.0.3'
 }
 
 // Version Information
@@ -12,7 +12,7 @@ def versionBuild = 5
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.1.1'
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         minSdkVersion 8

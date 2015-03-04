@@ -2,7 +2,8 @@ apply plugin: 'com.android.application'
 
 dependencies {
     compile project(':library')
-    compile 'com.android.support:appcompat-v7:21.0.2'
+//    compile "com.github.andkulikov:transitions-everywhere:1.2.2"
+    compile 'com.android.support:appcompat-v7:21.0.3'
 }
 
 // Version Information
@@ -13,7 +14,7 @@ def versionBuild = 1
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.1.1'
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         minSdkVersion 8
