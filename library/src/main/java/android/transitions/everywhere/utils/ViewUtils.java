@@ -45,6 +45,8 @@ public class ViewUtils {
         void setAnimationMatrix(View view, Matrix matrix);
 
         Object getWindowId(View view);
+
+        boolean isRtl(View view);
     }
 
     static class BaseViewUtilsImpl implements ViewUtilsImpl {
@@ -134,10 +136,23 @@ public class ViewUtils {
             return null;
         }
 
+        @Override
+        public boolean isRtl(View view) {
+            return false;
+        }
+
+    }
+
+    @TargetApi(VERSION_CODES.JELLY_BEAN_MR1)
+    static class ViewUtilsJellyBeanMR1 extends BaseViewUtilsImpl {
+        @Override
+        public boolean isRtl(View view) {
+            return view != null && view.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+        }
     }
 
     @TargetApi(VERSION_CODES.JELLY_BEAN_MR2)
-    static class ViewUtilsJellyBeanMR2 extends BaseViewUtilsImpl {
+    static class ViewUtilsJellyBeanMR2 extends ViewUtilsJellyBeanMR1 {
         @Override
         public void setClipBounds(View v, Rect clipBounds) {
             v.setClipBounds(clipBounds);
@@ -164,6 +179,8 @@ public class ViewUtils {
             IMPL = new ViewUtilsKitKat();
         } else if (version >= VERSION_CODES.JELLY_BEAN_MR2) {
             IMPL = new ViewUtilsJellyBeanMR2();
+        } else if (version >= VERSION_CODES.JELLY_BEAN_MR1) {
+            IMPL = new ViewUtilsJellyBeanMR1();
         } else {
             IMPL = new BaseViewUtilsImpl();
         }
@@ -235,5 +252,9 @@ public class ViewUtils {
 
     public static Object getWindowId(View view) {
         return IMPL.getWindowId(view);
+    }
+
+    public static boolean isRtl(View view) {
+        return IMPL.isRtl(view);
     }
 }
