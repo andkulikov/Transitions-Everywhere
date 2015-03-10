@@ -26,6 +26,8 @@ public class ViewUtils {
 
         void setTransitionAlpha(View v, float alpha);
 
+        boolean isTransitionAlphaCompatMode();
+
         String getAlphaProperty();
 
         void setTranslationZ(View view, float z);
@@ -80,6 +82,11 @@ public class ViewUtils {
         @Override
         public void setTransitionAlpha(View v, float alpha) {
             v.setAlpha(alpha);
+        }
+
+        @Override
+        public boolean isTransitionAlphaCompatMode() {
+            return true;
         }
 
         @Override
@@ -152,7 +159,7 @@ public class ViewUtils {
     static {
         final int version = VERSION.SDK_INT;
         if (version >= VERSION_CODES.LOLLIPOP) {
-            IMPL = new ViewUtilsLolipop();
+            IMPL = new ViewUtilsLollipop();
         } else if (version >= VERSION_CODES.KITKAT) {
             IMPL = new ViewUtilsKitKat();
         } else if (version >= VERSION_CODES.JELLY_BEAN_MR2) {
@@ -180,6 +187,10 @@ public class ViewUtils {
 
     public static void setTransitionAlpha(View v, float alpha) {
         IMPL.setTransitionAlpha(v, alpha);
+    }
+
+    public static boolean isTransitionAlphaCompatMode() {
+        return IMPL.isTransitionAlphaCompatMode();
     }
 
     public static String getAlphaProperty() {

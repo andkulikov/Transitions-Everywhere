@@ -29,6 +29,11 @@ class ViewUtilsKitKat extends ViewUtils.ViewUtilsJellyBeanMR2 {
     }
 
     @Override
+    public boolean isTransitionAlphaCompatMode() {
+        return false;
+    }
+
+    @Override
     public String getAlphaProperty() {
         return "transitionAlpha";
     }
