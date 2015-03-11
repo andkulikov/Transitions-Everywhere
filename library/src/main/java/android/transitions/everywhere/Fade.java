@@ -109,10 +109,12 @@ public class Fade extends Visibility {
      * Utility method to handle creating and running the Animator.
      */
     private Animator createAnimation(View view, float startAlpha, float endAlpha) {
+        float endListenerAlpha = 1f;
         if (ViewUtils.isTransitionAlphaCompatMode()) {
             float curAlpha = view.getAlpha();
             startAlpha = curAlpha * startAlpha;
             endAlpha = curAlpha * endAlpha;
+            endListenerAlpha = curAlpha;
         }
         if (startAlpha == endAlpha) {
             return null;
@@ -122,7 +124,7 @@ public class Fade extends Visibility {
         if (DBG) {
             Log.d(LOG_TAG, "Created animator " + anim);
         }
-        FadeAnimatorListener listener = new FadeAnimatorListener(view);
+        FadeAnimatorListener listener = new FadeAnimatorListener(view, endListenerAlpha);
         anim.addListener(listener);
         AnimatorUtils.addPauseListener(anim, listener);
         return anim;
@@ -150,10 +152,12 @@ public class Fade extends Visibility {
         private final View mView;
         private boolean mCanceled = false;
         private float mPausedAlpha = -1;
+        private float mEndListenerAlpha;
         private boolean mLayerTypeChanged = false;
 
-        public FadeAnimatorListener(View view) {
+        public FadeAnimatorListener(View view, float endListenerAlpha) {
             mView = view;
+            mEndListenerAlpha = endListenerAlpha;
         }
 
         @Override
@@ -176,7 +180,7 @@ public class Fade extends Visibility {
         @Override
         public void onAnimationEnd(Animator animator) {
             if (!mCanceled) {
-                ViewUtils.setTransitionAlpha(mView, 1);
+                ViewUtils.setTransitionAlpha(mView, mEndListenerAlpha);
             }
             if (mLayerTypeChanged) {
                 mView.setLayerType(View.LAYER_TYPE_NONE, null);
@@ -186,7 +190,7 @@ public class Fade extends Visibility {
         @Override
         public void onAnimationPause(Animator animator) {
             mPausedAlpha = ViewUtils.getTransitionAlpha(mView);
-            ViewUtils.setTransitionAlpha(mView, 1);
+            ViewUtils.setTransitionAlpha(mView, mEndListenerAlpha);
         }
 
         @Override
