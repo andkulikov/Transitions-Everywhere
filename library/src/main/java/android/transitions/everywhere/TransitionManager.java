@@ -245,7 +245,6 @@ public class TransitionManager {
                                     ArrayList<Transition> currentTransitions =
                                             runningTransitions.get(sceneRoot);
                                     currentTransitions.remove(transition);
-                                    transition.onEndOfAllTransitions();
                                 }
                             });
                             transition.captureValues(sceneRoot, false);

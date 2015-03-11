@@ -87,4 +87,15 @@ public class ReflectionUtils {
         }
     }
 
+    public static Object getFieldValue(final Object receiver, final Object defaultValue,
+                                       final Field field) {
+        if (field == null) return defaultValue;
+        try {
+            return field.get(receiver);
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in getFieldValue", e);
+        }
+        return defaultValue;
+    }
+
 }

@@ -476,14 +476,6 @@ public class TransitionSet extends Transition {
         }
     }
 
-    @Override
-    void onEndOfAllTransitions() {
-        int numTransitions = mTransitions.size();
-        for (int i = 0; i < numTransitions; ++i) {
-            mTransitions.get(i).onEndOfAllTransitions();
-        }
-    }
-
     /** @hide */
     @Override
     public void pause(View sceneRoot) {

@@ -82,9 +82,6 @@ public abstract class Visibility extends Transition {
     private int mForcedStartVisibility = -1;
     private int mForcedEndVisibility = -1;
 
-    private int mFinalVisibility;
-    private View mFinalViewToKeep;
-
     public Visibility() {}
 
     public Visibility(Context context, AttributeSet attrs) {
@@ -465,11 +462,11 @@ public abstract class Visibility extends Transition {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         if (!mCanceled) {
-                            if (!isForcedVisibility) {
-                                mFinalViewToKeep = finalViewToKeep;
-                                mFinalVisibility = finalVisibility;
+                            if (isForcedVisibility) {
+                                ViewUtils.setTransitionAlpha(finalViewToKeep, 0);
+                            } else {
+                                finalViewToKeep.setVisibility(finalVisibility);
                             }
-                            ViewUtils.setTransitionAlpha(finalViewToKeep, 0);
                         }
                     }
                 });
@@ -479,14 +476,6 @@ public abstract class Visibility extends Transition {
             return animator;
         }
         return null;
-    }
-
-    @Override
-    void onEndOfAllTransitions() {
-        if (mFinalViewToKeep != null) {
-            mFinalViewToKeep.setVisibility(mFinalVisibility);
-            mFinalViewToKeep = null;
-        }
     }
 
     @Override
