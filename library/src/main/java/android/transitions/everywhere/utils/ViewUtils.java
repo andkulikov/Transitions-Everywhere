@@ -47,6 +47,10 @@ public class ViewUtils {
         Object getWindowId(View view);
 
         boolean isRtl(View view);
+
+        void setHasTransientState(View view, boolean hasTransientState);
+
+        boolean hasTransientState(View view);
     }
 
     static class BaseViewUtilsImpl implements ViewUtilsImpl {
@@ -141,10 +145,32 @@ public class ViewUtils {
             return false;
         }
 
+        @Override
+        public void setHasTransientState(View view, boolean hasTransientState) {
+            // do nothing; API doesn't exist
+        }
+
+        @Override
+        public boolean hasTransientState(View view) {
+            return false;
+        }
+    }
+
+    @TargetApi(VERSION_CODES.JELLY_BEAN)
+    static class ViewUtilsJellyBean extends BaseViewUtilsImpl {
+        @Override
+        public void setHasTransientState(View view, boolean hasTransientState) {
+            view.setHasTransientState(hasTransientState);
+        }
+
+        @Override
+        public boolean hasTransientState(View view) {
+            return view.hasTransientState();
+        }
     }
 
     @TargetApi(VERSION_CODES.JELLY_BEAN_MR1)
-    static class ViewUtilsJellyBeanMR1 extends BaseViewUtilsImpl {
+    static class ViewUtilsJellyBeanMR1 extends ViewUtilsJellyBean {
         @Override
         public boolean isRtl(View view) {
             return view != null && view.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
@@ -181,6 +207,8 @@ public class ViewUtils {
             IMPL = new ViewUtilsJellyBeanMR2();
         } else if (version >= VERSION_CODES.JELLY_BEAN_MR1) {
             IMPL = new ViewUtilsJellyBeanMR1();
+        } else if (version >= VERSION_CODES.JELLY_BEAN) {
+            IMPL = new ViewUtilsJellyBean();
         } else {
             IMPL = new BaseViewUtilsImpl();
         }
@@ -256,5 +284,13 @@ public class ViewUtils {
 
     public static boolean isRtl(View view) {
         return IMPL.isRtl(view);
+    }
+
+    public static boolean hasTransientState(View view) {
+        return IMPL.hasTransientState(view);
+    }
+
+    public static void setHasTransientState(View view, boolean hasTransientState) {
+        IMPL.setHasTransientState(view, hasTransientState);
     }
 }

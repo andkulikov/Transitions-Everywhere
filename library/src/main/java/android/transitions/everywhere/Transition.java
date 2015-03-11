@@ -25,9 +25,9 @@ import android.content.res.TypedArray;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.v4.util.LongSparseArray;
 import android.transitions.everywhere.utils.AnimatorUtils;
 import android.transitions.everywhere.utils.ArrayMap;
+import android.transitions.everywhere.utils.LongSparseArray;
 import android.transitions.everywhere.utils.Objects;
 import android.transitions.everywhere.utils.ViewUtils;
 import android.util.AttributeSet;
@@ -1503,11 +1503,11 @@ public abstract class Transition implements Cloneable {
                     // Duplicate item IDs: cannot match by item ID.
                     View alreadyMatched = transitionValuesMaps.itemIdValues.get(itemId);
                     if (alreadyMatched != null) {
-                        android.support.v4.view.ViewCompat.setHasTransientState(alreadyMatched, false);
+                        ViewUtils.setHasTransientState(alreadyMatched, false);
                         transitionValuesMaps.itemIdValues.put(itemId, null);
                     }
                 } else {
-                    android.support.v4.view.ViewCompat.setHasTransientState(view, true);
+                    ViewUtils.setHasTransientState(view, true);
                     transitionValuesMaps.itemIdValues.put(itemId, view);
                 }
             }
@@ -1900,14 +1900,14 @@ public abstract class Transition implements Cloneable {
             }
             for (int i = 0; i < mStartValues.itemIdValues.size(); ++i) {
                 View view = mStartValues.itemIdValues.valueAt(i);
-                if (android.support.v4.view.ViewCompat.hasTransientState(view)) {
-                    android.support.v4.view.ViewCompat.setHasTransientState(view, false);
+                if (ViewUtils.hasTransientState(view)) {
+                    ViewUtils.setHasTransientState(view, false);
                 }
             }
             for (int i = 0; i < mEndValues.itemIdValues.size(); ++i) {
                 View view = mEndValues.itemIdValues.valueAt(i);
-                if (android.support.v4.view.ViewCompat.hasTransientState(view)) {
-                    android.support.v4.view.ViewCompat.setHasTransientState(view, false);
+                if (ViewUtils.hasTransientState(view)) {
+                    ViewUtils.setHasTransientState(view, false);
                 }
             }
             mEnded = true;

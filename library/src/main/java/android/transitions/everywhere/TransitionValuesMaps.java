@@ -16,8 +16,8 @@
 
 package android.transitions.everywhere;
 
-import android.support.v4.util.LongSparseArray;
 import android.transitions.everywhere.utils.ArrayMap;
+import android.transitions.everywhere.utils.LongSparseArray;
 import android.util.SparseArray;
 import android.view.View;
 

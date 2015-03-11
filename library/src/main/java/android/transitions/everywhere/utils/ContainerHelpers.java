@@ -17,10 +17,21 @@
 package android.transitions.everywhere.utils;
 
 public class ContainerHelpers {
-    static final boolean[] EMPTY_BOOLEANS = new boolean[0];
     static final int[] EMPTY_INTS = new int[0];
     static final long[] EMPTY_LONGS = new long[0];
     static final Object[] EMPTY_OBJECTS = new Object[0];
+
+    public static int idealLongArraySize(int need) {
+        return idealByteArraySize(need * 8) / 8;
+    }
+
+    public static int idealByteArraySize(int need) {
+        for (int i = 4; i < 32; i++)
+            if (need <= (1 << i) - 12)
+                return (1 << i) - 12;
+
+        return need;
+    }
 
     // This is Arrays.binarySearch(), but doesn't do any argument validation.
     static int binarySearch(int[] array, int size, int value) {
