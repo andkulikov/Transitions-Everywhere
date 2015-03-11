@@ -22,6 +22,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Path;
@@ -47,18 +48,21 @@ import java.util.Map;
  * the scene change and animates those changes during the transition.
  * <p/>
  * <p>A ChangeBounds transition can be described in a resource file by using the
- * tag <code>changeBounds</code>, along with the other standard
+ * tag <code>changeBounds</code>, using its attributes of
+ * {@link android.transitions.everywhere.R.styleable#ChangeBounds} along with the other standard
  * attributes of {@link android.transitions.everywhere.R.styleable#Transition}.</p>
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ChangeBounds extends Transition {
 
     private static final String PROPNAME_BOUNDS = "android:changeBounds:bounds";
+    private static final String PROPNAME_CLIP = "android:changeBounds:clip";
     private static final String PROPNAME_PARENT = "android:changeBounds:parent";
     private static final String PROPNAME_WINDOW_X = "android:changeBounds:windowX";
     private static final String PROPNAME_WINDOW_Y = "android:changeBounds:windowY";
     private static final String[] sTransitionProperties = {
             PROPNAME_BOUNDS,
+            PROPNAME_CLIP,
             PROPNAME_PARENT,
             PROPNAME_WINDOW_X,
             PROPNAME_WINDOW_Y
@@ -76,6 +80,11 @@ public class ChangeBounds extends Transition {
 
     public ChangeBounds(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ChangeBounds);
+        boolean resizeClip = a.getBoolean(R.styleable.ChangeBounds_resizeClip, false);
+        a.recycle();
+        setResizeClip(resizeClip);
     }
 
     @Override
@@ -83,8 +92,34 @@ public class ChangeBounds extends Transition {
         return sTransitionProperties;
     }
 
+    /**
+     * When <code>resizeClip</code> is true, ChangeBounds resizes the view using the clipBounds
+     * instead of changing the dimensions of the view during the animation. When
+     * <code>resizeClip</code> is false, ChangeBounds resizes the View by changing its dimensions.
+     *
+     * <p>When resizeClip is set to true, the clip bounds is modified by ChangeBounds. Therefore,
+     * {@link android.transition.ChangeClipBounds} is not compatible with ChangeBounds
+     * in this mode.</p>
+     *
+     * @param resizeClip Used to indicate whether the view bounds should be modified or the
+     *                   clip bounds should be modified by ChangeBounds.
+     * @see android.view.View#setClipBounds(android.graphics.Rect)
+     * @attr ref android.R.styleable#ChangeBounds_resizeClip
+     */
     public void setResizeClip(boolean resizeClip) {
         mResizeClip = resizeClip;
+    }
+
+    /**
+     * Returns true when the ChangeBounds will resize by changing the clip bounds during the
+     * view animation or false when bounds are changed. The default value is false.
+     *
+     * @return true when the ChangeBounds will resize by changing the clip bounds during the
+     * view animation or false when bounds are changed. The default value is false.
+     * @attr ref android.R.styleable#ChangeBounds_resizeClip
+     */
+    public boolean getResizeClip() {
+        return mResizeClip;
     }
 
     /**
@@ -113,6 +148,9 @@ public class ChangeBounds extends Transition {
                 values.view.getLocationInWindow(tempLocation);
                 values.values.put(PROPNAME_WINDOW_X, tempLocation[0]);
                 values.values.put(PROPNAME_WINDOW_Y, tempLocation[1]);
+            }
+            if (mResizeClip) {
+                values.values.put(PROPNAME_CLIP, ViewUtils.getClipBounds(view));
             }
         }
     }
@@ -160,26 +198,32 @@ public class ChangeBounds extends Transition {
         if (parentMatches(startParent, endParent)) {
             Rect startBounds = (Rect) startValues.values.get(PROPNAME_BOUNDS);
             Rect endBounds = (Rect) endValues.values.get(PROPNAME_BOUNDS);
-            int startLeft = startBounds.left;
-            int endLeft = endBounds.left;
-            int startTop = startBounds.top;
-            int endTop = endBounds.top;
-            int startRight = startBounds.right;
-            int endRight = endBounds.right;
-            int startBottom = startBounds.bottom;
-            int endBottom = endBounds.bottom;
-            int startWidth = startRight - startLeft;
-            int startHeight = startBottom - startTop;
-            int endWidth = endRight - endLeft;
-            int endHeight = endBottom - endTop;
+            final int startLeft = startBounds.left;
+            final int endLeft = endBounds.left;
+            final int startTop = startBounds.top;
+            final int endTop = endBounds.top;
+            final int startRight = startBounds.right;
+            final int endRight = endBounds.right;
+            final int startBottom = startBounds.bottom;
+            final int endBottom = endBounds.bottom;
+            final int startWidth = startRight - startLeft;
+            final int startHeight = startBottom - startTop;
+            final int endWidth = endRight - endLeft;
+            final int endHeight = endBottom - endTop;
+            Rect startClip = (Rect) startValues.values.get(PROPNAME_CLIP);
+            Rect endClip = (Rect) endValues.values.get(PROPNAME_CLIP);
             int numChanges = 0;
             if ((startWidth != 0 && startHeight != 0) || (endWidth != 0 && endHeight != 0)) {
                 if (startLeft != endLeft || startTop != endTop) ++numChanges;
                 if (startRight != endRight || startBottom != endBottom) ++numChanges;
             }
+            if ((startClip != null && !startClip.equals(endClip)) ||
+                    (startClip == null && endClip != null)) {
+                ++numChanges;
+            }
             if (numChanges > 0) {
-                if (!mResizeClip) {
-                    Animator anim;
+                Animator anim;
+                if (!mResizeClip || (startClip == null && endClip == null)) {
                     if (startWidth == endWidth && startHeight == endHeight &&
                             Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                         view.offsetLeftAndRight(startLeft - view.getLeft());
@@ -198,105 +242,86 @@ public class ChangeBounds extends Transition {
                         anim = TransitionUtils.mergeAnimators(topLeftAnimator,
                                 bottomRightAnimator);
                     }
-                    if (view.getParent() instanceof ViewGroup) {
-                        final ViewGroup parent = (ViewGroup) view.getParent();
-                        ViewGroupUtils.suppressLayout(parent, true);
-                        TransitionListener transitionListener = new TransitionListenerAdapter() {
-                            boolean mCanceled = false;
-
-                            @Override
-                            public void onTransitionCancel(Transition transition) {
-                                ViewGroupUtils.suppressLayout(parent, false);
-                                mCanceled = true;
-                            }
-
-                            @Override
-                            public void onTransitionEnd(Transition transition) {
-                                if (!mCanceled) {
-                                    ViewGroupUtils.suppressLayout(parent, false);
-                                }
-                            }
-
-                            @Override
-                            public void onTransitionPause(Transition transition) {
-                                ViewGroupUtils.suppressLayout(parent, false);
-                            }
-
-                            @Override
-                            public void onTransitionResume(Transition transition) {
-                                ViewGroupUtils.suppressLayout(parent, true);
-                            }
-                        };
-                        addListener(transitionListener);
-                    }
-                    return anim;
                 } else {
-                    if (startWidth != endWidth) view.setRight(endLeft +
-                            Math.max(startWidth, endWidth));
-                    if (startHeight != endHeight) view.setBottom(endTop +
-                            Math.max(startHeight, endHeight));
-                    // TODO: don't clobber TX/TY
-                    if (startLeft != endLeft) view.setTranslationX(startLeft - endLeft);
-                    if (startTop != endTop) view.setTranslationY(startTop - endTop);
-                    // Animate location with translationX/Y and size with clip bounds
-                    float transXDelta = endLeft - startLeft;
-                    float transYDelta = endTop - startTop;
-                    int widthDelta = endWidth - startWidth;
-                    int heightDelta = endHeight - startHeight;
-                    numChanges = 0;
-                    if (transXDelta != 0) numChanges++;
-                    if (transYDelta != 0) numChanges++;
-                    if (widthDelta != 0 || heightDelta != 0) numChanges++;
-                    ObjectAnimator translationAnimator = AnimatorUtils.ofFloat(this, view,
-                            "translationX", "translationY", 0, 0, transXDelta, transYDelta);
-                    ObjectAnimator clipAnimator = null;
-                    if (widthDelta != 0 || heightDelta != 0) {
-                        Rect tempStartBounds = new Rect(0, 0, startWidth, startHeight);
-                        Rect tempEndBounds = new Rect(0, 0, endWidth, endHeight);
-                        clipAnimator = ObjectAnimator.ofObject(view, "clipBounds", sRectEvaluator,
-                                tempStartBounds, tempEndBounds);
+                    int maxWidth = Math.max(startWidth, endWidth);
+                    int maxHeight = Math.max(startHeight, endHeight);
+
+                    view.setLeft(startLeft);
+                    view.setTop(startTop);
+                    view.setRight(startLeft + maxWidth);
+                    view.setBottom(startTop + maxHeight);
+                    ObjectAnimator positionAnimator = null;
+                    if (startLeft != endLeft || startTop != endTop) {
+                        positionAnimator = AnimatorUtils.ofInt(this, view, "left", "top",
+                                startLeft, startTop, endLeft, endTop);
                     }
-                    Animator anim = TransitionUtils.mergeAnimators(translationAnimator,
-                            clipAnimator);
-                    if (view.getParent() instanceof ViewGroup) {
-                        final ViewGroup parent = (ViewGroup) view.getParent();
-                        ViewGroupUtils.suppressLayout(parent, true);
-                        TransitionListener transitionListener = new TransitionListenerAdapter() {
-                            boolean mCanceled = false;
+                    final Rect finalClip = endClip;
+                    if (startClip == null) {
+                        startClip = new Rect(0, 0, startWidth, startHeight);
+                    }
+                    if (endClip == null) {
+                        endClip = new Rect(0, 0, endWidth, endHeight);
+                    }
+                    ObjectAnimator clipAnimator = null;
+                    if (!startClip.equals(endClip)) {
+                        ViewUtils.setClipBounds(view, startClip);
+                        clipAnimator = ObjectAnimator.ofObject(view, "clipBounds", sRectEvaluator,
+                                startClip, endClip);
+                        clipAnimator.addListener(new AnimatorListenerAdapter() {
+                            private boolean mIsCanceled;
 
                             @Override
-                            public void onTransitionCancel(Transition transition) {
-                                ViewGroupUtils.suppressLayout(parent, false);
-                                mCanceled = true;
+                            public void onAnimationCancel(Animator animation) {
+                                mIsCanceled = true;
                             }
 
                             @Override
-                            public void onTransitionEnd(Transition transition) {
-                                if (!mCanceled) {
-                                    ViewGroupUtils.suppressLayout(parent, false);
+                            public void onAnimationEnd(Animator animation) {
+                                if (!mIsCanceled) {
+                                    ViewUtils.setClipBounds(view, finalClip);
+                                    view.setLeft(endLeft);
+                                    view.setTop(endTop);
+                                    view.setRight(endRight);
+                                    view.setBottom(endBottom);
                                 }
                             }
+                        });
+                    }
+                    anim = TransitionUtils.mergeAnimators(positionAnimator,
+                            clipAnimator);
+                }
+                if (view.getParent() instanceof ViewGroup) {
+                    final ViewGroup parent = (ViewGroup) view.getParent();
+                    ViewGroupUtils.suppressLayout(parent, true);
+                    TransitionListener transitionListener = new TransitionListenerAdapter() {
+                        boolean mCanceled = false;
 
-                            @Override
-                            public void onTransitionPause(Transition transition) {
+                        @Override
+                        public void onTransitionCancel(Transition transition) {
+                            ViewGroupUtils.suppressLayout(parent, false);
+                            mCanceled = true;
+                        }
+
+                        @Override
+                        public void onTransitionEnd(Transition transition) {
+                            if (!mCanceled) {
                                 ViewGroupUtils.suppressLayout(parent, false);
                             }
-
-                            @Override
-                            public void onTransitionResume(Transition transition) {
-                                ViewGroupUtils.suppressLayout(parent, true);
-                            }
-                        };
-                        addListener(transitionListener);
-                    }
-                    anim.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            ViewUtils.setClipBounds(view, null);
                         }
-                    });
-                    return anim;
+
+                        @Override
+                        public void onTransitionPause(Transition transition) {
+                            ViewGroupUtils.suppressLayout(parent, false);
+                        }
+
+                        @Override
+                        public void onTransitionResume(Transition transition) {
+                            ViewGroupUtils.suppressLayout(parent, true);
+                        }
+                    };
+                    addListener(transitionListener);
                 }
+                return anim;
             }
         } else {
             int startX = (Integer) startValues.values.get(PROPNAME_WINDOW_X);
