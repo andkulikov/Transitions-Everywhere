@@ -30,7 +30,7 @@ import android.view.View;
  * will not blink out or shift suddenly when the transition is interrupted.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-class TranslationAnimationCreator {
+public class TranslationAnimationCreator {
 
     /**
      * Creates an animator that can be used for x and/or y translations. When interrupted,
@@ -66,11 +66,13 @@ class TranslationAnimationCreator {
         ObjectAnimator anim = AnimatorUtils.ofFloat(null, view,
                 "translationX", "translationY", startX, startY, endX, endY);
 
-        TransitionPositionListener listener = new TransitionPositionListener(view, values.view,
-                startPosX, startPosY, terminalX, terminalY);
-        anim.addListener(listener);
-        AnimatorUtils.addPauseListener(anim, listener);
-        anim.setInterpolator(interpolator);
+        if (anim != null) {
+            TransitionPositionListener listener = new TransitionPositionListener(view, values.view,
+                    startPosX, startPosY, terminalX, terminalY);
+            anim.addListener(listener);
+            AnimatorUtils.addPauseListener(anim, listener);
+            anim.setInterpolator(interpolator);
+        }
         return anim;
     }
 
