@@ -560,7 +560,10 @@ public class TransitionSet extends Transition {
         clone.mTransitions = new ArrayList<Transition>();
         int numTransitions = mTransitions.size();
         for (int i = 0; i < numTransitions; ++i) {
-            clone.addTransition((Transition) mTransitions.get(i).clone());
+            Transition transition = (Transition) mTransitions.get(i).clone();
+            long duration = transition.getDuration();
+            clone.addTransition(transition);
+            transition.setDuration(duration);
         }
         return clone;
     }
