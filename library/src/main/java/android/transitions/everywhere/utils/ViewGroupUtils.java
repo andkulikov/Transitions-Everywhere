@@ -17,8 +17,7 @@ public class ViewGroupUtils {
     @TargetApi(VERSION_CODES.HONEYCOMB)
     static class BaseViewGroupUtilsImpl implements ViewGroupUtilsImpl {
 
-        private static final Field FIELD_LAYOUT_SUPPRESSED =
-                ReflectionUtils.getPrivateField(ViewGroup.class, "mLayoutSuppressed");
+        private static Field sFieldLayoutSuppressed;
 
         static LayoutTransition mLayoutTransition = new LayoutTransition() {
             @Override
@@ -40,10 +39,14 @@ public class ViewGroupUtils {
                 group.setLayoutTransition(mLayoutTransition);
             } else {
                 group.setLayoutTransition(null);
+                if (sFieldLayoutSuppressed == null) {
+                    sFieldLayoutSuppressed = ReflectionUtils.getPrivateField(ViewGroup.class,
+                            "mLayoutSuppressed");
+                }
                 Boolean suppressed = (Boolean) ReflectionUtils.getFieldValue(group,
-                        Boolean.FALSE, FIELD_LAYOUT_SUPPRESSED);
+                        Boolean.FALSE, sFieldLayoutSuppressed);
                 if (!Boolean.FALSE.equals(suppressed)) {
-                    ReflectionUtils.setFieldValue(group, FIELD_LAYOUT_SUPPRESSED, false);
+                    ReflectionUtils.setFieldValue(group, sFieldLayoutSuppressed, false);
                     group.requestLayout();
                 }
             }
