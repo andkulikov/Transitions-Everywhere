@@ -48,7 +48,7 @@ public class TranslationAnimationCreator {
      * @return An animator that moves from (startX, startY) to (endX, endY) unless there was
      * a previous interruption, in which case it moves from the current position to (endX, endY).
      */
-    static Animator createAnimation(View view, TransitionValues values, int viewPosX, int viewPosY,
+    public static Animator createAnimation(View view, TransitionValues values, int viewPosX, int viewPosY,
                                     float startX, float startY, float endX, float endY, TimeInterpolator interpolator) {
         float terminalX = view.getTranslationX();
         float terminalY = view.getTranslationY();

@@ -51,6 +51,8 @@ public class ChangeImageTransform extends Transition {
             PROPNAME_BOUNDS,
     };
 
+    private ImageMatrixProperty mLastImageMatrixProperty;
+
     public ChangeImageTransform() {}
 
     public ChangeImageTransform(Context context, AttributeSet attrs) {
@@ -169,21 +171,28 @@ public class ChangeImageTransform extends Transition {
     }
 
     private ObjectAnimator createNullAnimator(ImageView imageView) {
-        return AnimatorUtils.ofObject(new ImageAnimator(imageView),
+        return AnimatorUtils.ofObject(createMatrixProperty(imageView),
                 new MatrixUtils.NullMatrixEvaluator(),
                 MatrixUtils.IDENTITY_MATRIX, MatrixUtils.IDENTITY_MATRIX);
     }
 
     private ObjectAnimator createMatrixAnimator(final ImageView imageView, Matrix startMatrix,
                                                 final Matrix endMatrix) {
-        return AnimatorUtils.ofObject(new ImageAnimator(imageView),
+        return AnimatorUtils.ofObject(createMatrixProperty(imageView),
                 new MatrixUtils.MatrixEvaluator(),
                 startMatrix, endMatrix);
     }
 
-    private static class ImageAnimator extends PropertyCompatObject<ImageView, Matrix> {
+    private ImageMatrixProperty createMatrixProperty(ImageView imageView) {
+        // save strong reference to object (in animator this target will be saved as a weak
+        // reference so it can be garbage-collected)
+        mLastImageMatrixProperty = new ImageMatrixProperty(imageView);
+        return mLastImageMatrixProperty;
+    }
 
-        public ImageAnimator(ImageView object) {
+    private static class ImageMatrixProperty extends PropertyCompatObject<ImageView, Matrix> {
+
+        public ImageMatrixProperty(ImageView object) {
             super(object);
         }
 

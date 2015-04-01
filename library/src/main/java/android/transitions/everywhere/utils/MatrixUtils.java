@@ -206,8 +206,11 @@ public class MatrixUtils {
         } else {
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
             Matrix drawMatrix = imageView.getImageMatrix();
+            if (drawMatrix.isIdentity()) {
+                drawMatrix = new Matrix();
+                ReflectionUtils.setFieldValue(imageView, FIELD_DRAW_MATRIX, drawMatrix);
+            }
             drawMatrix.set(matrix);
-            ReflectionUtils.setFieldValue(imageView, FIELD_DRAW_MATRIX, drawMatrix);
         }
         imageView.invalidate();
     }
