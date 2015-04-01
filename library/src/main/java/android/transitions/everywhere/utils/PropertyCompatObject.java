@@ -1,9 +1,14 @@
 package android.transitions.everywhere.utils;
 
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.os.Build;
+
 /**
  * Created by Andrey Kulikov on 24.10.14.
  */
-public class PropertyCompatObject<T, F> {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class PropertyCompatObject<T, F> extends AnimatorListenerAdapter {
 
     private T mObject;
 

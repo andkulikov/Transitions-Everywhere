@@ -17,10 +17,13 @@ package android.transitions.everywhere;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.transitions.everywhere.utils.AnimatorUtils;
 import android.transitions.everywhere.utils.MatrixUtils;
 import android.transitions.everywhere.utils.PropertyCompatObject;
@@ -34,11 +37,12 @@ import java.util.Map;
 /**
  * This Transition captures an ImageView's matrix before and after the
  * scene change and animates it during the transition.
- *
+ * <p/>
  * <p>In combination with ChangeBounds, ChangeImageTransform allows ImageViews
  * that change size, shape, or {@link android.widget.ImageView.ScaleType} to animate contents
  * smoothly.</p>
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ChangeImageTransform extends Transition {
 
     private static final String TAG = "ChangeImageTransform";
@@ -51,9 +55,8 @@ public class ChangeImageTransform extends Transition {
             PROPNAME_BOUNDS,
     };
 
-    private ImageMatrixProperty mLastImageMatrixProperty;
-
-    public ChangeImageTransform() {}
+    public ChangeImageTransform() {
+    }
 
     public ChangeImageTransform(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -156,7 +159,8 @@ public class ChangeImageTransform extends Transition {
 
         ObjectAnimator animator;
         if (drawableWidth == 0 || drawableHeight == 0) {
-            animator = createNullAnimator(imageView);
+            animator = createMatrixAnimator(imageView, new MatrixUtils.NullMatrixEvaluator(),
+                    MatrixUtils.IDENTITY_MATRIX, MatrixUtils.IDENTITY_MATRIX);
         } else {
             if (startMatrix == null) {
                 startMatrix = MatrixUtils.IDENTITY_MATRIX;
@@ -165,29 +169,21 @@ public class ChangeImageTransform extends Transition {
                 endMatrix = MatrixUtils.IDENTITY_MATRIX;
             }
             MatrixUtils.animateTransform(imageView, startMatrix);
-            animator = createMatrixAnimator(imageView, startMatrix, endMatrix);
+            animator = createMatrixAnimator(imageView, new MatrixUtils.MatrixEvaluator(),
+                    startMatrix, endMatrix);
         }
         return animator;
     }
 
-    private ObjectAnimator createNullAnimator(ImageView imageView) {
-        return AnimatorUtils.ofObject(createMatrixProperty(imageView),
-                new MatrixUtils.NullMatrixEvaluator(),
-                MatrixUtils.IDENTITY_MATRIX, MatrixUtils.IDENTITY_MATRIX);
-    }
-
-    private ObjectAnimator createMatrixAnimator(final ImageView imageView, Matrix startMatrix,
-                                                final Matrix endMatrix) {
-        return AnimatorUtils.ofObject(createMatrixProperty(imageView),
-                new MatrixUtils.MatrixEvaluator(),
+    private ObjectAnimator createMatrixAnimator(ImageView imageView, TypeEvaluator<Matrix> evaluator,
+                                                Matrix startMatrix, final Matrix endMatrix) {
+        ImageMatrixProperty matrixProperty = new ImageMatrixProperty(imageView);
+        ObjectAnimator animator = AnimatorUtils.ofObject(matrixProperty, evaluator,
                 startMatrix, endMatrix);
-    }
-
-    private ImageMatrixProperty createMatrixProperty(ImageView imageView) {
         // save strong reference to object (in animator this target will be saved as a weak
         // reference so it can be garbage-collected)
-        mLastImageMatrixProperty = new ImageMatrixProperty(imageView);
-        return mLastImageMatrixProperty;
+        animator.addListener(matrixProperty);
+        return animator;
     }
 
     private static class ImageMatrixProperty extends PropertyCompatObject<ImageView, Matrix> {
