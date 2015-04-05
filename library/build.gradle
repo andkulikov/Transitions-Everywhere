@@ -3,12 +3,12 @@ apply plugin: 'com.android.library'
 // Version Information
 def versionMajor = 1
 def versionMinor = 3
-def versionPatch = 0
-def versionBuild = 6
+def versionPatch = 1
+def versionBuild = 7
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '22'
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
         minSdkVersion 8
