@@ -291,6 +291,7 @@ public class TransitionInflater {
                         throw new RuntimeException("Could not create " + className, e);
                     }
                 }
+                a.recycle();
             } else {
                 throw new RuntimeException("Unknown scene name: " + parser.getName());
             }

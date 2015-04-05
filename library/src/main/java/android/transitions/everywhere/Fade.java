@@ -102,6 +102,7 @@ public class Fade extends Visibility {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Fade);
         int fadingMode = a.getInt(R.styleable.Fade_fadingMode, getMode());
+        a.recycle();
         setMode(fadingMode);
     }
 

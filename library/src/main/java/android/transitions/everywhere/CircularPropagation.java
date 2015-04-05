@@ -18,7 +18,6 @@ package android.transitions.everywhere;
 import android.annotation.TargetApi;
 import android.graphics.Rect;
 import android.os.Build;
-import android.util.FloatMath;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -104,6 +103,6 @@ public class CircularPropagation extends VisibilityPropagation {
     private static float distance(float x1, float y1, float x2, float y2) {
         float x = x2 - x1;
         float y = y2 - y1;
-        return FloatMath.sqrt((x * x) + (y * y));
+        return (float) Math.sqrt((x * x) + (y * y));
     }
 }

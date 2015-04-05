@@ -21,7 +21,6 @@ import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.util.AttributeSet;
-import android.util.FloatMath;
 
 /**
  * A PathMotion that takes a Path pattern and applies it to the separation between two points.
@@ -141,6 +140,6 @@ public class PatternPathMotion extends PathMotion {
     }
 
     private static float distance(float x, float y) {
-        return FloatMath.sqrt((x * x) + (y * y));
+        return (float) Math.sqrt((x * x) + (y * y));
     }
 }

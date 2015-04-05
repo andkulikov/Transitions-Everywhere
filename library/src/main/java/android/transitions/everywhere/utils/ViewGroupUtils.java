@@ -14,7 +14,7 @@ public class ViewGroupUtils {
         void suppressLayout(ViewGroup group, boolean suppress);
     }
 
-    @TargetApi(VERSION_CODES.HONEYCOMB)
+    @TargetApi(VERSION_CODES.JELLY_BEAN)
     static class BaseViewGroupUtilsImpl implements ViewGroupUtilsImpl {
 
         private static Field sFieldLayoutSuppressed;

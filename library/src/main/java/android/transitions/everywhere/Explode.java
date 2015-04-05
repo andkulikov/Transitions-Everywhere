@@ -22,7 +22,6 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.FloatMath;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -171,6 +170,6 @@ public class Explode extends Visibility {
     }
 
     private static float calculateDistance(float x, float y) {
-        return FloatMath.sqrt((x * x) + (y * y));
+        return (float) Math.sqrt((x * x) + (y * y));
     }
 }
