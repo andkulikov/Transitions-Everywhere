@@ -9,6 +9,7 @@ About Transitions API
 
 Changelog
 ============
+<b>1.3.1</b> - Bug fix<br>
 <b>1.3.0</b> - Merge with changes from Android 5.1 and some major bug fixes<br>
 <b>1.2.0 - 1.2.2</b> - Bug fix<br>
 <b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lollipop</b>
@@ -22,7 +23,7 @@ Usage
 Gradle:
 ```
 dependencies {
-    compile "com.github.andkulikov:transitions-everywhere:1.3.0"
+    compile "com.github.andkulikov:transitions-everywhere:1.3.1"
 }
 ```
 Use transition classes from package `android.transitions.everywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
