@@ -1070,7 +1070,7 @@ public abstract class Transition implements Cloneable {
      */
     public Transition removeTarget(int targetId) {
         if (targetId > 0) {
-            mTargetIds.remove(targetId);
+            mTargetIds.remove((Integer) targetId);
         }
         return this;
     }
