@@ -36,7 +36,6 @@ public final class Scene {
     private ViewGroup mSceneRoot;
     private View mLayout; // alternative to layoutId
     Runnable mEnterAction, mExitAction;
-    private static ThreadLocal<SparseArray<Scene>> sScenes = new ThreadLocal<SparseArray<Scene>>();
 
     /**
      * Returns a Scene described by the resource file associated with the given
@@ -53,14 +52,13 @@ public final class Scene {
      * @return
      */
     public static Scene getSceneForLayout(ViewGroup sceneRoot, int layoutId, Context context) {
-        SparseArray<Scene> scenes = sScenes.get();
+        SparseArray<Scene> scenes = (SparseArray<Scene>) sceneRoot.getTag(R.id.scene_layoutid_cache);
         if (scenes == null) {
             scenes = new SparseArray<Scene>();
-            sScenes.set(scenes);
+            sceneRoot.setTag(R.id.scene_layoutid_cache, scenes);
         }
         Scene scene = scenes.get(layoutId);
         if (scene != null) {
-            scene.mSceneRoot = sceneRoot; //Fix when you recreate the same layout on configuration change
             return scene;
         } else {
             scene = new Scene(sceneRoot, layoutId, context);
