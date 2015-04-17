@@ -1,5 +1,6 @@
 package android.transitions.everywhere.utils;
 
+import android.animation.LayoutTransition;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,8 @@ import java.util.List;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 class ViewOverlayPreJellybean extends FrameLayout {
+
+    private static final Field FIELD_VIEW_PARENT = ReflectionUtils.getPrivateField(View.class, "mParent");
 
     private List<Drawable> mDrawableOverlays;
 
@@ -41,8 +45,28 @@ class ViewOverlayPreJellybean extends FrameLayout {
         mDrawableOverlays = new ArrayList<Drawable>();
     }
 
-    public void addView(View view, int left, int top) {
-        addView(view, initParams(view, left, top));
+    public void addView(View child, int left, int top) {
+        if (child.getParent() instanceof ViewGroup) {
+            ViewGroup parent = (ViewGroup) child.getParent();
+            LayoutTransition layoutTransition = null;
+            if (parent.getLayoutTransition() != null) {
+                layoutTransition = parent.getLayoutTransition();
+                parent.setLayoutTransition(null);
+            }
+            parent.removeView(child);
+            if (layoutTransition != null) {
+                parent.setLayoutTransition(layoutTransition);
+            }
+
+            // fail-safe if view is still attached for any reason
+            if (child.getParent() != null && FIELD_VIEW_PARENT != null) {
+                ReflectionUtils.setFieldValue(child, FIELD_VIEW_PARENT, null);
+            }
+            if (child.getParent() != null) {
+                return;
+            }
+        }
+        addView(child, initParams(child, left, top));
         invalidate();
     }
 
