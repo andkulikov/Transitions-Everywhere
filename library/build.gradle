@@ -3,8 +3,8 @@ apply plugin: 'com.android.library'
 // Version Information
 def versionMajor = 1
 def versionMinor = 3
-def versionPatch = 1
-def versionBuild = 7
+def versionPatch = 2
+def versionBuild = 8
 
 android {
     compileSdkVersion 22
