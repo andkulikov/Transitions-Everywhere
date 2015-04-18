@@ -138,13 +138,24 @@ public class TransitionSet extends Transition {
      */
     public TransitionSet addTransition(Transition transition) {
         if (transition != null) {
-            mTransitions.add(transition);
-            transition.mParent = this;
+            addTransitionInternal(transition);
             if (mDuration >= 0) {
                 transition.setDuration(mDuration);
             }
+            if (mInterpolator != null) {
+                transition.setInterpolator(mInterpolator);
+            }
         }
         return this;
+    }
+
+    /**
+     * Adds child transition to array
+     * @param transition A child transition to be added.
+     */
+    private void addTransitionInternal(Transition transition) {
+        mTransitions.add(transition);
+        transition.mParent = this;
     }
 
     /**
@@ -198,7 +209,14 @@ public class TransitionSet extends Transition {
 
     @Override
     public TransitionSet setInterpolator(TimeInterpolator interpolator) {
-        return (TransitionSet) super.setInterpolator(interpolator);
+        super.setInterpolator(interpolator);
+        if (mInterpolator != null && mTransitions != null) {
+            int numTransitions = mTransitions.size();
+            for (int i = 0; i < numTransitions; ++i) {
+                mTransitions.get(i).setInterpolator(mInterpolator);
+            }
+        }
+        return this;
     }
 
     @Override
@@ -560,10 +578,7 @@ public class TransitionSet extends Transition {
         clone.mTransitions = new ArrayList<Transition>();
         int numTransitions = mTransitions.size();
         for (int i = 0; i < numTransitions; ++i) {
-            Transition transition = (Transition) mTransitions.get(i).clone();
-            long duration = transition.getDuration();
-            clone.addTransition(transition);
-            transition.setDuration(duration);
+            clone.addTransitionInternal(mTransitions.get(i).clone());
         }
         return clone;
     }
