@@ -36,14 +36,15 @@ public class ViewGroupUtils {
         private static Field sFieldLayoutSuppressed;
 
         @Override
-        public void suppressLayout(ViewGroup group, boolean suppress) {
+        public void suppressLayout(final ViewGroup group, boolean suppress) {
             if (suppress) {
-                if (group.getLayoutTransition() != null) {
+                LayoutTransition layoutTransition = group.getLayoutTransition();
+                if (layoutTransition != null && layoutTransition != EMPTY_LAYOUT_TRANSITION) {
                     group.setTag(R.id.group_layouttransition_cache, group.getLayoutTransition());
                 }
                 group.setLayoutTransition(EMPTY_LAYOUT_TRANSITION);
             } else {
-                group.setLayoutTransition((LayoutTransition) group.getTag(R.id.group_layouttransition_cache));
+                group.setLayoutTransition(null);
                 if (sFieldLayoutSuppressed == null) {
                     sFieldLayoutSuppressed = ReflectionUtils.getPrivateField(ViewGroup.class,
                             "mLayoutSuppressed");
@@ -53,6 +54,17 @@ public class ViewGroupUtils {
                 if (!Boolean.FALSE.equals(suppressed)) {
                     ReflectionUtils.setFieldValue(group, sFieldLayoutSuppressed, false);
                     group.requestLayout();
+                }
+                final LayoutTransition layoutTransition = (LayoutTransition)
+                        group.getTag(R.id.group_layouttransition_cache);
+                if (layoutTransition != null) {
+                    group.setTag(R.id.group_layouttransition_cache, null);
+                    group.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            group.setLayoutTransition(layoutTransition);
+                        }
+                    });
                 }
             }
         }
