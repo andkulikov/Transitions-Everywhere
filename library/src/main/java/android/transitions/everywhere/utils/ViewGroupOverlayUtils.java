@@ -88,7 +88,7 @@ public class ViewGroupOverlayUtils {
 
         @Override
         public void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
-            if (screenX != 0 && screenY != 0) {
+            if (screenX != 0 || screenY != 0) {
                 int[] loc = new int[2];
                 sceneRoot.getLocationOnScreen(loc);
                 overlayView.offsetLeftAndRight((screenX - loc[0]) - overlayView.getLeft());
