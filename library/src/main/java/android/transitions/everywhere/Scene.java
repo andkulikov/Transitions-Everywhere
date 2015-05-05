@@ -118,9 +118,8 @@ public final class Scene {
     }
 
     /**
-     * @deprecated use {@link #Scene(ViewGroup, View)}.
+     * You can use {@link #Scene(ViewGroup, View)}.
      */
-    @Deprecated
     public Scene(ViewGroup sceneRoot, ViewGroup layout) {
         mSceneRoot = sceneRoot;
         mLayout = layout;
