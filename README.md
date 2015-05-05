@@ -5,12 +5,13 @@ Backport of [Transitions API from Android KitKat and Lollipop][1]. Compatible wi
 About Transitions API
 ============
 [Video - DevBytes: Android 4.4 Transitions][2]<br>
-[Sample project from Google][3] 
+[Sample project from Google][3]<br>
+[Article about transitions and library (in Russian language)][6]
 
 Changelog
 ============
-<b>1.3.1</b> - Bug fix<br>
-<b>1.3.0</b> - Merge with changes from Android 5.1 and some major bug fixes<br>
+<b>1.3.1 - 1.3.2</b> - Bug fix<br>
+<b>1.3.0</b> - Merge with changes from Android 5.1<br>
 <b>1.2.0 - 1.2.2</b> - Bug fix<br>
 <b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lollipop</b>
 
@@ -23,7 +24,7 @@ Usage
 Gradle:
 ```
 dependencies {
-    compile "com.github.andkulikov:transitions-everywhere:1.3.1"
+    compile "com.github.andkulikov:transitions-everywhere:1.3.2"
 }
 ```
 Use transition classes from package `android.transitions.everywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
@@ -61,6 +62,7 @@ Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>
 [3]: https://developer.android.com/samples/BasicTransition/index.html
 [4]: https://github.com/pardom/TransitionSupportLibrary
 [5]: https://github.com/guerwan/TransitionsBackport
+[6]: http://habrahabr.ru/post/243363/
 
 <br>
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-transitions--everywhere-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1050)
