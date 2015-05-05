@@ -17,7 +17,7 @@ public class ViewGroupOverlayUtils {
 
         void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY);
 
-        void initializeOverlay(View sceneRoot);
+        void initializeOverlay(ViewGroup sceneRoot);
 
         int[] getLocationOnScreenOfOverlayView(ViewGroup sceneRoot, View overlayView);
 
@@ -33,23 +33,29 @@ public class ViewGroupOverlayUtils {
         @Override
         public void addOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
-            viewOverlay.addView(overlayView, screenX, screenY);
+            if (viewOverlay != null) {
+                viewOverlay.addView(overlayView, screenX, screenY);
+            }
         }
 
         @Override
         public void removeOverlay(ViewGroup sceneRoot, View overlayView) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
-            viewOverlay.removeView(overlayView);
+            if (viewOverlay != null) {
+                viewOverlay.removeView(overlayView);
+            }
         }
 
         @Override
         public void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
-            viewOverlay.moveView(overlayView, screenX, screenY);
+            if (viewOverlay != null) {
+                viewOverlay.moveView(overlayView, screenX, screenY);
+            }
         }
 
         @Override
-        public void initializeOverlay(View sceneRoot) {
+        public void initializeOverlay(ViewGroup sceneRoot) {
             ViewOverlayPreJellybean.getOverlay(sceneRoot);
         }
 
@@ -97,7 +103,7 @@ public class ViewGroupOverlayUtils {
         }
 
         @Override
-        public void initializeOverlay(View sceneRoot) {
+        public void initializeOverlay(ViewGroup sceneRoot) {
             // do nothing
         }
 
@@ -152,7 +158,7 @@ public class ViewGroupOverlayUtils {
         }
     }
 
-    public static void initializeOverlay(View sceneRoot) {
+    public static void initializeOverlay(ViewGroup sceneRoot) {
         IMPL.initializeOverlay(sceneRoot);
     }
 

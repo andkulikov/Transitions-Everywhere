@@ -117,31 +117,28 @@ class ViewOverlayPreJellybean extends FrameLayout {
         }
     }
 
-    public static ViewOverlayPreJellybean getOverlay(View sceneRoot) {
-        View group = sceneRoot;
-        while (group != null && !(group.getId() == android.R.id.content)) {
-            group = (View) group.getParent();
-        }
-
-        ViewOverlayPreJellybean viewOverlayPreJellybean = null;
-        if (group != null) {
-            for (int i = 0; i < ((FrameLayout) group).getChildCount(); i++) {
-                View childAt = ((FrameLayout) group).getChildAt(i);
-                if (childAt instanceof ViewOverlayPreJellybean) {
-                    viewOverlayPreJellybean = (ViewOverlayPreJellybean) childAt;
-                    break;
+    public static ViewOverlayPreJellybean getOverlay(ViewGroup sceneRoot) {
+        if (sceneRoot != null) {
+            ViewGroup group = sceneRoot;
+            while (group.getId() != android.R.id.content && group.getParent() != null &&
+                    group.getParent() instanceof ViewGroup) {
+                group = (ViewGroup) group.getParent();
+            }
+            for (int i = 0; i < group.getChildCount(); i++) {
+                View child = group.getChildAt(i);
+                if (child instanceof ViewOverlayPreJellybean) {
+                    return (ViewOverlayPreJellybean) child;
                 }
             }
-
-            if (viewOverlayPreJellybean == null) {
-                viewOverlayPreJellybean = new ViewOverlayPreJellybean(sceneRoot.getContext());
-                final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                params.gravity = Gravity.FILL;
-                ((FrameLayout) group).addView(viewOverlayPreJellybean, params);
-            }
+            final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            params.gravity = Gravity.FILL;
+            ViewOverlayPreJellybean viewOverlay = new ViewOverlayPreJellybean(sceneRoot.getContext());
+            group.addView(viewOverlay, params);
+            return viewOverlay;
+        } else {
+            return null;
         }
-        return viewOverlayPreJellybean;
     }
 
 }
