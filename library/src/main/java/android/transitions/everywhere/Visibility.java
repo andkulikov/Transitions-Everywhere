@@ -17,11 +17,14 @@
 package android.transitions.everywhere;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.Animator.AnimatorPauseListener;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.transitions.everywhere.utils.AnimatorUtils;
 import android.transitions.everywhere.utils.ViewGroupOverlayUtils;
 import android.transitions.everywhere.utils.ViewUtils;
 import android.util.AttributeSet;
@@ -184,7 +187,7 @@ public abstract class Visibility extends Transition {
         return visibility == View.VISIBLE && parent != null;
     }
 
-    private VisibilityInfo getVisibilityChangeInfo(TransitionValues startValues,
+    private static VisibilityInfo getVisibilityChangeInfo(TransitionValues startValues,
                                                    TransitionValues endValues) {
         final VisibilityInfo visInfo = new VisibilityInfo();
         visInfo.visibilityChange = false;
@@ -290,6 +293,12 @@ public abstract class Visibility extends Transition {
             if (parentVisibilityInfo.visibilityChange) {
                 return null;
             }
+        }
+        final boolean isForcedVisibility = mForcedStartVisibility != -1 ||
+                mForcedEndVisibility != -1;
+        if (isForcedVisibility && !ViewUtils.isTransitionAlphaCompatMode()) {
+            // Make sure that we reverse the effect of onDisappear's setTransitionAlpha(0)
+            ViewUtils.setTransitionAlpha(endValues.view, 1);
         }
         return onAppear(sceneRoot, endValues.view, startValues, endValues);
     }
@@ -416,9 +425,9 @@ public abstract class Visibility extends Transition {
                 ViewGroupOverlayUtils.removeOverlay(sceneRoot, overlayView);
             } else {
                 final View finalOverlayView = overlayView;
-                animator.addListener(new AnimatorListenerAdapter() {
+                addListener(new TransitionListenerAdapter() {
                     @Override
-                    public void onAnimationEnd(Animator animation) {
+                    public void onTransitionEnd(Transition transition) {
                         ViewGroupOverlayUtils.removeOverlay(sceneRoot, finalOverlayView);
                     }
                 });
@@ -436,40 +445,11 @@ public abstract class Visibility extends Transition {
             }
             Animator animator = onDisappear(sceneRoot, viewToKeep, startValues, endValues);
             if (animator != null) {
-                final View finalViewToKeep = viewToKeep;
-                animator.addListener(new AnimatorListenerAdapter() {
-                    boolean mCanceled = false;
-
-                    @Override
-                    public void onAnimationPause(Animator animation) {
-                        if (!mCanceled && !isForcedVisibility) {
-                            finalViewToKeep.setVisibility(finalVisibility);
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationResume(Animator animation) {
-                        if (!mCanceled && !isForcedVisibility) {
-                            finalViewToKeep.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        mCanceled = true;
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        if (!mCanceled) {
-                            if (isForcedVisibility) {
-                                ViewUtils.setTransitionAlpha(finalViewToKeep, 0);
-                            } else {
-                                finalViewToKeep.setVisibility(finalVisibility);
-                            }
-                        }
-                    }
-                });
+                DisappearListener disappearListener = new DisappearListener(viewToKeep,
+                        finalVisibility, isForcedVisibility);
+                animator.addListener(disappearListener);
+                AnimatorUtils.addPauseListener(animator, disappearListener);
+                addListener(disappearListener);
             } else if (!isForcedVisibility) {
                 viewToKeep.setVisibility(originalVisibility);
             }
@@ -479,7 +459,7 @@ public abstract class Visibility extends Transition {
     }
 
     @Override
-    boolean areValuesChanged(TransitionValues oldValues, TransitionValues newValues) {
+    protected boolean areValuesChanged(TransitionValues oldValues, TransitionValues newValues) {
         if (oldValues == null && newValues == null) {
             return false;
         }
@@ -514,5 +494,91 @@ public abstract class Visibility extends Transition {
     public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues,
                                 TransitionValues endValues) {
         return null;
+    }
+
+    private static class DisappearListener extends AnimatorListenerAdapter
+            implements TransitionListener {
+        private final boolean mIsForcedVisibility;
+        private final View mView;
+        private final int mFinalVisibility;
+
+        boolean mCanceled = false;
+
+        public DisappearListener(View view, int finalVisibility, boolean isForcedVisibility) {
+            mView = view;
+            mIsForcedVisibility = isForcedVisibility;
+            mFinalVisibility = finalVisibility;
+        }
+
+        @Override
+        public void onAnimationPause(Animator animation) {
+            if (!mCanceled && !mIsForcedVisibility) {
+                mView.setVisibility(mFinalVisibility);
+            }
+        }
+
+        @Override
+        public void onAnimationResume(Animator animation) {
+            if (!mCanceled && !mIsForcedVisibility) {
+                mView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+            mCanceled = true;
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationStart(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            hideViewWhenNotCanceled();
+        }
+
+        @Override
+        public void onTransitionStart(Transition transition) {
+            // do nothing
+        }
+
+        @Override
+        public void onTransitionEnd(Transition transition) {
+            hideViewWhenNotCanceled();
+        }
+
+        @Override
+        public void onTransitionCancel(Transition transition) {
+            // do nothing
+        }
+
+        @Override
+        public void onTransitionPause(Transition transition) {
+            // do nothing
+        }
+
+        @Override
+        public void onTransitionResume(Transition transition) {
+            // do nothing
+        }
+
+        private void hideViewWhenNotCanceled() {
+            if (!mCanceled) {
+                if (mIsForcedVisibility) {
+                    if (!ViewUtils.isTransitionAlphaCompatMode()) {
+                        ViewUtils.setTransitionAlpha(mView, 0);
+                    }
+                } else {
+                    mView.setVisibility(mFinalVisibility);
+                }
+            }
+        }
     }
 }

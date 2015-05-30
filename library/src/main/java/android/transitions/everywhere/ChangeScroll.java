@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package android.transitions.everywhere.hidden;
+package android.transitions.everywhere;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.transitions.everywhere.Transition;
-import android.transitions.everywhere.TransitionUtils;
-import android.transitions.everywhere.TransitionValues;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +28,6 @@ import android.view.ViewGroup;
 /**
  * This transition captures the scroll properties of targets before and after
  * the scene change and animates any changes.
- *
- * @hide
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ChangeScroll extends Transition {

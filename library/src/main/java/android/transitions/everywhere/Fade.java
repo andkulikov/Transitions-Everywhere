@@ -109,13 +109,15 @@ public class Fade extends Visibility {
     /**
      * Utility method to handle creating and running the Animator.
      */
-    private Animator createAnimation(View view, float startAlpha, float endAlpha) {
-        float endListenerAlpha = 1f;
+    private Animator createAnimation(final View view, float startAlpha, float endAlpha) {
+        final float endListenerAlpha;
         if (ViewUtils.isTransitionAlphaCompatMode()) {
             float curAlpha = view.getAlpha();
             startAlpha = curAlpha * startAlpha;
             endAlpha = curAlpha * endAlpha;
             endListenerAlpha = curAlpha;
+        } else {
+            endListenerAlpha = 1f;
         }
         if (startAlpha == endAlpha) {
             return null;
@@ -125,8 +127,14 @@ public class Fade extends Visibility {
         if (DBG) {
             Log.d(LOG_TAG, "Created animator " + anim);
         }
-        FadeAnimatorListener listener = new FadeAnimatorListener(view, endListenerAlpha);
+        final FadeAnimatorListener listener = new FadeAnimatorListener(view, endListenerAlpha);
         anim.addListener(listener);
+        addListener(new TransitionListenerAdapter() {
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                ViewUtils.setTransitionAlpha(view, endListenerAlpha);
+            }
+        });
         AnimatorUtils.addPauseListener(anim, listener);
         return anim;
     }
@@ -151,7 +159,6 @@ public class Fade extends Visibility {
 
     private static class FadeAnimatorListener extends AnimatorListenerAdapter {
         private final View mView;
-        private boolean mCanceled = false;
         private float mPausedAlpha = -1;
         private float mEndListenerAlpha;
         private boolean mLayerTypeChanged = false;
@@ -171,18 +178,8 @@ public class Fade extends Visibility {
         }
 
         @Override
-        public void onAnimationCancel(Animator animator) {
-            mCanceled = true;
-            if (mPausedAlpha >= 0) {
-                ViewUtils.setTransitionAlpha(mView, mPausedAlpha);
-            }
-        }
-
-        @Override
         public void onAnimationEnd(Animator animator) {
-            if (!mCanceled) {
-                ViewUtils.setTransitionAlpha(mView, mEndListenerAlpha);
-            }
+            ViewUtils.setTransitionAlpha(mView, mEndListenerAlpha);
             if (mLayerTypeChanged) {
                 mView.setLayerType(View.LAYER_TYPE_NONE, null);
             }

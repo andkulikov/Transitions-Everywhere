@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
-import android.transitions.everywhere.hidden.ChangeScroll;
 import android.transitions.everywhere.hidden.Recolor;
 import android.transitions.everywhere.utils.ArrayMap;
 import android.util.AttributeSet;
@@ -223,6 +222,9 @@ public class TransitionInflater {
                             .asSubclass(expectedType);
                     if (c != null) {
                         constructor = c.getConstructor(sConstructorSignature);
+                        if (!constructor.isAccessible()) {
+                            constructor.setAccessible(true);
+                        }
                         sConstructors.put(className, constructor);
                     }
                 }

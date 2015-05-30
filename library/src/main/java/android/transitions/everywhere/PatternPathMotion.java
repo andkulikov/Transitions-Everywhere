@@ -115,7 +115,7 @@ public class PatternPathMotion extends PathMotion {
         mTempMatrix.setTranslate(-startX, -startY);
         float dx = endX - startX;
         float dy = endY - startY;
-        float distance = distance(dx, dy);
+        float distance = (float) Math.hypot(dx, dy);
         float scale = 1 / distance;
         mTempMatrix.postScale(scale, scale);
         double angle = Math.atan2(dy, dx);
@@ -126,9 +126,9 @@ public class PatternPathMotion extends PathMotion {
 
     @Override
     public Path getPath(float startX, float startY, float endX, float endY) {
-        float dx = endX - startX;
-        float dy = endY - startY;
-        float length = distance(dx, dy);
+        double dx = endX - startX;
+        double dy = endY - startY;
+        float length = (float) Math.hypot(dx, dy);
         double angle = Math.atan2(dy, dx);
 
         mTempMatrix.setScale(length, length);
@@ -139,7 +139,4 @@ public class PatternPathMotion extends PathMotion {
         return path;
     }
 
-    private static float distance(float x, float y) {
-        return (float) Math.sqrt((x * x) + (y * y));
-    }
 }

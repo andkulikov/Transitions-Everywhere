@@ -803,6 +803,9 @@ public abstract class Transition implements Cloneable {
      * views are ignored and only the ids are used).
      */
     boolean isValidTarget(View target) {
+        if (target == null) {
+            return false;
+        }
         int targetId = target.getId();
         if (mTargetIdExcludes != null && mTargetIdExcludes.contains(targetId)) {
             return false;
@@ -1641,6 +1644,7 @@ public abstract class Transition implements Cloneable {
         for (int i = 0; i < count; i++) {
             TransitionValues values = lookIn.get(i);
             if (values == null) {
+                // Null values are always added to the end of the list, so we know to stop now.
                 return null;
             }
             if (values.view == view) {
@@ -1744,6 +1748,9 @@ public abstract class Transition implements Cloneable {
                     View oldView = oldInfo.view;
                     TransitionValues startValues = getTransitionValues(oldView, true);
                     TransitionValues endValues = getMatchedTransitionValues(oldView, true);
+                    if (startValues == null && endValues == null) {
+                        endValues = mEndValues.viewValues.get(oldView);
+                    }
                     boolean cancel = (startValues != null || endValues != null) &&
                             oldInfo.transition.areValuesChanged(oldValues, endValues);
                     if (cancel) {
@@ -1767,7 +1774,17 @@ public abstract class Transition implements Cloneable {
         runAnimators();
     }
 
-    boolean areValuesChanged(TransitionValues oldValues, TransitionValues newValues) {
+    /**
+     * Returns whether transition values have changed between the start scene and the end scene
+     * (thus determining whether animation is required). The default implementation compares the
+     * property values returned from {@link #getTransitionProperties()}, or all property values if
+     * {@code getTransitionProperties()} returns null. Subclasses may override this method to
+     * provide logic more specific to their transition implementation.
+     *
+     * @param oldValues the first set of values, may be {@code null}
+     * @param newValues the second set of values, may be {@code null}
+     */
+    protected boolean areValuesChanged(TransitionValues oldValues, TransitionValues newValues) {
         boolean valuesChanged = false;
         // if oldValues null, then transition didn't care to stash values,
         // and won't get canceled
