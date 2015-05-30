@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.andkulikov.transitions.everywhere"
-    android:versionCode="1"
-    android:versionName="1.0">
-
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="21" />
+    package="com.github.andkulikov.transitions.everywhere">
 
     <application
         android:icon="@drawable/ic_launcher"

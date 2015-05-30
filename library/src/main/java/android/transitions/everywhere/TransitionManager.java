@@ -221,6 +221,7 @@ public class TransitionManager {
         return runningTransitions.get();
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     private static void sceneChangeRunTransition(final ViewGroup sceneRoot,
                                                  final Transition transition) {
         if (transition != null && sceneRoot != null) {

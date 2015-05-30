@@ -734,7 +734,7 @@ public abstract class Transition implements Cloneable {
                 Animator animator = createAnimator(sceneRoot, start, end);
                 if (animator != null) {
                     // Save animation info for future cancellation purposes
-                    View view = null;
+                    View view;
                     TransitionValues infoValues = null;
                     if (end != null) {
                         view = end.view;
@@ -755,7 +755,7 @@ public abstract class Transition implements Cloneable {
                                 AnimationInfo info = runningAnimators.get(anim);
                                 if (info.values != null && info.view == view &&
                                         ((info.name == null && getName() == null) ||
-                                                info.name.equals(getName()))) {
+                                                (info.name != null && info.name.equals(getName())))) {
                                     if (info.values.equals(infoValues)) {
                                         // Favor the old animator
                                         animator = null;
@@ -765,7 +765,7 @@ public abstract class Transition implements Cloneable {
                             }
                         }
                     } else {
-                        view = (start != null) ? start.view : null;
+                        view = start.view;
                     }
                     if (animator != null) {
                         if (mPropagation != null) {
@@ -813,7 +813,7 @@ public abstract class Transition implements Cloneable {
         if (mTargetExcludes != null && mTargetExcludes.contains(target)) {
             return false;
         }
-        if (mTargetTypeExcludes != null && target != null) {
+        if (mTargetTypeExcludes != null) {
             int numTypes = mTargetTypeExcludes.size();
             for (int i = 0; i < numTypes; ++i) {
                 Class type = mTargetTypeExcludes.get(i);
@@ -823,7 +823,7 @@ public abstract class Transition implements Cloneable {
             }
         }
         final String transitionName = ViewUtils.getTransitionName(target);
-        if (mTargetNameExcludes != null && target != null && transitionName != null) {
+        if (mTargetNameExcludes != null && transitionName != null) {
             if (mTargetNameExcludes.contains(transitionName)) {
                 return false;
             }
@@ -1559,7 +1559,7 @@ public abstract class Transition implements Cloneable {
         if (mTargetExcludes != null && mTargetExcludes.contains(view)) {
             return;
         }
-        if (mTargetTypeExcludes != null && view != null) {
+        if (mTargetTypeExcludes != null) {
             int numTypes = mTargetTypeExcludes.size();
             for (int i = 0; i < numTypes; ++i) {
                 if (mTargetTypeExcludes.get(i).isInstance(view)) {
@@ -2226,7 +2226,7 @@ public abstract class Transition implements Cloneable {
 
     String toString(String indent) {
         String result = indent + ((Object) this).getClass().getSimpleName() + "@" +
-                Integer.toHexString(((Object) this).hashCode()) + ": ";
+                Integer.toHexString(this.hashCode()) + ": ";
         if (mDuration != -1) {
             result += "dur(" + mDuration + ") ";
         }
@@ -2263,7 +2263,7 @@ public abstract class Transition implements Cloneable {
      * A transition listener receives notifications from a transition.
      * Notifications indicate transition lifecycle events.
      */
-    public static interface TransitionListener {
+    public interface TransitionListener {
         /**
          * Notification about the start of the transition.
          *

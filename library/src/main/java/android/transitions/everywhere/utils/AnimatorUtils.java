@@ -132,7 +132,7 @@ public class AnimatorUtils {
                 pvh[pvhIndex++] = PropertyValuesHolder.ofFloat(xPropertyName, startLeft, endLeft);
             }
             if (startTop != endTop) {
-                pvh[pvhIndex++] = PropertyValuesHolder.ofFloat(yPropertyName, startTop, endTop);
+                pvh[pvhIndex] = PropertyValuesHolder.ofFloat(yPropertyName, startTop, endTop);
             }
             return ObjectAnimator.ofPropertyValuesHolder(target, pvh);
         }
