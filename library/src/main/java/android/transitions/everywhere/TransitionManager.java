@@ -16,6 +16,7 @@
 
 package android.transitions.everywhere;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.transitions.everywhere.utils.ArrayMap;
@@ -225,51 +226,96 @@ public class TransitionManager {
         if (transition != null && sceneRoot != null) {
             if (isTransitionsAllowed()) {
                 ViewGroupOverlayUtils.initializeOverlay(sceneRoot);
-                final ViewTreeObserver observer = sceneRoot.getViewTreeObserver();
-                final ViewTreeObserver.OnPreDrawListener listener =
-                        new ViewTreeObserver.OnPreDrawListener() {
-                            public boolean onPreDraw() {
-                                observer.removeOnPreDrawListener(this);
-
-                                // Don't start the transition if it's no longer pending.
-                                if (!sPendingTransitions.remove(sceneRoot)) {
-                                    return true;
-                                }
-                                // Add to running list, handle end to remove it
-                                final ArrayMap<ViewGroup, ArrayList<Transition>> runningTransitions =
-                                        getRunningTransitions();
-                                ArrayList<Transition> currentTransitions = runningTransitions.get(sceneRoot);
-                                ArrayList<Transition> previousRunningTransitions = null;
-                                if (currentTransitions == null) {
-                                    currentTransitions = new ArrayList<Transition>();
-                                    runningTransitions.put(sceneRoot, currentTransitions);
-                                } else if (currentTransitions.size() > 0) {
-                                    previousRunningTransitions = new ArrayList<Transition>(currentTransitions);
-                                }
-                                currentTransitions.add(transition);
-                                transition.addListener(new Transition.TransitionListenerAdapter() {
-                                    @Override
-                                    public void onTransitionEnd(Transition transition) {
-                                        ArrayList<Transition> currentTransitions =
-                                                runningTransitions.get(sceneRoot);
-                                        currentTransitions.remove(transition);
-                                    }
-                                });
-                                transition.captureValues(sceneRoot, false);
-                                if (previousRunningTransitions != null) {
-                                    for (Transition runningTransition : previousRunningTransitions) {
-                                        runningTransition.resume(sceneRoot);
-                                    }
-                                }
-                                transition.playTransition(sceneRoot);
-
-                                return true;
-                            }
-                        };
-                observer.addOnPreDrawListener(listener);
+                MultiListener listener = new MultiListener(transition, sceneRoot);
+                sceneRoot.addOnAttachStateChangeListener(listener);
+                sceneRoot.getViewTreeObserver().addOnPreDrawListener(listener);
             } else {
                 sPendingTransitions.remove(sceneRoot);
             }
+        }
+    }
+
+    /**
+     * This private utility class is used to listen for both OnPreDraw and
+     * OnAttachStateChange events. OnPreDraw events are the main ones we care
+     * about since that's what triggers the transition to take place.
+     * OnAttachStateChange events are also important in case the view is removed
+     * from the hierarchy before the OnPreDraw event takes place; it's used to
+     * clean up things since the OnPreDraw listener didn't get called in time.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+    private static class MultiListener implements ViewTreeObserver.OnPreDrawListener,
+            View.OnAttachStateChangeListener {
+
+        Transition mTransition;
+        ViewGroup mSceneRoot;
+
+        MultiListener(Transition transition, ViewGroup sceneRoot) {
+            mTransition = transition;
+            mSceneRoot = sceneRoot;
+        }
+
+        private void removeListeners() {
+            mSceneRoot.getViewTreeObserver().removeOnPreDrawListener(this);
+            mSceneRoot.removeOnAttachStateChangeListener(this);
+        }
+
+        @Override
+        public void onViewAttachedToWindow(View v) {
+        }
+
+        @Override
+        public void onViewDetachedFromWindow(View v) {
+            removeListeners();
+
+            sPendingTransitions.remove(mSceneRoot);
+            ArrayList<Transition> runningTransitions = getRunningTransitions().get(mSceneRoot);
+            if (runningTransitions != null && runningTransitions.size() > 0) {
+                for (Transition runningTransition : runningTransitions) {
+                    runningTransition.resume(mSceneRoot);
+                }
+            }
+            mTransition.clearValues(true);
+        }
+
+        @Override
+        public boolean onPreDraw() {
+            removeListeners();
+
+            // Don't start the transition if it's no longer pending.
+            if (!sPendingTransitions.remove(mSceneRoot)) {
+                return true;
+            }
+
+            // Add to running list, handle end to remove it
+            final ArrayMap<ViewGroup, ArrayList<Transition>> runningTransitions =
+                    getRunningTransitions();
+            ArrayList<Transition> currentTransitions = runningTransitions.get(mSceneRoot);
+            ArrayList<Transition> previousRunningTransitions = null;
+            if (currentTransitions == null) {
+                currentTransitions = new ArrayList<Transition>();
+                runningTransitions.put(mSceneRoot, currentTransitions);
+            } else if (currentTransitions.size() > 0) {
+                previousRunningTransitions = new ArrayList<Transition>(currentTransitions);
+            }
+            currentTransitions.add(mTransition);
+            mTransition.addListener(new Transition.TransitionListenerAdapter() {
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    ArrayList<Transition> currentTransitions =
+                            runningTransitions.get(mSceneRoot);
+                    currentTransitions.remove(transition);
+                }
+            });
+            mTransition.captureValues(mSceneRoot, false);
+            if (previousRunningTransitions != null) {
+                for (Transition runningTransition : previousRunningTransitions) {
+                    runningTransition.resume(mSceneRoot);
+                }
+            }
+            mTransition.playTransition(mSceneRoot);
+
+            return true;
         }
     }
 
@@ -411,10 +457,10 @@ public class TransitionManager {
 
     /**
      * Returns is transition animations enabled. Animations was disabled
-     * for Android versions < 3.0
+     * for Android versions < 3.1
      */
     public static boolean isTransitionsAllowed() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1;
     }
 
     /**
