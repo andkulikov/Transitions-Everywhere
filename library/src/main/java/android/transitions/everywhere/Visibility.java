@@ -425,9 +425,9 @@ public abstract class Visibility extends Transition {
                 ViewGroupOverlayUtils.removeOverlay(sceneRoot, overlayView);
             } else {
                 final View finalOverlayView = overlayView;
-                addListener(new TransitionListenerAdapter() {
+                animator.addListener(new AnimatorListenerAdapter() {
                     @Override
-                    public void onTransitionEnd(Transition transition) {
+                    public void onAnimationEnd(Animator animation) {
                         ViewGroupOverlayUtils.removeOverlay(sceneRoot, finalOverlayView);
                     }
                 });
