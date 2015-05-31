@@ -48,6 +48,13 @@ Transition names of views
 ============
 Android 5.0 adds new method `setTransitionName()` for `View` class. With this library you should call `TransitionManager.setTransitionName(View v, String transitionName)` method instead to provide backward compatibility.
 
+ProGuard configs
+============
+```
+-keep class android.transitions.everywhere.** { *; }
+-keep class android.transitions.everywhere.**.** { *; }
+```
+
 About library
 ============
 Transition animations backported to <b>Android 3.0</b>.<br>
