@@ -10,6 +10,7 @@ About Transitions API
 
 Changelog
 ============
+<b>1.4.0</b> - Merge with Android M Preview sources<br>
 <b>1.3.1 - 1.3.2</b> - Bug fix<br>
 <b>1.3.0</b> - Merge with changes from Android 5.1<br>
 <b>1.2.0 - 1.2.2</b> - Bug fix<br>
@@ -24,7 +25,7 @@ Usage
 Gradle:
 ```
 dependencies {
-    compile "com.github.andkulikov:transitions-everywhere:1.3.2"
+    compile "com.github.andkulikov:transitions-everywhere:1.4.0"
 }
 ```
 Use transition classes from package `android.transitions.everywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
@@ -57,10 +58,10 @@ ProGuard configs
 
 About library
 ============
-Transition animations backported to <b>Android 3.0</b>.<br>
+Transition animations backported to <b>Android 3.1</b>.<br>
 For Android ver. <b>>= 2.2</b> and < <b>3.0</b> scene to scene (layout to layout) changes is executed by the same API  but without animations.
 
-<b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find it in package  `android.transitions.everywhere.hidden`. But i don't recommend to use them because they can work unstable.
+<b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find it in package  `android.transitions.everywhere.hidden`.
 
 Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>  
 
