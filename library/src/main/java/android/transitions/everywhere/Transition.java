@@ -197,7 +197,7 @@ public abstract class Transition implements Cloneable {
     ArrayList<TransitionValues> mEndValuesList; // only valid after playTransitions starts
 
     // Per-animator information used for later canceling when future transitions overlap
-    private static ThreadLocal<ArrayMap<Animator, AnimationInfo>> sRunningAnimators =
+    private static final ThreadLocal<ArrayMap<Animator, AnimationInfo>> sRunningAnimators =
             new ThreadLocal<ArrayMap<Animator, AnimationInfo>>();
 
     // Scene Root is set at createAnimator() time in the cloned Transition
@@ -749,17 +749,19 @@ public abstract class Transition implements Cloneable {
                                             newValues.values.get(properties[j]));
                                 }
                             }
-                            int numExistingAnims = runningAnimators.size();
-                            for (int j = 0; j < numExistingAnims; ++j) {
-                                Animator anim = runningAnimators.keyAt(j);
-                                AnimationInfo info = runningAnimators.get(anim);
-                                if (info.values != null && info.view == view &&
-                                        ((info.name == null && getName() == null) ||
-                                                (info.name != null && info.name.equals(getName())))) {
-                                    if (info.values.equals(infoValues)) {
-                                        // Favor the old animator
-                                        animator = null;
-                                        break;
+                            synchronized (sRunningAnimators) {
+                                int numExistingAnims = runningAnimators.size();
+                                for (int j = 0; j < numExistingAnims; ++j) {
+                                    Animator anim = runningAnimators.keyAt(j);
+                                    AnimationInfo info = runningAnimators.get(anim);
+                                    if (info.values != null && info.view == view &&
+                                            ((info.name == null && getName() == null) ||
+                                                    (info.name != null && info.name.equals(getName())))) {
+                                        if (info.values.equals(infoValues)) {
+                                            // Favor the old animator
+                                            animator = null;
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -1669,15 +1671,17 @@ public abstract class Transition implements Cloneable {
      */
     public void pause(View sceneRoot) {
         if (!mEnded) {
-            ArrayMap<Animator, AnimationInfo> runningAnimators = getRunningAnimators();
-            int numOldAnims = runningAnimators.size();
-            if (sceneRoot != null) {
-                Object windowId = ViewUtils.getWindowId(sceneRoot);
-                for (int i = numOldAnims - 1; i >= 0; i--) {
-                    AnimationInfo info = runningAnimators.valueAt(i);
-                    if (info.view != null && windowId != null && Objects.equal(windowId, info.windowId)) {
-                        Animator anim = runningAnimators.keyAt(i);
-                        AnimatorUtils.pause(anim);
+            synchronized (sRunningAnimators) {
+                ArrayMap<Animator, AnimationInfo> runningAnimators = getRunningAnimators();
+                int numOldAnims = runningAnimators.size();
+                if (sceneRoot != null) {
+                    Object windowId = ViewUtils.getWindowId(sceneRoot);
+                    for (int i = numOldAnims - 1; i >= 0; i--) {
+                        AnimationInfo info = runningAnimators.valueAt(i);
+                        if (info.view != null && windowId != null && Objects.equal(windowId, info.windowId)) {
+                            Animator anim = runningAnimators.keyAt(i);
+                            AnimatorUtils.pause(anim);
+                        }
                     }
                 }
             }
@@ -1737,33 +1741,35 @@ public abstract class Transition implements Cloneable {
         matchStartAndEnd(mStartValues, mEndValues);
 
         ArrayMap<Animator, AnimationInfo> runningAnimators = getRunningAnimators();
-        int numOldAnims = runningAnimators.size();
-        Object windowId = ViewUtils.getWindowId(sceneRoot);
-        for (int i = numOldAnims - 1; i >= 0; i--) {
-            Animator anim = runningAnimators.keyAt(i);
-            if (anim != null) {
-                AnimationInfo oldInfo = runningAnimators.get(anim);
-                if (oldInfo != null && oldInfo.view != null && oldInfo.windowId == windowId) {
-                    TransitionValues oldValues = oldInfo.values;
-                    View oldView = oldInfo.view;
-                    TransitionValues startValues = getTransitionValues(oldView, true);
-                    TransitionValues endValues = getMatchedTransitionValues(oldView, true);
-                    if (startValues == null && endValues == null) {
-                        endValues = mEndValues.viewValues.get(oldView);
-                    }
-                    boolean cancel = (startValues != null || endValues != null) &&
-                            oldInfo.transition.areValuesChanged(oldValues, endValues);
-                    if (cancel) {
-                        if (anim.isRunning() || AnimatorUtils.isAnimatorStarted(anim)) {
-                            if (DBG) {
-                                Log.d(LOG_TAG, "Canceling anim " + anim);
+        synchronized (sRunningAnimators) {
+            int numOldAnims = runningAnimators.size();
+            Object windowId = ViewUtils.getWindowId(sceneRoot);
+            for (int i = numOldAnims - 1; i >= 0; i--) {
+                Animator anim = runningAnimators.keyAt(i);
+                if (anim != null) {
+                    AnimationInfo oldInfo = runningAnimators.get(anim);
+                    if (oldInfo != null && oldInfo.view != null && oldInfo.windowId == windowId) {
+                        TransitionValues oldValues = oldInfo.values;
+                        View oldView = oldInfo.view;
+                        TransitionValues startValues = getTransitionValues(oldView, true);
+                        TransitionValues endValues = getMatchedTransitionValues(oldView, true);
+                        if (startValues == null && endValues == null) {
+                            endValues = mEndValues.viewValues.get(oldView);
+                        }
+                        boolean cancel = (startValues != null || endValues != null) &&
+                                oldInfo.transition.areValuesChanged(oldValues, endValues);
+                        if (cancel) {
+                            if (anim.isRunning() || AnimatorUtils.isAnimatorStarted(anim)) {
+                                if (DBG) {
+                                    Log.d(LOG_TAG, "Canceling anim " + anim);
+                                }
+                                anim.cancel();
+                            } else {
+                                if (DBG) {
+                                    Log.d(LOG_TAG, "removing anim from info list: " + anim);
+                                }
+                                runningAnimators.remove(anim);
                             }
-                            anim.cancel();
-                        } else {
-                            if (DBG) {
-                                Log.d(LOG_TAG, "removing anim from info list: " + anim);
-                            }
-                            runningAnimators.remove(anim);
                         }
                     }
                 }
