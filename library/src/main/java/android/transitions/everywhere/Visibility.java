@@ -17,8 +17,6 @@
 package android.transitions.everywhere;
 
 import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
-import android.animation.Animator.AnimatorPauseListener;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -49,7 +47,7 @@ public abstract class Visibility extends Transition {
 
     static final String PROPNAME_VISIBILITY = "android:visibility:visibility";
     private static final String PROPNAME_PARENT = "android:visibility:parent";
-    private static final String PROPNAME_SCREEN_LOCATION = "android:visibility:screenLocation";
+    protected static final String PROPNAME_SCREEN_LOCATION = "android:visibility:screenLocation";
 
     /**
      * Mode used in {@link #setMode(int)} to make the transition

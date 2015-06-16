@@ -40,14 +40,13 @@ import android.view.animation.DecelerateInterpolator;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Slide extends Visibility {
-    private static final String TAG = "Slide";
-    private static final TimeInterpolator sDecelerate = new DecelerateInterpolator();
-    private static final TimeInterpolator sAccelerate = new AccelerateInterpolator();
-    private static final String PROPNAME_SCREEN_POSITION = "android:slide:screenPosition";
-    private CalculateSlide mSlideCalculator = sCalculateBottom;
+
+    protected static final TimeInterpolator sDecelerate = new DecelerateInterpolator();
+    protected static final TimeInterpolator sAccelerate = new AccelerateInterpolator();
+    protected CalculateSlide mSlideCalculator = sCalculateBottom;
     private int mSlideEdge = Gravity.BOTTOM;
 
-    private interface CalculateSlide {
+    protected interface CalculateSlide {
 
         /** Returns the translation value for view when it goes out of the scene */
         float getGoneX(ViewGroup sceneRoot, View view);
@@ -56,7 +55,7 @@ public class Slide extends Visibility {
         float getGoneY(ViewGroup sceneRoot, View view);
     }
 
-    private static abstract class CalculateSlideHorizontal implements CalculateSlide {
+    protected static abstract class CalculateSlideHorizontal implements CalculateSlide {
 
         @Override
         public float getGoneY(ViewGroup sceneRoot, View view) {
@@ -64,7 +63,7 @@ public class Slide extends Visibility {
         }
     }
 
-    private static abstract class CalculateSlideVertical implements CalculateSlide {
+    protected static abstract class CalculateSlideVertical implements CalculateSlide {
 
         @Override
         public float getGoneX(ViewGroup sceneRoot, View view) {
@@ -151,25 +150,6 @@ public class Slide extends Visibility {
         setSlideEdge(edge);
     }
 
-    private void captureValues(TransitionValues transitionValues) {
-        View view = transitionValues.view;
-        int[] position = new int[2];
-        view.getLocationOnScreen(position);
-        transitionValues.values.put(PROPNAME_SCREEN_POSITION, position);
-    }
-
-    @Override
-    public void captureStartValues(TransitionValues transitionValues) {
-        super.captureStartValues(transitionValues);
-        captureValues(transitionValues);
-    }
-
-    @Override
-    public void captureEndValues(TransitionValues transitionValues) {
-        super.captureEndValues(transitionValues);
-        captureValues(transitionValues);
-    }
-
     /**
      * Change the edge that Views appear and disappear from.
      *
@@ -226,7 +206,7 @@ public class Slide extends Visibility {
         if (endValues == null) {
             return null;
         }
-        int[] position = (int[]) endValues.values.get(PROPNAME_SCREEN_POSITION);
+        int[] position = (int[]) endValues.values.get(PROPNAME_SCREEN_LOCATION);
         float endX = view.getTranslationX();
         float endY = view.getTranslationY();
         float startX = mSlideCalculator.getGoneX(sceneRoot, view);
@@ -242,7 +222,7 @@ public class Slide extends Visibility {
         if (startValues == null) {
             return null;
         }
-        int[] position = (int[]) startValues.values.get(PROPNAME_SCREEN_POSITION);
+        int[] position = (int[]) startValues.values.get(PROPNAME_SCREEN_LOCATION);
         float startX = view.getTranslationX();
         float startY = view.getTranslationY();
         float endX = mSlideCalculator.getGoneX(sceneRoot, view);
