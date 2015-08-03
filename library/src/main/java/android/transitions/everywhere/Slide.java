@@ -213,7 +213,7 @@ public class Slide extends Visibility {
         float startY = mSlideCalculator.getGoneY(sceneRoot, view);
         return TranslationAnimationCreator
                 .createAnimation(view, endValues, position[0], position[1],
-                        startX, startY, endX, endY, sDecelerate);
+                        startX, startY, endX, endY, sDecelerate, this);
     }
 
     @Override
@@ -229,6 +229,6 @@ public class Slide extends Visibility {
         float endY = mSlideCalculator.getGoneY(sceneRoot, view);
         return TranslationAnimationCreator
                 .createAnimation(view, startValues, position[0], position[1],
-                        startX, startY, endX, endY, sAccelerate);
+                        startX, startY, endX, endY, sAccelerate, this);
     }
 }

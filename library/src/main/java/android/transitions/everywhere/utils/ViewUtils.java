@@ -9,6 +9,8 @@ import android.transitions.everywhere.R;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Field;
+
 @TargetApi(VERSION_CODES.HONEYCOMB)
 public class ViewUtils {
     interface ViewUtilsImpl {
@@ -51,9 +53,17 @@ public class ViewUtils {
         void setHasTransientState(View view, boolean hasTransientState);
 
         boolean hasTransientState(View view);
+
+        void setTransitionVisibility(View v, int visibility);
     }
 
     static class BaseViewUtilsImpl implements ViewUtilsImpl {
+
+        private static final Field FIELD_VIEW_FLAGS =
+                ReflectionUtils.getPrivateField(View.class, "mViewFlags");
+
+        private static final int VIEW_VISIBILITY_MASK = 0x0000000C;
+
         @Override
         public float getTransitionAlpha(View v) {
             return v.getAlpha();
@@ -153,6 +163,13 @@ public class ViewUtils {
         @Override
         public boolean hasTransientState(View view) {
             return false;
+        }
+
+        @Override
+        public void setTransitionVisibility(View v, int visibility) {
+            int value = (Integer) ReflectionUtils.getFieldValue(v, 0, FIELD_VIEW_FLAGS);
+            value = (value & ~VIEW_VISIBILITY_MASK) | visibility;
+            ReflectionUtils.setFieldValue(v, FIELD_VIEW_FLAGS, value);
         }
     }
 
@@ -292,5 +309,18 @@ public class ViewUtils {
 
     public static void setHasTransientState(View view, boolean hasTransientState) {
         IMPL.setHasTransientState(view, hasTransientState);
+    }
+
+    /**
+     * Change the visibility of the View without triggering any other changes. This is
+     * important for transitions, where visibility changes should not adjust focus or
+     * trigger a new layout. This is only used when the visibility has already been changed
+     * and we need a transient value during an animation. When the animation completes,
+     * the original visibility value is always restored.
+     *
+     * @param visibility One of View.VISIBLE, View.INVISIBLE, or View.GONE.
+     */
+    public static void setTransitionVisibility(View v, int visibility) {
+        IMPL.setTransitionVisibility(v, visibility);
     }
 }

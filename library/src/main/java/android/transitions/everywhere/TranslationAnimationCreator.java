@@ -49,7 +49,8 @@ public class TranslationAnimationCreator {
      * a previous interruption, in which case it moves from the current position to (endX, endY).
      */
     public static Animator createAnimation(View view, TransitionValues values, int viewPosX, int viewPosY,
-                                    float startX, float startY, float endX, float endY, TimeInterpolator interpolator) {
+                                    float startX, float startY, float endX, float endY, TimeInterpolator interpolator,
+                                    Transition transition) {
         float terminalX = view.getTranslationX();
         float terminalY = view.getTranslationY();
         int[] startPosition = (int[]) values.view.getTag(R.id.transitionPosition);
@@ -69,6 +70,7 @@ public class TranslationAnimationCreator {
         if (anim != null) {
             TransitionPositionListener listener = new TransitionPositionListener(view, values.view,
                     startPosX, startPosY, terminalX, terminalY);
+            transition.addListener(listener);
             anim.addListener(listener);
             AnimatorUtils.addPauseListener(anim, listener);
             anim.setInterpolator(interpolator);
@@ -76,7 +78,8 @@ public class TranslationAnimationCreator {
         return anim;
     }
 
-    private static class TransitionPositionListener extends AnimatorListenerAdapter {
+    private static class TransitionPositionListener extends AnimatorListenerAdapter implements
+            Transition.TransitionListener {
 
         private final View mViewInHierarchy;
         private final View mMovingView;
@@ -114,8 +117,6 @@ public class TranslationAnimationCreator {
 
         @Override
         public void onAnimationEnd(Animator animator) {
-            mMovingView.setTranslationX(mTerminalX);
-            mMovingView.setTranslationY(mTerminalY);
         }
 
         @Override
@@ -130,6 +131,28 @@ public class TranslationAnimationCreator {
         public void onAnimationResume(Animator animator) {
             mMovingView.setTranslationX(mPausedX);
             mMovingView.setTranslationY(mPausedY);
+        }
+
+        @Override
+        public void onTransitionStart(Transition transition) {
+        }
+
+        @Override
+        public void onTransitionEnd(Transition transition) {
+            mMovingView.setTranslationX(mTerminalX);
+            mMovingView.setTranslationY(mTerminalY);
+        }
+
+        @Override
+        public void onTransitionCancel(Transition transition) {
+        }
+
+        @Override
+        public void onTransitionPause(Transition transition) {
+        }
+
+        @Override
+        public void onTransitionResume(Transition transition) {
         }
     }
 

@@ -423,9 +423,9 @@ public abstract class Visibility extends Transition {
                 ViewGroupOverlayUtils.removeOverlay(sceneRoot, overlayView);
             } else {
                 final View finalOverlayView = overlayView;
-                animator.addListener(new AnimatorListenerAdapter() {
+                addListener(new TransitionListenerAdapter() {
                     @Override
-                    public void onAnimationEnd(Animator animation) {
+                    public void onTransitionEnd(Transition transition) {
                         ViewGroupOverlayUtils.removeOverlay(sceneRoot, finalOverlayView);
                     }
                 });
@@ -439,7 +439,7 @@ public abstract class Visibility extends Transition {
                     mForcedEndVisibility != -1;
             if (!isForcedVisibility) {
                 originalVisibility = viewToKeep.getVisibility();
-                viewToKeep.setVisibility(View.VISIBLE);
+                ViewUtils.setTransitionVisibility(viewToKeep, View.VISIBLE);
             }
             Animator animator = onDisappear(sceneRoot, viewToKeep, startValues, endValues);
             if (animator != null) {
@@ -449,7 +449,7 @@ public abstract class Visibility extends Transition {
                 AnimatorUtils.addPauseListener(animator, disappearListener);
                 addListener(disappearListener);
             } else if (!isForcedVisibility) {
-                viewToKeep.setVisibility(originalVisibility);
+                ViewUtils.setTransitionVisibility(viewToKeep, originalVisibility);
             }
             return animator;
         }
@@ -457,18 +457,18 @@ public abstract class Visibility extends Transition {
     }
 
     @Override
-    protected boolean areValuesChanged(TransitionValues oldValues, TransitionValues newValues) {
-        if (oldValues == null && newValues == null) {
+    public boolean isTransitionRequired(TransitionValues startValues, TransitionValues newValues) {
+        if (startValues == null && newValues == null) {
             return false;
         }
-        if (oldValues != null && newValues != null &&
+        if (startValues != null && newValues != null &&
                 newValues.values.containsKey(PROPNAME_VISIBILITY) !=
-                        oldValues.values.containsKey(PROPNAME_VISIBILITY)) {
+                        startValues.values.containsKey(PROPNAME_VISIBILITY)) {
             // The transition wasn't targeted in either the start or end, so it couldn't
             // have changed.
             return false;
         }
-        VisibilityInfo changeInfo = getVisibilityChangeInfo(oldValues, newValues);
+        VisibilityInfo changeInfo = getVisibilityChangeInfo(startValues, newValues);
         return changeInfo.visibilityChange && (changeInfo.startVisibility == View.VISIBLE ||
                 changeInfo.endVisibility == View.VISIBLE);
     }
@@ -511,14 +511,14 @@ public abstract class Visibility extends Transition {
         @Override
         public void onAnimationPause(Animator animation) {
             if (!mCanceled && !mIsForcedVisibility) {
-                mView.setVisibility(mFinalVisibility);
+                ViewUtils.setTransitionVisibility(mView, mFinalVisibility);
             }
         }
 
         @Override
         public void onAnimationResume(Animator animation) {
             if (!mCanceled && !mIsForcedVisibility) {
-                mView.setVisibility(View.VISIBLE);
+                ViewUtils.setTransitionVisibility(mView, View.VISIBLE);
             }
         }
 
