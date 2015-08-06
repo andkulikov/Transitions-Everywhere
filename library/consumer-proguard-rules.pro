@@ -1,0 +1,2 @@
+-keep class android.transitions.everywhere.** { *; }
+-keep class android.transitions.everywhere.**.** { *; }

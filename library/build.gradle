@@ -15,5 +15,6 @@ android {
         targetSdkVersion 22
         versionCode versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        consumerProguardFiles 'consumer-proguard-rules.pro'
     }
 }
