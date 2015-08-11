@@ -28,7 +28,7 @@ dependencies {
     compile "com.github.andkulikov:transitions-everywhere:1.4.0"
 }
 ```
-Use transition classes from package `android.transitions.everywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
+Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Transitions via XML
 ============
@@ -52,8 +52,8 @@ Android 5.0 adds new method `setTransitionName()` for `View` class. With this li
 ProGuard configs
 ============
 ```
--keep class android.transitions.everywhere.** { *; }
--keep class android.transitions.everywhere.**.** { *; }
+-keep class com.transitionseverywhere.** { *; }
+-keep class com.transitionseverywhere.**.** { *; }
 ```
 
 About library
@@ -61,7 +61,7 @@ About library
 Transition animations backported to <b>Android 3.1</b>.<br>
 For Android ver. <b>>= 2.2</b> and < <b>3.0</b> scene to scene (layout to layout) changes is executed by the same API  but without animations.
 
-<b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find it in package  `android.transitions.everywhere.hidden`.
+<b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find it in package  `com.transitionseverywhere.hidden`.
 
 Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>  
 

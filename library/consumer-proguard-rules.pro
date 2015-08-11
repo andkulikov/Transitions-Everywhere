@@ -1,2 +1,2 @@
--keep class android.transitions.everywhere.** { *; }
--keep class android.transitions.everywhere.**.** { *; }
+-keep class com.transitionseverywhere.** { *; }
+-keep class com.transitionseverywhere.**.** { *; }

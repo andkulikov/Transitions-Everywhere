@@ -2,17 +2,18 @@ package com.github.andkulikov.transitions.everywhere;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.transitions.everywhere.ChangeBounds;
-import android.transitions.everywhere.ChangeImageTransform;
-import android.transitions.everywhere.Scene;
-import android.transitions.everywhere.Slide;
-import android.transitions.everywhere.TransitionInflater;
-import android.transitions.everywhere.TransitionManager;
-import android.transitions.everywhere.TransitionSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
+
+import com.transitionseverywhere.ChangeBounds;
+import com.transitionseverywhere.ChangeImageTransform;
+import com.transitionseverywhere.Scene;
+import com.transitionseverywhere.Slide;
+import com.transitionseverywhere.TransitionInflater;
+import com.transitionseverywhere.TransitionManager;
+import com.transitionseverywhere.TransitionSet;
 
 public class MainActivity extends Activity implements RadioGroup.OnCheckedChangeListener {
 
