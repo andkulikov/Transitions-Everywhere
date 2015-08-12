@@ -30,6 +30,7 @@ Please update imports in your classes<br>
 from `android.transitions.everywhere.*` to `com.transitionseverywhere`<br>
 And gradle dependency<br>
 from `com.github.andkulikov:transitions-everywhere` to `com.andkulikov:transitionseverywhere`<br>
+<br>
 <b>1.4.0</b> - Merge with Android M Preview sources<br>
 <b>1.3.1 - 1.3.2</b> - Bug fix<br>
 <b>1.3.0</b> - Merge with changes from Android 5.1<br>
