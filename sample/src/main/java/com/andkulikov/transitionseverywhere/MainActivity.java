@@ -1,4 +1,4 @@
-package com.github.andkulikov.transitions.everywhere;
+package com.andkulikov.transitionseverywhere;
 
 import android.app.Activity;
 import android.os.Bundle;
