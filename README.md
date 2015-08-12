@@ -5,16 +5,7 @@ Backport of [Transitions API from Android KitKat and Lollipop][1]. Compatible wi
 About Transitions API
 ============
 [Video - DevBytes: Android 4.4 Transitions][2]<br>
-[Sample project from Google][3]<br>
-[Article about transitions and library (in Russian language)][6]
-
-Changelog
-============
-<b>1.4.0</b> - Merge with Android M Preview sources<br>
-<b>1.3.1 - 1.3.2</b> - Bug fix<br>
-<b>1.3.0</b> - Merge with changes from Android 5.1<br>
-<b>1.2.0 - 1.2.2</b> - Bug fix<br>
-<b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lollipop</b>
+[Article about transitions and library (in Russian language)][3]
 
 Simple example
 ============
@@ -29,6 +20,19 @@ dependencies {
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
+
+Changelog
+============
+<b>1.5.0</b><br>
+Merge with Android M Preview 2<br>
+Migrate to <b>new library package name</b> and <b>maven artifact id</b>:<br>
+Please update imports in your classes from `android.transitions.everywhere.*` to `com.transitionseverywhere`<br>
+And gradle dependency from `com.github.andkulikov:transitions-everywhere` to `com.andkulikov:transitionseverywhere`<br>
+<b>1.4.0</b> - Merge with Android M Preview sources<br>
+<b>1.3.1 - 1.3.2</b> - Bug fix<br>
+<b>1.3.0</b> - Merge with changes from Android 5.1<br>
+<b>1.2.0 - 1.2.2</b> - Bug fix<br>
+<b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lollipop</b>
 
 Transitions via XML
 ============
@@ -67,10 +71,9 @@ Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>
 
 [1]: http://developer.android.com/reference/android/transition/package-summary.html
 [2]: https://www.youtube.com/watch?v=S3H7nJ4QaD8
-[3]: https://developer.android.com/samples/BasicTransition/index.html
+[3]: http://habrahabr.ru/post/243363/
 [4]: https://github.com/pardom/TransitionSupportLibrary
 [5]: https://github.com/guerwan/TransitionsBackport
-[6]: http://habrahabr.ru/post/243363/
 
 <br>
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-transitions--everywhere-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1050)
