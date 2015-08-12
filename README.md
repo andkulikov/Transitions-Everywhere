@@ -16,7 +16,7 @@ Usage
 Gradle:
 ```
 dependencies {
-    compile "com.github.andkulikov:transitions-everywhere:1.4.0"
+    compile "com.andkulikov:transitionseverywhere:1.5.0"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
@@ -26,8 +26,10 @@ Changelog
 <b>1.5.0</b><br>
 Merge with Android M Preview 2<br>
 Migrate to <b>new library package name</b> and <b>maven artifact id</b>:<br>
-Please update imports in your classes from `android.transitions.everywhere.*` to `com.transitionseverywhere`<br>
-And gradle dependency from `com.github.andkulikov:transitions-everywhere` to `com.andkulikov:transitionseverywhere`<br>
+Please update imports in your classes<br>
+from `android.transitions.everywhere.*` to `com.transitionseverywhere`<br>
+And gradle dependency<br>
+from `com.github.andkulikov:transitions-everywhere` to `com.andkulikov:transitionseverywhere`<br>
 <b>1.4.0</b> - Merge with Android M Preview sources<br>
 <b>1.3.1 - 1.3.2</b> - Bug fix<br>
 <b>1.3.0</b> - Merge with changes from Android 5.1<br>
@@ -53,13 +55,6 @@ Transition names of views
 ============
 Android 5.0 adds new method `setTransitionName()` for `View` class. With this library you should call `TransitionManager.setTransitionName(View v, String transitionName)` method instead to provide backward compatibility.
 
-ProGuard configs
-============
-```
--keep class com.transitionseverywhere.** { *; }
--keep class com.transitionseverywhere.**.** { *; }
-```
-
 About library
 ============
 Transition animations backported to <b>Android 3.1</b>.<br>
@@ -68,6 +63,13 @@ For Android ver. <b>>= 2.2</b> and < <b>3.0</b> scene to scene (layout to layout
 <b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find it in package  `com.transitionseverywhere.hidden`.
 
 Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>  
+
+ProGuard configs
+============
+```
+-keep class com.transitionseverywhere.** { *; }
+-keep class com.transitionseverywhere.**.** { *; }
+```
 
 [1]: http://developer.android.com/reference/android/transition/package-summary.html
 [2]: https://www.youtube.com/watch?v=S3H7nJ4QaD8
