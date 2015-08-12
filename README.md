@@ -5,16 +5,7 @@ Backport of [Transitions API from Android KitKat and Lollipop][1]. Compatible wi
 About Transitions API
 ============
 [Video - DevBytes: Android 4.4 Transitions][2]<br>
-[Sample project from Google][3]<br>
-[Article about transitions and library (in Russian language)][6]
-
-Changelog
-============
-<b>1.4.0</b> - Merge with Android M Preview sources<br>
-<b>1.3.1 - 1.3.2</b> - Bug fix<br>
-<b>1.3.0</b> - Merge with changes from Android 5.1<br>
-<b>1.2.0 - 1.2.2</b> - Bug fix<br>
-<b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lollipop</b>
+[Article about transitions and library (in Russian language)][3]
 
 Simple example
 ============
@@ -28,7 +19,20 @@ dependencies {
     compile "com.github.andkulikov:transitions-everywhere:1.4.0"
 }
 ```
-Use transition classes from package `android.transitions.everywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
+Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
+
+Changelog
+============
+<b>1.5.0</b><br>
+Merge with Android M Preview 2<br>
+Migrate to <b>new library package name</b> and <b>maven artifact id</b>:<br>
+Please update imports in your classes from `android.transitions.everywhere.*` to `com.transitionseverywhere`<br>
+And gradle dependency from `com.github.andkulikov:transitions-everywhere` to `com.andkulikov:transitionseverywhere`<br>
+<b>1.4.0</b> - Merge with Android M Preview sources<br>
+<b>1.3.1 - 1.3.2</b> - Bug fix<br>
+<b>1.3.0</b> - Merge with changes from Android 5.1<br>
+<b>1.2.0 - 1.2.2</b> - Bug fix<br>
+<b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lollipop</b>
 
 Transitions via XML
 ============
@@ -52,8 +56,8 @@ Android 5.0 adds new method `setTransitionName()` for `View` class. With this li
 ProGuard configs
 ============
 ```
--keep class android.transitions.everywhere.** { *; }
--keep class android.transitions.everywhere.**.** { *; }
+-keep class com.transitionseverywhere.** { *; }
+-keep class com.transitionseverywhere.**.** { *; }
 ```
 
 About library
@@ -61,16 +65,15 @@ About library
 Transition animations backported to <b>Android 3.1</b>.<br>
 For Android ver. <b>>= 2.2</b> and < <b>3.0</b> scene to scene (layout to layout) changes is executed by the same API  but without animations.
 
-<b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find it in package  `android.transitions.everywhere.hidden`.
+<b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find it in package  `com.transitionseverywhere.hidden`.
 
 Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>  
 
 [1]: http://developer.android.com/reference/android/transition/package-summary.html
 [2]: https://www.youtube.com/watch?v=S3H7nJ4QaD8
-[3]: https://developer.android.com/samples/BasicTransition/index.html
+[3]: http://habrahabr.ru/post/243363/
 [4]: https://github.com/pardom/TransitionSupportLibrary
 [5]: https://github.com/guerwan/TransitionsBackport
-[6]: http://habrahabr.ru/post/243363/
 
 <br>
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-transitions--everywhere-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1050)
