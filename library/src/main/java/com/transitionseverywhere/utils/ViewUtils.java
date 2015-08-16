@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.transitionseverywhere.R;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 @TargetApi(VERSION_CODES.HONEYCOMB)
 public class ViewUtils {
@@ -56,6 +57,8 @@ public class ViewUtils {
         boolean hasTransientState(View view);
 
         void setTransitionVisibility(View v, int visibility);
+
+        void setLeftTopRightBottom(View view, int left, int top, int right, int bottom);
     }
 
     static class BaseViewUtilsImpl implements ViewUtilsImpl {
@@ -64,6 +67,10 @@ public class ViewUtils {
                 ReflectionUtils.getPrivateField(View.class, "mViewFlags");
 
         private static final int VIEW_VISIBILITY_MASK = 0x0000000C;
+
+        private static final Method METHOD_SET_FRAME =
+                ReflectionUtils.getPrivateMethod(View.class, "setFrame", int.class, int.class,
+                        int.class, int.class);
 
         @Override
         public float getTransitionAlpha(View v) {
@@ -171,6 +178,11 @@ public class ViewUtils {
             int value = (Integer) ReflectionUtils.getFieldValue(v, 0, FIELD_VIEW_FLAGS);
             value = (value & ~VIEW_VISIBILITY_MASK) | visibility;
             ReflectionUtils.setFieldValue(v, FIELD_VIEW_FLAGS, value);
+        }
+
+        @Override
+        public void setLeftTopRightBottom(View v, int left, int top, int right, int bottom) {
+            ReflectionUtils.invoke(v, null, METHOD_SET_FRAME, left, top, right, bottom);
         }
     }
 
@@ -323,5 +335,9 @@ public class ViewUtils {
      */
     public static void setTransitionVisibility(View v, int visibility) {
         IMPL.setTransitionVisibility(v, visibility);
+    }
+
+    public static void setLeftTopRightBottom(View view, int left, int top, int right, int bottom) {
+        IMPL.setLeftTopRightBottom(view, left, top, right, bottom);
     }
 }

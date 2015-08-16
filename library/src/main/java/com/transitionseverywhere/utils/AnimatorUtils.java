@@ -4,16 +4,18 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorPauseListener;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.animation.TypeConverter;
 import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.util.Property;
 import android.view.View;
 
+import com.transitionseverywhere.PathMotion;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionUtils;
 
@@ -34,11 +36,14 @@ public class AnimatorUtils {
                                String xPropertyName, String yPropertyName,
                                float startLeft, float startTop, float endLeft, float endTop);
 
+        <T> Animator ofPointF(T target, PointFProperty<T> property,
+                                    float startLeft, float startTop,
+                                    float endLeft, float endTop);
+
+        <T> Animator ofPointF(T target, PointFProperty<T> property, Path path);
+
         Animator ofInt(Transition transition, Object target, Property propertyX, Property propertyY,
                        int startX, int startY, int endX, int endY);
-
-        <V> PropertyValuesHolder pvhOfObject(Property<?, V> property,
-                                             TypeConverter<PointF, V> converter, Path path);
 
         boolean isAnimatorStarted(Animator anim);
 
@@ -73,14 +78,19 @@ public class AnimatorUtils {
         }
 
         @Override
-        public Animator ofInt(Transition transition, Object target, Property propertyX,
-                              Property propertyY, int startX, int startY, int endX, int endY) {
+        public <T> ObjectAnimator ofPointF(T target, PointFProperty<T> property, float startLeft,
+                                           float startTop, float endLeft, float endTop) {
             return null;
         }
 
         @Override
-        public <V> PropertyValuesHolder pvhOfObject(Property<?, V> property,
-                                                    TypeConverter<PointF, V> converter, Path path) {
+        public <T> Animator ofPointF(T target, PointFProperty<T> property, Path path) {
+            return null;
+        }
+
+        @Override
+        public Animator ofInt(Transition transition, Object target, Property propertyX,
+                              Property propertyY, int startX, int startY, int endX, int endY) {
             return null;
         }
 
@@ -152,6 +162,33 @@ public class AnimatorUtils {
         }
 
         @Override
+        public <T> Animator ofPointF(final T target, final PointFProperty<T> property, final Path path) {
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                private PointF mTempPointF = new PointF();
+                private float[] mTempFloat = new float[2];
+
+                PathMeasure mPathMeasure = new PathMeasure(path, false);
+
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float fraction = animation.getAnimatedFraction();
+                    if (fraction < 0) {
+                        fraction = 0;
+                    }
+                    if (fraction > 1) {
+                        fraction = 1;
+                    }
+                    mPathMeasure.getPosTan(fraction * mPathMeasure.getLength(), mTempFloat, null);
+                    mTempPointF.set(mTempFloat[0], mTempFloat[1]);
+                    property.set(target, mTempPointF);
+                }
+            });
+            return valueAnimator;
+        }
+
+        @Override
         public boolean isAnimatorStarted(Animator anim) {
             return anim.isStarted();
         }
@@ -217,8 +254,8 @@ public class AnimatorUtils {
         }
 
         @Override
-        public <V> PropertyValuesHolder pvhOfObject(Property<?, V> property, TypeConverter<PointF, V> converter, Path path) {
-            return PropertyValuesHolder.ofObject(property, converter, path);
+        public <T> Animator ofPointF(T target, PointFProperty<T> property, Path path) {
+            return ObjectAnimator.ofObject(target, property, null, path);
         }
 
     }
@@ -276,6 +313,24 @@ public class AnimatorUtils {
         }
     }
 
+    public static <T> Animator ofPointF(T target, PointFProperty<T> property,
+                                              float startLeft, float startTop,
+                                              float endLeft, float endTop) {
+        return null;
+    }
+
+    public static <T> Animator ofPointF(T target, PointFProperty<T> property,
+                                              float startLeft, float startTop,
+                                              float endLeft, float endTop, PathMotion pathMotion) {
+        if (startLeft != endLeft || startTop != endTop) {
+//            if (pathMotion == nullathMotion.equals())
+            return IMPL.ofPointF(target, property, pathMotion.getPath(startLeft, startTop,
+                    endLeft, endTop));
+        } else {
+            return null;
+        }
+    }
+
     public static Animator ofInt(Transition transition, Object target, Property propertyX,
                                  Property propertyY, int startX, int startY, int endX, int endY) {
         if (startX != endX || startY != endY) {
@@ -283,11 +338,6 @@ public class AnimatorUtils {
         } else {
             return null;
         }
-    }
-
-    public static <V> PropertyValuesHolder pvhOfObject(Property<?, V> property,
-                                                       TypeConverter<PointF, V> converter, Path path) {
-        return IMPL.pvhOfObject(property, converter, path);
     }
 
     public static boolean isAnimatorStarted(Animator anim) {
