@@ -5,6 +5,7 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -60,8 +61,8 @@ public class ViewUtils {
             return true;
         }
 
-        public String getAlphaProperty() {
-            return "alpha";
+        public Property<View, Float> getAlphaProperty() {
+            return View.ALPHA;
         }
 
         public void setTranslationZ(View view, float z) {
@@ -218,7 +219,7 @@ public class ViewUtils {
         return IMPL.isTransitionAlphaCompatMode();
     }
 
-    public static String getAlphaProperty() {
+    public static Property<View, Float> getAlphaProperty() {
         return IMPL.getAlphaProperty();
     }
 
