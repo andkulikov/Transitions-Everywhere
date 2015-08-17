@@ -5,11 +5,8 @@ import android.animation.Animator.AnimatorPauseListener;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.graphics.Path;
-import android.graphics.PathMeasure;
-import android.graphics.PointF;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.util.Property;
@@ -78,8 +75,8 @@ public class AnimatorUtils {
         }
 
         @Override
-        public <T> ObjectAnimator ofPointF(T target, PointFProperty<T> property, float startLeft,
-                                           float startTop, float endLeft, float endTop) {
+        public <T> Animator ofPointF(T target, PointFProperty<T> property, float startLeft,
+                                     float startTop, float endLeft, float endTop) {
             return null;
         }
 
@@ -162,30 +159,14 @@ public class AnimatorUtils {
         }
 
         @Override
+        public <T> Animator ofPointF(T target, PointFProperty<T> property, float startLeft,
+                                     float startTop, float endLeft, float endTop) {
+            return PointFAnimator.ofPointF(target, property, startLeft, startTop, endLeft, endTop);
+        }
+
+        @Override
         public <T> Animator ofPointF(final T target, final PointFProperty<T> property, final Path path) {
-            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-                private PointF mTempPointF = new PointF();
-                private float[] mTempFloat = new float[2];
-
-                PathMeasure mPathMeasure = new PathMeasure(path, false);
-
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    float fraction = animation.getAnimatedFraction();
-                    if (fraction < 0) {
-                        fraction = 0;
-                    }
-                    if (fraction > 1) {
-                        fraction = 1;
-                    }
-                    mPathMeasure.getPosTan(fraction * mPathMeasure.getLength(), mTempFloat, null);
-                    mTempPointF.set(mTempFloat[0], mTempFloat[1]);
-                    property.set(target, mTempPointF);
-                }
-            });
-            return valueAnimator;
+            return PathAnimatorCompat.ofPointF(target, property, path);
         }
 
         @Override
@@ -314,18 +295,28 @@ public class AnimatorUtils {
     }
 
     public static <T> Animator ofPointF(T target, PointFProperty<T> property,
-                                              float startLeft, float startTop,
-                                              float endLeft, float endTop) {
-        return null;
+                                        float startLeft, float startTop,
+                                        float endLeft, float endTop) {
+        return IMPL.ofPointF(target, property, startLeft, startTop, endLeft, endTop);
     }
 
-    public static <T> Animator ofPointF(T target, PointFProperty<T> property,
-                                              float startLeft, float startTop,
-                                              float endLeft, float endTop, PathMotion pathMotion) {
+    public static <T> Animator ofPointF(T target, PointFProperty<T> property, Path path) {
+        if (path != null) {
+            return IMPL.ofPointF(target, property, path);
+        } else {
+            return null;
+        }
+    }
+
+    public static <T> Animator ofPointF(T target, PointFProperty<T> property, PathMotion pathMotion,
+                                        float startLeft, float startTop, float endLeft, float endTop) {
         if (startLeft != endLeft || startTop != endTop) {
-//            if (pathMotion == nullathMotion.equals())
-            return IMPL.ofPointF(target, property, pathMotion.getPath(startLeft, startTop,
-                    endLeft, endTop));
+            if (pathMotion == null || pathMotion.equals(PathMotion.STRAIGHT_PATH_MOTION)) {
+                return ofPointF(target, property, startLeft, startTop, endLeft, endTop);
+            } else {
+                return ofPointF(target, property, pathMotion.getPath(startLeft, startTop,
+                        endLeft, endTop));
+            }
         } else {
             return null;
         }

@@ -14,4 +14,10 @@ public abstract class PointFProperty<T> extends Property<T, PointF> {
     public PointFProperty(String name) {
         super(PointF.class, name);
     }
+
+    @Override
+    public PointF get(T object) {
+        return null;
+    }
+
 }
