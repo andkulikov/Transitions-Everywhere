@@ -5,9 +5,7 @@ import android.graphics.PointF;
 import android.os.Build;
 
 /**
- * Copyright New Cloud Technology, Ltd, 2014
- * <p/>
- * NOTICE:  The intellectual and technical concepts contained herein are proprietary to New Cloud Technology, Ltd, and is protected by trade secret and copyright law. Dissemination of any of this information or reproduction of this material is strictly forbidden unless prior written permission is obtained from New Cloud Technology, Ltd.
+ * Created by Andrey Kulikov on 17.08.15.
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class PointFAnimator extends BasePointFAnimator {
