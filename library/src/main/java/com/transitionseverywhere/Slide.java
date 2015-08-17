@@ -39,7 +39,7 @@ import com.transitionseverywhere.utils.ViewUtils;
  * limited as described in {@link Visibility#onDisappear(android.view.ViewGroup,
  * TransitionValues, int, TransitionValues, int)}.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Slide extends Visibility {
 
     protected static final TimeInterpolator sDecelerate = new DecelerateInterpolator();

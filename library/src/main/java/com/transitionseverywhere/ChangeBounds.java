@@ -18,25 +18,24 @@ package com.transitionseverywhere;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.transitionseverywhere.utils.AnimatorUtils;
+import com.transitionseverywhere.utils.PointFProperty;
 import com.transitionseverywhere.utils.RectEvaluator;
 import com.transitionseverywhere.utils.ViewGroupUtils;
 import com.transitionseverywhere.utils.ViewOverlayUtils;
@@ -53,7 +52,7 @@ import java.util.Map;
  * {@link com.transitionseverywhere.R.styleable#ChangeBounds} along with the other standard
  * attributes of {@link com.transitionseverywhere.R.styleable#Transition}.</p>
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ChangeBounds extends Transition {
 
     private static final String PROPNAME_BOUNDS = "android:changeBounds:bounds";
@@ -69,13 +68,90 @@ public class ChangeBounds extends Transition {
             PROPNAME_WINDOW_Y
     };
 
+    private static final PointFProperty<Drawable> DRAWABLE_ORIGIN_PROPERTY;
+    private static final PointFProperty<ViewBounds> TOP_LEFT_PROPERTY;
+    private static final PointFProperty<ViewBounds> BOTTOM_RIGHT_PROPERTY;
+    private static final PointFProperty<View> BOTTOM_RIGHT_ONLY_PROPERTY;
+    private static final PointFProperty<View> TOP_LEFT_ONLY_PROPERTY;
+    private static final PointFProperty<View> POSITION_PROPERTY;
+
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            DRAWABLE_ORIGIN_PROPERTY = new PointFProperty<Drawable>("boundsOrigin") {
+
+                private Rect mBounds = new Rect();
+
+                @Override
+                public void set(Drawable object, PointF value) {
+                    object.copyBounds(mBounds);
+                    mBounds.offsetTo(Math.round(value.x), Math.round(value.y));
+                    object.setBounds(mBounds);
+                }
+
+                @Override
+                public PointF get(Drawable object) {
+                    object.copyBounds(mBounds);
+                    return new PointF(mBounds.left, mBounds.top);
+                }
+            };
+            TOP_LEFT_PROPERTY = new PointFProperty<ViewBounds>("topLeft") {
+                @Override
+                public void set(ViewBounds viewBounds, PointF topLeft) {
+                    viewBounds.setTopLeft(topLeft);
+                }
+            };
+            BOTTOM_RIGHT_PROPERTY = new PointFProperty<ViewBounds>("bottomRight") {
+                @Override
+                public void set(ViewBounds viewBounds, PointF bottomRight) {
+                    viewBounds.setBottomRight(bottomRight);
+                }
+            };
+            BOTTOM_RIGHT_ONLY_PROPERTY = new PointFProperty<View>("bottomRight") {
+                @Override
+                public void set(View view, PointF bottomRight) {
+                    int left = view.getLeft();
+                    int top = view.getTop();
+                    int right = Math.round(bottomRight.x);
+                    int bottom = Math.round(bottomRight.y);
+                    ViewUtils.setLeftTopRightBottom(view, left, top, right, bottom);
+                }
+            };
+            TOP_LEFT_ONLY_PROPERTY = new PointFProperty<View>("topLeft") {
+                @Override
+                public void set(View view, PointF topLeft) {
+                    int left = Math.round(topLeft.x);
+                    int top = Math.round(topLeft.y);
+                    int right = view.getRight();
+                    int bottom = view.getBottom();
+                    ViewUtils.setLeftTopRightBottom(view, left, top, right, bottom);
+                }
+            };
+            POSITION_PROPERTY = new PointFProperty<View>("position") {
+                @Override
+                public void set(View view, PointF topLeft) {
+                    int left = Math.round(topLeft.x);
+                    int top = Math.round(topLeft.y);
+                    int right = left + view.getWidth();
+                    int bottom = top + view.getHeight();
+                    ViewUtils.setLeftTopRightBottom(view, left, top, right, bottom);
+                }
+            };
+        } else {
+            DRAWABLE_ORIGIN_PROPERTY = null;
+            TOP_LEFT_PROPERTY = null;
+            BOTTOM_RIGHT_PROPERTY = null;
+            BOTTOM_RIGHT_ONLY_PROPERTY = null;
+            TOP_LEFT_ONLY_PROPERTY = null;
+            POSITION_PROPERTY = null;
+        }
+    }
+
     int[] tempLocation = new int[2];
     boolean mResizeClip = false;
     boolean mReparent = false;
     private static final String LOG_TAG = "ChangeBounds";
 
     private static RectEvaluator sRectEvaluator;
-    private static DrawableOriginProperty sDrawableOriginProperty;
 
     public ChangeBounds() {}
 
@@ -225,35 +301,41 @@ public class ChangeBounds extends Transition {
             if (numChanges > 0) {
                 Animator anim;
                 if (!mResizeClip || (startClip == null && endClip == null)) {
-                    if (startWidth == endWidth && startHeight == endHeight &&
-                            Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                        view.offsetLeftAndRight(startLeft - view.getLeft());
-                        view.offsetTopAndBottom(startTop - view.getTop());
-                        anim = AnimatorUtils.ofInt(this, view, new HorizontalOffsetProperty(),
-                                new VerticalOffsetProperty(), 0, 0, endLeft - startLeft, endTop - startTop);
-                    } else {
-                        if (startLeft != endLeft) view.setLeft(startLeft);
-                        if (startTop != endTop) view.setTop(startTop);
-                        if (startRight != endRight) view.setRight(startRight);
-                        if (startBottom != endBottom) view.setBottom(startBottom);
-                        ObjectAnimator topLeftAnimator = AnimatorUtils.ofInt(this, view, "left", "top",
+                    ViewUtils.setLeftTopRightBottom(view, startLeft, startTop, startRight, startBottom);
+                    if (numChanges == 2) {
+                        if (startWidth == endWidth && startHeight == endHeight) {
+                            anim = AnimatorUtils.ofPointF(view, POSITION_PROPERTY, getPathMotion(),
+                                    startLeft, startTop, endLeft, endTop);
+                        } else {
+                            ViewBounds viewBounds = new ViewBounds(view);
+                            Animator topLeftAnimator = AnimatorUtils.ofPointF(viewBounds,
+                                    TOP_LEFT_PROPERTY, getPathMotion(),
+                                    startLeft, startTop, endLeft, endTop);
+                            Animator bottomRightAnimator = AnimatorUtils.ofPointF(viewBounds,
+                                    BOTTOM_RIGHT_PROPERTY, getPathMotion(),
+                                    startRight, startBottom, endRight, endBottom);
+                            AnimatorSet set = new AnimatorSet();
+                            set.playTogether(topLeftAnimator, bottomRightAnimator);
+                            set.addListener(viewBounds);
+                            anim = set;
+                        }
+                    } else if (startLeft != endLeft || startTop != endTop) {
+                        anim = AnimatorUtils.ofPointF(view, TOP_LEFT_ONLY_PROPERTY, getPathMotion(),
                                 startLeft, startTop, endLeft, endTop);
-                        ObjectAnimator bottomRightAnimator = AnimatorUtils.ofInt(this, view, "right", "bottom",
+                    } else {
+                        anim = AnimatorUtils.ofPointF(view, BOTTOM_RIGHT_ONLY_PROPERTY, getPathMotion(),
                                 startRight, startBottom, endRight, endBottom);
-                        anim = TransitionUtils.mergeAnimators(topLeftAnimator,
-                                bottomRightAnimator);
                     }
                 } else {
                     int maxWidth = Math.max(startWidth, endWidth);
                     int maxHeight = Math.max(startHeight, endHeight);
 
-                    view.setLeft(startLeft);
-                    view.setTop(startTop);
-                    view.setRight(startLeft + maxWidth);
-                    view.setBottom(startTop + maxHeight);
-                    ObjectAnimator positionAnimator = null;
+                    ViewUtils.setLeftTopRightBottom(view, startLeft, startTop, startLeft + maxWidth,
+                            startTop + maxHeight);
+
+                    Animator positionAnimator = null;
                     if (startLeft != endLeft || startTop != endTop) {
-                        positionAnimator = AnimatorUtils.ofInt(this, view, "left", "top",
+                        positionAnimator = AnimatorUtils.ofPointF(view, POSITION_PROPERTY, getPathMotion(),
                                 startLeft, startTop, endLeft, endTop);
                     }
                     final Rect finalClip = endClip;
@@ -266,8 +348,8 @@ public class ChangeBounds extends Transition {
                     ObjectAnimator clipAnimator = null;
                     if (!startClip.equals(endClip)) {
                         ViewUtils.setClipBounds(view, startClip);
-                        clipAnimator = ObjectAnimator.ofObject(view, "clipBounds", sRectEvaluator,
-                                startClip, endClip);
+                        clipAnimator = ObjectAnimator.ofObject(view,
+                                ChangeClipBounds.VIEW_CLIP_BOUNDS, sRectEvaluator, startClip, endClip);
                         clipAnimator.addListener(new AnimatorListenerAdapter() {
                             private boolean mIsCanceled;
 
@@ -280,10 +362,8 @@ public class ChangeBounds extends Transition {
                             public void onAnimationEnd(Animator animation) {
                                 if (!mIsCanceled) {
                                     ViewUtils.setClipBounds(view, finalClip);
-                                    view.setLeft(endLeft);
-                                    view.setTop(endTop);
-                                    view.setRight(endRight);
-                                    view.setBottom(endBottom);
+                                    ViewUtils.setLeftTopRightBottom(view, endLeft, endTop,
+                                            endRight, endBottom);
                                 }
                             }
                         });
@@ -338,105 +418,63 @@ public class ChangeBounds extends Transition {
                 view.draw(canvas);
                 final BitmapDrawable drawable = new BitmapDrawable(
                         sceneRoot.getContext().getResources(), bitmap);
-                final float transitionAlpha = ViewUtils.getTransitionAlpha(view);
-                ViewUtils.setTransitionAlpha(view, 0);
-                ViewOverlayUtils.addOverlay(sceneRoot, drawable);
-                ObjectAnimator anim;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (sDrawableOriginProperty == null) {
-                        sDrawableOriginProperty = new DrawableOriginProperty();
-                    }
-                    Path topLeftPath = getPathMotion().getPath(startX - tempLocation[0],
-                            startY - tempLocation[1], endX - tempLocation[0], endY - tempLocation[1]);
-                    PropertyValuesHolder origin = AnimatorUtils.pvhOfObject(
-                            sDrawableOriginProperty, null, topLeftPath);
-                    anim = ObjectAnimator.ofPropertyValuesHolder(drawable, origin);
-                } else {
-                    Rect startBounds1 = new Rect(startX - tempLocation[0], startY - tempLocation[1],
-                            startX - tempLocation[0] + view.getWidth(),
-                            startY - tempLocation[1] + view.getHeight());
-                    Rect endBounds1 = new Rect(endX - tempLocation[0], endY - tempLocation[1],
-                            endX - tempLocation[0] + view.getWidth(),
-                            endY - tempLocation[1] + view.getHeight());
-                    anim = ObjectAnimator.ofObject(drawable, "bounds",
-                            sRectEvaluator, startBounds1, endBounds1);
+                Animator anim;
+                anim = AnimatorUtils.ofPointF(drawable, DRAWABLE_ORIGIN_PROPERTY, getPathMotion(),
+                        startX - tempLocation[0], startY - tempLocation[1],
+                        endX - tempLocation[0], endY - tempLocation[1]);
+                if (anim != null) {
+                    final float transitionAlpha = ViewUtils.getTransitionAlpha(view);
+                    ViewUtils.setTransitionAlpha(view, 0);
+                    ViewOverlayUtils.addOverlay(sceneRoot, drawable);
+                    anim.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            ViewOverlayUtils.removeOverlay(sceneRoot, drawable);
+                            ViewUtils.setTransitionAlpha(view, transitionAlpha);
+                        }
+                    });
                 }
-                anim.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        ViewOverlayUtils.removeOverlay(sceneRoot, drawable);
-                        ViewUtils.setTransitionAlpha(view, transitionAlpha);
-                    }
-                });
                 return anim;
             }
         }
         return null;
     }
 
-    private abstract static class OffsetProperty extends IntProperty<View> {
-        int mPreviousValue;
+    private static class ViewBounds extends AnimatorListenerAdapter {
+        private int mLeft;
+        private int mTop;
+        private int mRight;
+        private int mBottom;
+        private boolean mIsTopLeftSet;
+        private boolean mIsBottomRightSet;
+        private View mView;
 
-        public OffsetProperty(String name) {
-            super(name);
+        public ViewBounds(View view) {
+            mView = view;
         }
 
-        @Override
-        public void setValue(View view, int value) {
-            int offset = value - mPreviousValue;
-            offsetBy(view, offset);
-            mPreviousValue = value;
+        public void setTopLeft(PointF topLeft) {
+            mLeft = Math.round(topLeft.x);
+            mTop = Math.round(topLeft.y);
+            mIsTopLeftSet = true;
+            if (mIsBottomRightSet) {
+                setLeftTopRightBottom();
+            }
         }
 
-        @Override
-        public Integer get(View object) {
-            return null;
+        public void setBottomRight(PointF bottomRight) {
+            mRight = Math.round(bottomRight.x);
+            mBottom = Math.round(bottomRight.y);
+            mIsBottomRightSet = true;
+            if (mIsTopLeftSet) {
+                setLeftTopRightBottom();
+            }
         }
 
-        protected abstract void offsetBy(View view, int by);
-    }
-
-    private static class HorizontalOffsetProperty extends OffsetProperty {
-        public HorizontalOffsetProperty() {
-            super("offsetLeftAndRight");
-        }
-
-        @Override
-        protected void offsetBy(View view, int by) {
-            view.offsetLeftAndRight(by);
-        }
-    }
-
-    private static class VerticalOffsetProperty extends OffsetProperty {
-        public VerticalOffsetProperty() {
-            super("offsetTopAndBottom");
-        }
-
-        @Override
-        protected void offsetBy(View view, int by) {
-            view.offsetTopAndBottom(by);
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static class DrawableOriginProperty extends Property<Drawable, PointF> {
-        private Rect mBounds = new Rect();
-
-        private DrawableOriginProperty() {
-            super(PointF.class, "boundsOrigin");
-        }
-
-        @Override
-        public void set(Drawable object, PointF value) {
-            object.copyBounds(mBounds);
-            mBounds.offsetTo(Math.round(value.x), Math.round(value.y));
-            object.setBounds(mBounds);
-        }
-
-        @Override
-        public PointF get(Drawable object) {
-            object.copyBounds(mBounds);
-            return new PointF(mBounds.left, mBounds.top);
+        private void setLeftTopRightBottom() {
+            ViewUtils.setLeftTopRightBottom(mView, mLeft, mTop, mRight, mBottom);
+            mIsTopLeftSet = false;
+            mIsBottomRightSet = false;
         }
     }
 

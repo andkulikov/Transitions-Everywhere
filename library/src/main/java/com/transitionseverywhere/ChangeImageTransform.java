@@ -25,13 +25,12 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.transitionseverywhere.utils.AnimatorUtils;
 import com.transitionseverywhere.utils.MatrixUtils;
-import com.transitionseverywhere.utils.PropertyCompatObject;
 
 import java.util.Map;
 
@@ -43,7 +42,7 @@ import java.util.Map;
  * that change size, shape, or {@link android.widget.ImageView.ScaleType} to animate contents
  * smoothly.</p>
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ChangeImageTransform extends Transition {
 
     private static final String TAG = "ChangeImageTransform";
@@ -55,6 +54,28 @@ public class ChangeImageTransform extends Transition {
             PROPNAME_MATRIX,
             PROPNAME_BOUNDS,
     };
+
+    private static final Property<ImageView, Matrix> ANIMATED_TRANSFORM_PROPERTY;
+
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            ANIMATED_TRANSFORM_PROPERTY = new Property<ImageView, Matrix>(Matrix.class,
+                    "animatedTransform") {
+
+                @Override
+                public void set(ImageView object, Matrix value) {
+                    MatrixUtils.animateTransform(object, value);
+                }
+
+                @Override
+                public Matrix get(ImageView object) {
+                    return null;
+                }
+            };
+        } else {
+            ANIMATED_TRANSFORM_PROPERTY = null;
+        }
+    }
 
     public ChangeImageTransform() {
     }
@@ -178,26 +199,8 @@ public class ChangeImageTransform extends Transition {
 
     private ObjectAnimator createMatrixAnimator(ImageView imageView, TypeEvaluator<Matrix> evaluator,
                                                 Matrix startMatrix, final Matrix endMatrix) {
-        ImageMatrixProperty matrixProperty = new ImageMatrixProperty(imageView);
-        ObjectAnimator animator = AnimatorUtils.ofObject(matrixProperty, evaluator,
-                startMatrix, endMatrix);
-        // save strong reference to object (in animator this target will be saved as a weak
-        // reference so it can be garbage-collected)
-        animator.addListener(matrixProperty);
-        return animator;
-    }
-
-    private static class ImageMatrixProperty extends PropertyCompatObject<ImageView, Matrix> {
-
-        public ImageMatrixProperty(ImageView object) {
-            super(object);
-        }
-
-        @Override
-        public void setValue(Matrix value) {
-            MatrixUtils.animateTransform(getObject(), value);
-        }
-
+        return ObjectAnimator.ofObject(imageView, ANIMATED_TRANSFORM_PROPERTY,
+                evaluator, startMatrix, endMatrix);
     }
 
 }

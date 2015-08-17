@@ -31,7 +31,7 @@ import android.view.ViewGroup;
  * the epicenter. This is the default TransitionPropagation used with
  * {@link android.transition.Explode}.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class CircularPropagation extends VisibilityPropagation {
     private static final String TAG = "CircularPropagation";
 

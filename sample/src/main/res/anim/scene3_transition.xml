@@ -2,7 +2,9 @@
 <transitionSet xmlns:app="http://schemas.android.com/apk/res-auto"
                app:transitionOrdering="together"
                app:duration="400">
-    <changeBounds/>
+    <changeBounds>
+        <arcMotion/>
+    </changeBounds>
     <changeImageTransform/>
     <fade
         app:fadingMode="fade_in"

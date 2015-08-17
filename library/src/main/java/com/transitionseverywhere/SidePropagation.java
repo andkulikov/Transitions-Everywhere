@@ -32,7 +32,7 @@ import com.transitionseverywhere.utils.ViewUtils;
  * it will transition later when closer to the side and sooner when farther from the edge.
  * This is the default TransitionPropagation used with {@link android.transition.Slide}.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class SidePropagation extends VisibilityPropagation {
     private static final String TAG = "SlidePropagation";
 

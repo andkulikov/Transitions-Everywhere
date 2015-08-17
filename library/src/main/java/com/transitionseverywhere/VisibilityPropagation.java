@@ -23,7 +23,7 @@ import android.view.View;
  * Base class for <code>TransitionPropagation</code>s that care about
  * View Visibility and the center position of the View.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public abstract class VisibilityPropagation extends TransitionPropagation {
 
     /**

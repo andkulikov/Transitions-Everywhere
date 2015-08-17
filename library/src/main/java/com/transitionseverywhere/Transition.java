@@ -22,7 +22,6 @@ import android.animation.TimeInterpolator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -117,7 +116,7 @@ import java.util.StringTokenizer;
  * {@link com.transitionseverywhere.R.styleable#TransitionTarget}, and {@link com.transitionseverywhere.R.styleable#Fade},
  * {@link com.transitionseverywhere.R.styleable#Slide}, and {@link com.transitionseverywhere.R.styleable#ChangeTransform}.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public abstract class Transition implements Cloneable {
 
     private static final String LOG_TAG = "Transition";
@@ -162,16 +161,6 @@ public abstract class Transition implements Cloneable {
             MATCH_INSTANCE,
             MATCH_ID,
             MATCH_ITEM_ID,
-    };
-
-    private static final PathMotion STRAIGHT_PATH_MOTION = new PathMotion() {
-        @Override
-        public Path getPath(float startX, float startY, float endX, float endY) {
-            Path path = new Path();
-            path.moveTo(startX, startY);
-            path.lineTo(endX, endY);
-            return path;
-        }
     };
 
     private String mName = ((Object) this).getClass().getName();
@@ -247,7 +236,7 @@ public abstract class Transition implements Cloneable {
 
     // The function used to interpolate along two-dimensional points. Typically used
     // for adding curves to x/y View motion.
-    private PathMotion mPathMotion = STRAIGHT_PATH_MOTION;
+    private PathMotion mPathMotion = PathMotion.STRAIGHT_PATH_MOTION;
 
     /**
      * Constructs a Transition object with no target objects. A transition with
@@ -2076,7 +2065,7 @@ public abstract class Transition implements Cloneable {
      */
     public void setPathMotion(PathMotion pathMotion) {
         if (pathMotion == null) {
-            mPathMotion = STRAIGHT_PATH_MOTION;
+            mPathMotion = PathMotion.STRAIGHT_PATH_MOTION;
         } else {
             mPathMotion = pathMotion;
         }

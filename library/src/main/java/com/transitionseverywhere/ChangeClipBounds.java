@@ -22,6 +22,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,7 +33,7 @@ import com.transitionseverywhere.utils.ViewUtils;
  * ChangeClipBounds captures the {@link android.view.View#getClipBounds()} before and after the
  * scene change and animates those changes during the transition.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ChangeClipBounds extends Transition {
 
     private static final String TAG = "ChangeTransform";
@@ -43,6 +44,28 @@ public class ChangeClipBounds extends Transition {
     private static final String[] sTransitionProperties = {
             PROPNAME_CLIP,
     };
+
+    public static final Property<View, Rect> VIEW_CLIP_BOUNDS;
+
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            VIEW_CLIP_BOUNDS = new Property<View, Rect>(Rect.class, "clipBounds") {
+
+                @Override
+                public void set(View object, Rect value) {
+                    ViewUtils.setClipBounds(object, value);
+                }
+
+                @Override
+                public Rect get(View object) {
+                    return ViewUtils.getClipBounds(object);
+                }
+
+            };
+        } else {
+            VIEW_CLIP_BOUNDS = null;
+        }
+    }
 
     public ChangeClipBounds() {}
 
@@ -104,6 +127,7 @@ public class ChangeClipBounds extends Transition {
 
         ViewUtils.setClipBounds(endValues.view, start);
         RectEvaluator evaluator = new RectEvaluator(new Rect());
-        return ObjectAnimator.ofObject(endValues.view, "clipBounds", evaluator, start, end);
+        return ObjectAnimator.ofObject(endValues.view, VIEW_CLIP_BOUNDS, evaluator, start, end);
     }
+
 }

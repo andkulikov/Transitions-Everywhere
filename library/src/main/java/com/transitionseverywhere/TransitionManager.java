@@ -185,10 +185,10 @@ public class TransitionManager {
 
         final ViewGroup sceneRoot = scene.getSceneRoot();
         if (!sPendingTransitions.contains(sceneRoot)) {
-            sPendingTransitions.add(sceneRoot);
-
             Transition transitionClone = null;
             if (isTransitionsAllowed()) {
+                sPendingTransitions.add(sceneRoot);
+
                 if (transition != null) {
                     transitionClone = transition.clone();
                     transitionClone.setSceneRoot(sceneRoot);
@@ -459,10 +459,10 @@ public class TransitionManager {
 
     /**
      * Returns is transition animations enabled. Animations was disabled
-     * for Android versions < 3.1
+     * for Android versions < 4.0
      */
     public static boolean isTransitionsAllowed() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
     }
 
     /**

@@ -51,6 +51,21 @@ public class ReflectionUtils {
         return null;
     }
 
+    public static Method getPrivateMethod(final Class<?> targetClass, final String name,
+                                   final Class<?>... parameterTypes) {
+        if (targetClass == null || TextUtils.isEmpty(name)) return null;
+        try {
+            Method method = targetClass.getDeclaredMethod(name, parameterTypes);
+            method.setAccessible(true);
+            return method;
+        } catch (SecurityException e) {
+            // ignore
+        } catch (NoSuchMethodException e) {
+            // ignore
+        }
+        return null;
+    }
+
     public static Object invoke(final Object receiver, final Object defaultValue,
                                 final Method method, final Object... args) {
         if (method == null) return defaultValue;

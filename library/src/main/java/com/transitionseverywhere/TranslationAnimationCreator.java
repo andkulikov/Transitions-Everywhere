@@ -17,13 +17,14 @@ package com.transitionseverywhere;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.annotation.TargetApi;
+import android.graphics.PointF;
 import android.os.Build;
 import android.view.View;
 
 import com.transitionseverywhere.utils.AnimatorUtils;
+import com.transitionseverywhere.utils.PointFProperty;
 
 /**
  * This class is used by Slide and Explode to create an animator that goes from the start
@@ -32,6 +33,22 @@ import com.transitionseverywhere.utils.AnimatorUtils;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class TranslationAnimationCreator {
+
+    public static final PointFProperty<View> TRANSLATIONS_PROPERTY;
+
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            TRANSLATIONS_PROPERTY = new PointFProperty<View>("translations") {
+                @Override
+                public void set(View view, PointF topLeft) {
+                    view.setTranslationX(topLeft.x);
+                    view.setTranslationY(topLeft.y);
+                }
+            };
+        } else {
+            TRANSLATIONS_PROPERTY = null;
+        }
+    }
 
     /**
      * Creates an animator that can be used for x and/or y translations. When interrupted,
@@ -65,8 +82,8 @@ public class TranslationAnimationCreator {
 
         view.setTranslationX(startX);
         view.setTranslationY(startY);
-        ObjectAnimator anim = AnimatorUtils.ofFloat(null, view,
-                "translationX", "translationY", startX, startY, endX, endY);
+        Animator anim = AnimatorUtils.ofPointF(view, TRANSLATIONS_PROPERTY,
+                startX, startY, endX, endY);
 
         if (anim != null) {
             TransitionPositionListener listener = new TransitionPositionListener(view, values.view,
