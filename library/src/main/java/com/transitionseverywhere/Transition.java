@@ -116,7 +116,7 @@ import java.util.StringTokenizer;
  * {@link com.transitionseverywhere.R.styleable#TransitionTarget}, and {@link com.transitionseverywhere.R.styleable#Fade},
  * {@link com.transitionseverywhere.R.styleable#Slide}, and {@link com.transitionseverywhere.R.styleable#ChangeTransform}.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public abstract class Transition implements Cloneable {
 
     private static final String LOG_TAG = "Transition";

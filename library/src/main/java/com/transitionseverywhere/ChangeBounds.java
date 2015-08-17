@@ -323,13 +323,12 @@ public class ChangeBounds extends Transition {
                     int maxWidth = Math.max(startWidth, endWidth);
                     int maxHeight = Math.max(startHeight, endHeight);
 
-                    view.setLeft(startLeft);
-                    view.setTop(startTop);
-                    view.setRight(startLeft + maxWidth);
-                    view.setBottom(startTop + maxHeight);
-                    ObjectAnimator positionAnimator = null;
+                    ViewUtils.setLeftTopRightBottom(view, startLeft, startTop, startLeft + maxWidth,
+                            startTop + maxHeight);
+
+                    Animator positionAnimator = null;
                     if (startLeft != endLeft || startTop != endTop) {
-                        positionAnimator = AnimatorUtils.ofInt(this, view, "left", "top",
+                        positionAnimator = AnimatorUtils.ofPointF(view, POSITION_PROPERTY, getPathMotion(),
                                 startLeft, startTop, endLeft, endTop);
                     }
                     final Rect finalClip = endClip;
@@ -356,10 +355,8 @@ public class ChangeBounds extends Transition {
                             public void onAnimationEnd(Animator animation) {
                                 if (!mIsCanceled) {
                                     ViewUtils.setClipBounds(view, finalClip);
-                                    view.setLeft(endLeft);
-                                    view.setTop(endTop);
-                                    view.setRight(endRight);
-                                    view.setBottom(endBottom);
+                                    ViewUtils.setLeftTopRightBottom(view, endLeft, endTop, endRight,
+                                            endBottom);
                                 }
                             }
                         });

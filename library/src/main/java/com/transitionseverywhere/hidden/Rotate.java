@@ -30,7 +30,7 @@ import com.transitionseverywhere.TransitionValues;
  * This transition captures the rotation property of targets before and after
  * the scene change and animates any changes.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Rotate extends Transition {
 
     private static final String PROPNAME_ROTATION = "android:rotate:rotation";

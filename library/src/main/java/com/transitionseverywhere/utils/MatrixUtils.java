@@ -215,7 +215,7 @@ public class MatrixUtils {
         imageView.invalidate();
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public static class MatrixEvaluator implements TypeEvaluator<Matrix> {
 
         float[] mTempStartValues = new float[9];
@@ -237,7 +237,7 @@ public class MatrixUtils {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public static class NullMatrixEvaluator implements TypeEvaluator<Matrix> {
         @Override
         public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {

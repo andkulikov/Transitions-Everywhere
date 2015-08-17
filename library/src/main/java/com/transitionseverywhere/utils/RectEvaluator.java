@@ -23,7 +23,7 @@ import android.os.Build;
 /**
  * This evaluator can be used to perform type interpolation between <code>Rect</code> values.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class RectEvaluator implements TypeEvaluator<Rect> {
 
     /**

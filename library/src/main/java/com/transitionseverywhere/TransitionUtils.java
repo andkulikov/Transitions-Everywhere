@@ -38,7 +38,7 @@ import com.transitionseverywhere.utils.ViewUtils;
  *
  * @hide
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class TransitionUtils {
     private static int MAX_IMAGE_SIZE = (1024 * 1024);
 

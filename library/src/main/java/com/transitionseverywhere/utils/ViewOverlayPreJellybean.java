@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Andrey Kulikov on 15.11.14.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 class ViewOverlayPreJellybean extends FrameLayout {
 
     private static final Field FIELD_VIEW_PARENT = ReflectionUtils.getPrivateField(View.class, "mParent");

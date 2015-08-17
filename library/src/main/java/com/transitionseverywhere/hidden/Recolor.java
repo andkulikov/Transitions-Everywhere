@@ -41,7 +41,7 @@ import com.transitionseverywhere.TransitionValues;
  * color} of the text for target TextViews. If the color changes between
  * scenes, the color change is animated.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Recolor extends Transition {
 
     private static final String PROPNAME_BACKGROUND = "android:recolor:background";

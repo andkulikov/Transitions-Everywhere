@@ -38,7 +38,7 @@ import android.view.animation.DecelerateInterpolator;
  * <p>Views move away from the focal View or the center of the Scene if
  * no epicenter was provided.</p>
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Explode extends Visibility {
     private static final TimeInterpolator sDecelerate = new DecelerateInterpolator();
     private static final TimeInterpolator sAccelerate = new AccelerateInterpolator();

@@ -13,55 +13,10 @@ import com.transitionseverywhere.R;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-@TargetApi(VERSION_CODES.HONEYCOMB)
+@TargetApi(VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ViewUtils {
-    interface ViewUtilsImpl {
-        float getTransitionAlpha(View v);
 
-        boolean isLaidOut(View v, boolean defaultValue);
-
-        void setClipBounds(View v, Rect clipBounds);
-
-        Rect getClipBounds(View v);
-
-        void setTransitionName(View v, String name);
-
-        String getTransitionName(View v);
-
-        void setTransitionAlpha(View v, float alpha);
-
-        boolean isTransitionAlphaCompatMode();
-
-        String getAlphaProperty();
-
-        void setTranslationZ(View view, float z);
-
-        float getTranslationZ(View view);
-
-        View addGhostView(View view, ViewGroup viewGroup, Matrix matrix);
-
-        void removeGhostView(View view);
-
-        void transformMatrixToGlobal(View view, Matrix matrix);
-
-        void transformMatrixToLocal(View view, Matrix matrix);
-
-        void setAnimationMatrix(View view, Matrix matrix);
-
-        Object getWindowId(View view);
-
-        boolean isRtl(View view);
-
-        void setHasTransientState(View view, boolean hasTransientState);
-
-        boolean hasTransientState(View view);
-
-        void setTransitionVisibility(View v, int visibility);
-
-        void setLeftTopRightBottom(View view, int left, int top, int right, int bottom);
-    }
-
-    static class BaseViewUtilsImpl implements ViewUtilsImpl {
+    static class BaseViewUtils {
 
         private static final Field FIELD_VIEW_FLAGS =
                 ReflectionUtils.getPrivateField(View.class, "mViewFlags");
@@ -72,108 +27,87 @@ public class ViewUtils {
                 ReflectionUtils.getPrivateMethod(View.class, "setFrame", int.class, int.class,
                         int.class, int.class);
 
-        @Override
         public float getTransitionAlpha(View v) {
             return v.getAlpha();
         }
 
-        @Override
         public boolean isLaidOut(View v, boolean defaultValue) {
             return defaultValue;
         }
 
-        @Override
         public void setClipBounds(View v, Rect clipBounds) {
             // TODO: Implement support behavior
         }
 
-        @Override
         public Rect getClipBounds(View v) {
             // TODO: Implement support behavior
             return null;
         }
 
-        @Override
         public void setTransitionName(View v, String name) {
             v.setTag(R.id.transitionName, name);
         }
 
-        @Override
         public String getTransitionName(View v) {
             return (String) v.getTag(R.id.transitionName);
         }
 
-        @Override
         public void setTransitionAlpha(View v, float alpha) {
             v.setAlpha(alpha);
         }
 
-        @Override
         public boolean isTransitionAlphaCompatMode() {
             return true;
         }
 
-        @Override
         public String getAlphaProperty() {
             return "alpha";
         }
 
-        @Override
         public void setTranslationZ(View view, float z) {
             // do nothing
         }
 
-        @Override
         public float getTranslationZ(View view) {
             return 0;
         }
 
-        @Override
         public View addGhostView(View view, ViewGroup viewGroup, Matrix matrix) {
             return null;
         }
 
-        @Override
         public void removeGhostView(View view) {
             // do nothing
         }
 
-        @Override
         public void transformMatrixToGlobal(View view, Matrix matrix) {
             // TODO: Implement support behavior
         }
 
-        @Override
         public void transformMatrixToLocal(View v, Matrix matrix) {
             // TODO: Implement support behavior
         }
 
-        @Override
         public void setAnimationMatrix(View view, Matrix matrix) {
             // TODO: Implement support behavior
         }
 
-        @Override
         public Object getWindowId(View view) {
             return null;
         }
 
-        @Override
         public boolean isRtl(View view) {
             return false;
         }
 
-        @Override
         public void setHasTransientState(View view, boolean hasTransientState) {
             // do nothing; API doesn't exist
         }
 
-        @Override
         public boolean hasTransientState(View view) {
             return false;
         }
 
-        @Override
         public void setTransitionVisibility(View v, int visibility) {
             int value = (Integer) ReflectionUtils.getFieldValue(v, 0, FIELD_VIEW_FLAGS);
             value = (value & ~VIEW_VISIBILITY_MASK) | visibility;
@@ -182,7 +116,6 @@ public class ViewUtils {
 
         private Integer[] mTempIntArray = new Integer[4];
 
-        @Override
         public void setLeftTopRightBottom(View v, int left, int top, int right, int bottom) {
             // optimizations for reflection invoke autoboxing
             if (mTempIntArray[0] == null || mTempIntArray[0].intValue() != left) {
@@ -204,7 +137,7 @@ public class ViewUtils {
     }
 
     @TargetApi(VERSION_CODES.JELLY_BEAN)
-    static class ViewUtilsJellyBean extends BaseViewUtilsImpl {
+    static class ViewUtilsJellyBean extends BaseViewUtils {
         @Override
         public void setHasTransientState(View view, boolean hasTransientState) {
             view.setHasTransientState(hasTransientState);
@@ -242,7 +175,7 @@ public class ViewUtils {
         }
     }
 
-    private static final ViewUtilsImpl IMPL;
+    private static final BaseViewUtils IMPL;
 
     static {
         final int version = VERSION.SDK_INT;
@@ -257,7 +190,7 @@ public class ViewUtils {
         } else if (version >= VERSION_CODES.JELLY_BEAN) {
             IMPL = new ViewUtilsJellyBean();
         } else {
-            IMPL = new BaseViewUtilsImpl();
+            IMPL = new BaseViewUtils();
         }
     }
 

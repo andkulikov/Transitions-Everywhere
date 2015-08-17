@@ -7,20 +7,13 @@ import android.view.ViewGroup;
 
 public class ViewOverlayUtils {
 
-    interface ViewOverlayUtilsImpl {
-        void addOverlay(ViewGroup sceneRoot, Drawable drawable);
+    static class BaseViewOverlayUtils {
 
-        void removeOverlay(ViewGroup sceneRoot, Drawable drawable);
-    }
-
-    static class BaseViewOverlayUtilsImpl implements ViewOverlayUtilsImpl {
-        @Override
         public void addOverlay(ViewGroup sceneRoot, Drawable drawable) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
             viewOverlay.addDrawable(drawable);
         }
 
-        @Override
         public void removeOverlay(ViewGroup sceneRoot, Drawable drawable) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
             viewOverlay.removeDrawable(drawable);
@@ -29,7 +22,7 @@ public class ViewOverlayUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    static class JellyBeanMR2ViewUtilsImpl implements ViewOverlayUtilsImpl {
+    static class JellyBeanMR2ViewUtils extends BaseViewOverlayUtils {
         @Override
         public void addOverlay(ViewGroup sceneRoot, Drawable drawable) {
             sceneRoot.getOverlay().add(drawable);
@@ -41,13 +34,13 @@ public class ViewOverlayUtils {
         }
     }
 
-    private static final ViewOverlayUtilsImpl IMPL;
+    private static final BaseViewOverlayUtils IMPL;
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            IMPL = new JellyBeanMR2ViewUtilsImpl();
+            IMPL = new JellyBeanMR2ViewUtils();
         } else {
-            IMPL = new BaseViewOverlayUtilsImpl();
+            IMPL = new BaseViewOverlayUtils();
         }
     }
 

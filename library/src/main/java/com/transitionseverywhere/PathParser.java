@@ -25,7 +25,7 @@ import java.util.Arrays;
 /**
  * @hide
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class PathParser {
     static final String LOGTAG = PathParser.class.getSimpleName();
 

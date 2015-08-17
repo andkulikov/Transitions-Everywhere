@@ -40,7 +40,7 @@ import java.util.Map;
  * to the end text.  This is useful in situations where you want to resize a
  * text view to its new size before displaying the text that goes there.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ChangeText extends Transition {
 
     private static final String LOG_TAG = "TextChange";

@@ -61,7 +61,7 @@ import com.transitionseverywhere.utils.ViewUtils;
  * attributes of {@link com.transitionseverywhere.R.styleable#Fade} and
  * {@link com.transitionseverywhere.R.styleable#Transition}.</p>
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Fade extends Visibility {
 
     private static final String LOG_TAG = "Fade";

@@ -43,7 +43,7 @@ import com.transitionseverywhere.utils.ViewUtils;
  * {@link #onAppear(ViewGroup, View, TransitionValues, TransitionValues)},
  * {@link #onDisappear(ViewGroup, View, TransitionValues, TransitionValues)}.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public abstract class Visibility extends Transition {
 
     static final String PROPNAME_VISIBILITY = "android:visibility:visibility";

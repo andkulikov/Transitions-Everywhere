@@ -11,27 +11,8 @@ import com.transitionseverywhere.hidden.Crossfade;
 
 public class ViewGroupOverlayUtils {
 
-    interface ViewGroupOverlayUtilsImpl {
-        void addOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY);
+    static class BaseViewGroupOverlayUtils {
 
-        void removeOverlay(ViewGroup sceneRoot, View overlayView);
-
-        void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY);
-
-        void initializeOverlay(ViewGroup sceneRoot);
-
-        int[] getLocationOnScreenOfOverlayView(ViewGroup sceneRoot, View overlayView);
-
-        void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
-                                 BitmapDrawable startDrawable, BitmapDrawable endDrawable);
-
-        void removeCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
-                                    BitmapDrawable startDrawable, BitmapDrawable endDrawable);
-    }
-
-    static class BaseViewGroupOverlayUtilsImpl implements ViewGroupOverlayUtilsImpl {
-
-        @Override
         public void addOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
             if (viewOverlay != null) {
@@ -39,7 +20,6 @@ public class ViewGroupOverlayUtils {
             }
         }
 
-        @Override
         public void removeOverlay(ViewGroup sceneRoot, View overlayView) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
             if (viewOverlay != null) {
@@ -47,7 +27,6 @@ public class ViewGroupOverlayUtils {
             }
         }
 
-        @Override
         public void moveViewInOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
             if (viewOverlay != null) {
@@ -55,25 +34,21 @@ public class ViewGroupOverlayUtils {
             }
         }
 
-        @Override
         public void initializeOverlay(ViewGroup sceneRoot) {
             ViewOverlayPreJellybean.getOverlay(sceneRoot);
         }
 
-        @Override
         public int[] getLocationOnScreenOfOverlayView(ViewGroup sceneRoot, View overlayView) {
             int[] location = new int[2];
             overlayView.getLocationOnScreen(location);
             return location;
         }
 
-        @Override
         public void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                         BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
             //TODO ViewOverlay
         }
 
-        @Override
         public void removeCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                            BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
             //TODO ViewOverlay
@@ -81,7 +56,8 @@ public class ViewGroupOverlayUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    static class JellyBeanMR2ViewGroupUtilsImpl implements ViewGroupOverlayUtilsImpl {
+    static class JellyBeanMR2ViewGroupUtils extends BaseViewGroupOverlayUtils {
+
         @Override
         public void addOverlay(ViewGroup sceneRoot, View overlayView, int screenX, int screenY) {
             moveViewInOverlay(sceneRoot, overlayView, screenX, screenY);
@@ -143,13 +119,13 @@ public class ViewGroupOverlayUtils {
 
     }
 
-    private static final ViewGroupOverlayUtilsImpl IMPL;
+    private static final BaseViewGroupOverlayUtils IMPL;
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            IMPL = new JellyBeanMR2ViewGroupUtilsImpl();
+            IMPL = new JellyBeanMR2ViewGroupUtils();
         } else {
-            IMPL = new BaseViewGroupOverlayUtilsImpl();
+            IMPL = new BaseViewGroupOverlayUtils();
         }
     }
 
