@@ -60,8 +60,11 @@ public class ChangeTransform extends Transition {
             PROPNAME_PARENT_MATRIX,
     };
 
-    private static final Property<View, Matrix> ANIMATION_MATRIX_PROPERTY =
-            new Property<View, Matrix>(Matrix.class, "animationMatrix") {
+    private static final Property<View, Matrix> ANIMATION_MATRIX_PROPERTY;
+
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            ANIMATION_MATRIX_PROPERTY = new Property<View, Matrix>(Matrix.class, "animationMatrix") {
                 @Override
                 public Matrix get(View object) {
                     return null;
@@ -72,6 +75,10 @@ public class ChangeTransform extends Transition {
                     ViewUtils.setAnimationMatrix(object, value);
                 }
             };
+        } else {
+            ANIMATION_MATRIX_PROPERTY = null;
+        }
+    }
 
     private boolean mUseOverlay = true;
     private boolean mReparent = true;

@@ -55,18 +55,27 @@ public class ChangeImageTransform extends Transition {
             PROPNAME_BOUNDS,
     };
 
-    private static Property<ImageView, Matrix> ANIMATED_TRANSFORM_PROPERTY
-            = new Property<ImageView, Matrix>(Matrix.class, "animatedTransform") {
-        @Override
-        public void set(ImageView object, Matrix value) {
-            MatrixUtils.animateTransform(object, value);
-        }
+    private static final Property<ImageView, Matrix> ANIMATED_TRANSFORM_PROPERTY;
 
-        @Override
-        public Matrix get(ImageView object) {
-            return null;
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            ANIMATED_TRANSFORM_PROPERTY = new Property<ImageView, Matrix>(Matrix.class,
+                    "animatedTransform") {
+
+                @Override
+                public void set(ImageView object, Matrix value) {
+                    MatrixUtils.animateTransform(object, value);
+                }
+
+                @Override
+                public Matrix get(ImageView object) {
+                    return null;
+                }
+            };
+        } else {
+            ANIMATED_TRANSFORM_PROPERTY = null;
         }
-    };
+    }
 
     public ChangeImageTransform() {
     }

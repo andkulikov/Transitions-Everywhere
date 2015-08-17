@@ -185,10 +185,10 @@ public class TransitionManager {
 
         final ViewGroup sceneRoot = scene.getSceneRoot();
         if (!sPendingTransitions.contains(sceneRoot)) {
-            sPendingTransitions.add(sceneRoot);
-
             Transition transitionClone = null;
             if (isTransitionsAllowed()) {
+                sPendingTransitions.add(sceneRoot);
+
                 if (transition != null) {
                     transitionClone = transition.clone();
                     transitionClone.setSceneRoot(sceneRoot);

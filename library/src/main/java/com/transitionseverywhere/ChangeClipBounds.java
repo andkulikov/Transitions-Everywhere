@@ -45,6 +45,28 @@ public class ChangeClipBounds extends Transition {
             PROPNAME_CLIP,
     };
 
+    public static final Property<View, Rect> VIEW_CLIP_BOUNDS;
+
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            VIEW_CLIP_BOUNDS = new Property<View, Rect>(Rect.class, "clipBounds") {
+
+                @Override
+                public void set(View object, Rect value) {
+                    ViewUtils.setClipBounds(object, value);
+                }
+
+                @Override
+                public Rect get(View object) {
+                    return ViewUtils.getClipBounds(object);
+                }
+
+            };
+        } else {
+            VIEW_CLIP_BOUNDS = null;
+        }
+    }
+
     public ChangeClipBounds() {}
 
     public ChangeClipBounds(Context context, AttributeSet attrs) {
@@ -108,18 +130,4 @@ public class ChangeClipBounds extends Transition {
         return ObjectAnimator.ofObject(endValues.view, VIEW_CLIP_BOUNDS, evaluator, start, end);
     }
 
-    public static final Property<View, Rect> VIEW_CLIP_BOUNDS =
-            new Property<View, Rect>(Rect.class, "clipBounds") {
-
-                @Override
-                public void set(View object, Rect value) {
-                    ViewUtils.setClipBounds(object, value);
-                }
-
-                @Override
-                public Rect get(View object) {
-                    return ViewUtils.getClipBounds(object);
-                }
-
-            };
 }

@@ -34,14 +34,21 @@ import com.transitionseverywhere.utils.PointFProperty;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class TranslationAnimationCreator {
 
-    public static final PointFProperty<View> TRANSLATIONS_PROPERTY =
-            new PointFProperty<View>("translations") {
+    public static final PointFProperty<View> TRANSLATIONS_PROPERTY;
+
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            TRANSLATIONS_PROPERTY = new PointFProperty<View>("translations") {
                 @Override
                 public void set(View view, PointF topLeft) {
                     view.setTranslationX(topLeft.x);
                     view.setTranslationY(topLeft.y);
                 }
             };
+        } else {
+            TRANSLATIONS_PROPERTY = null;
+        }
+    }
 
     /**
      * Creates an animator that can be used for x and/or y translations. When interrupted,

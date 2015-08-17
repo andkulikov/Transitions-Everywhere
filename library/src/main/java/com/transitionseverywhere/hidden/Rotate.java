@@ -56,7 +56,7 @@ public class Rotate extends Transition {
         float endRotation = (Float) endValues.values.get(PROPNAME_ROTATION);
         if (startRotation != endRotation) {
             view.setRotation(startRotation);
-            return ObjectAnimator.ofFloat(view, "rotation",
+            return ObjectAnimator.ofFloat(view, View.ROTATION,
                     startRotation, endRotation);
         }
         return null;
