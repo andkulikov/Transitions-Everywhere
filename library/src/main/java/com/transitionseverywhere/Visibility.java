@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 
 import com.transitionseverywhere.utils.AnimatorUtils;
 import com.transitionseverywhere.utils.ViewGroupOverlayUtils;
+import com.transitionseverywhere.utils.ViewGroupUtils;
 import com.transitionseverywhere.utils.ViewUtils;
 
 /**
@@ -500,13 +501,19 @@ public abstract class Visibility extends Transition {
         private final boolean mIsForcedVisibility;
         private final View mView;
         private final int mFinalVisibility;
+        private final ViewGroup mParent;
 
+        private boolean mLayoutSuppressed;
+        private boolean mFinalVisibilitySet;
         boolean mCanceled = false;
 
         public DisappearListener(View view, int finalVisibility, boolean isForcedVisibility) {
             mView = view;
             mIsForcedVisibility = isForcedVisibility;
             mFinalVisibility = finalVisibility;
+            mParent = (ViewGroup) view.getParent();
+            // Prevent a layout from including mView in its calculation.
+            suppressLayout(true);
         }
 
         @Override
@@ -529,23 +536,12 @@ public abstract class Visibility extends Transition {
         }
 
         @Override
-        public void onAnimationRepeat(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationStart(Animator animation) {
-
-        }
-
-        @Override
         public void onAnimationEnd(Animator animation) {
             hideViewWhenNotCanceled();
         }
 
         @Override
         public void onTransitionStart(Transition transition) {
-            // do nothing
         }
 
         @Override
@@ -555,17 +551,16 @@ public abstract class Visibility extends Transition {
 
         @Override
         public void onTransitionCancel(Transition transition) {
-            // do nothing
         }
 
         @Override
         public void onTransitionPause(Transition transition) {
-            // do nothing
+            suppressLayout(false);
         }
 
         @Override
         public void onTransitionResume(Transition transition) {
-            // do nothing
+            suppressLayout(true);
         }
 
         private void hideViewWhenNotCanceled() {
@@ -574,9 +569,23 @@ public abstract class Visibility extends Transition {
                     if (!ViewUtils.isTransitionAlphaCompatMode()) {
                         ViewUtils.setTransitionAlpha(mView, 0);
                     }
-                } else {
-                    mView.setVisibility(mFinalVisibility);
+                } else if (!mFinalVisibilitySet) {
+                    // Recreate the parent's display list in case it includes mView.
+                    ViewUtils.setTransitionVisibility(mView, mFinalVisibility);
+                    if (mParent != null) {
+                        mParent.invalidate();
+                    }
+                    mFinalVisibilitySet = true;
                 }
+            }
+            // Layout is allowed now that the View is in its final state
+            suppressLayout(false);
+        }
+
+        private void suppressLayout(boolean suppress) {
+            if (mLayoutSuppressed != suppress && mParent != null && !mIsForcedVisibility) {
+                mLayoutSuppressed = suppress;
+                ViewGroupUtils.suppressLayout(mParent, suppress);
             }
         }
     }
