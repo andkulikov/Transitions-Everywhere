@@ -25,6 +25,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.IntProperty;
+import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -46,6 +48,41 @@ public class Recolor extends Transition {
 
     private static final String PROPNAME_BACKGROUND = "android:recolor:background";
     private static final String PROPNAME_TEXT_COLOR = "android:recolor:textColor";
+
+    public static final Property<TextView, Integer> TEXTVIEW_TEXT_COLOR;
+    public static final Property<ColorDrawable, Integer> COLORDRAWABLE_COLOR;
+
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            TEXTVIEW_TEXT_COLOR = new IntProperty<TextView>("textColor") {
+
+                @Override
+                public void setValue(TextView object, int value) {
+                    object.setTextColor(value);
+                }
+
+                @Override
+                public Integer get(TextView object) {
+                    return 0;
+                }
+
+            };
+            COLORDRAWABLE_COLOR = new IntProperty<ColorDrawable>("color") {
+                @Override
+                public void setValue(ColorDrawable object, int value) {
+                    object.setColor(value);
+                }
+
+                @Override
+                public Integer get(ColorDrawable object) {
+                    return object.getColor();
+                }
+            };
+        } else {
+            TEXTVIEW_TEXT_COLOR = null;
+            COLORDRAWABLE_COLOR = null;
+        }
+    }
 
     public Recolor() {}
 
@@ -80,14 +117,12 @@ public class Recolor extends Transition {
         final View view = endValues.view;
         Drawable startBackground = (Drawable) startValues.values.get(PROPNAME_BACKGROUND);
         Drawable endBackground = (Drawable) endValues.values.get(PROPNAME_BACKGROUND);
-        boolean changed = false;
         if (startBackground instanceof ColorDrawable && endBackground instanceof ColorDrawable) {
             ColorDrawable startColor = (ColorDrawable) startBackground;
             ColorDrawable endColor = (ColorDrawable) endBackground;
             if (startColor.getColor() != endColor.getColor()) {
                 endColor.setColor(startColor.getColor());
-                changed = true;
-                return ObjectAnimator.ofObject(endBackground, "color",
+                return ObjectAnimator.ofObject(endColor, COLORDRAWABLE_COLOR,
                         new ArgbEvaluator(), startColor.getColor(), endColor.getColor());
             }
         }
@@ -97,8 +132,7 @@ public class Recolor extends Transition {
             int end = (Integer) endValues.values.get(PROPNAME_TEXT_COLOR);
             if (start != end) {
                 textView.setTextColor(end);
-                changed = true;
-                return ObjectAnimator.ofObject(textView, "textColor",
+                return ObjectAnimator.ofObject(textView, TEXTVIEW_TEXT_COLOR,
                         new ArgbEvaluator(), start, end);
             }
         }
