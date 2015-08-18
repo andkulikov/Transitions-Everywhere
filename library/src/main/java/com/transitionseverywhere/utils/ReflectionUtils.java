@@ -113,4 +113,62 @@ public class ReflectionUtils {
         return defaultValue;
     }
 
+    // Optimizations to avoid creating new objects array in every call of method.invoke(...)
+    // caused by "Object... args" arguments definition
+
+    private static final Object[] EMPTY_ARRAY = new Object[0];
+    private static final Object[] ONE_OBJECT_ARRAY = new Object[1];
+    private static final Object[] TWO_OBJECTS_ARRAY = new Object[2];
+    private static final Object[] THREE_OBJECTS_ARRAY = new Object[3];
+    private static final Object[] FOUR_OBJECTS_ARRAY = new Object[4];
+
+    public static Object invoke(Object receiver, Object defaultValue, Method method) {
+        return invoke(receiver, defaultValue, method, EMPTY_ARRAY);
+    }
+
+    public static Object invoke(Object receiver, Object defaultValue, Method method, Object firstArg) {
+        ONE_OBJECT_ARRAY[0] = firstArg;
+        Object result = invoke(receiver, defaultValue, method, ONE_OBJECT_ARRAY);
+        ONE_OBJECT_ARRAY[0] = null;
+        return result;
+    }
+
+    public static Object invoke(Object receiver, Object defaultValue, Method method,
+                                Object firstArg, Object secondArg) {
+        TWO_OBJECTS_ARRAY[0] = firstArg;
+        TWO_OBJECTS_ARRAY[1] = secondArg;
+        Object result = invoke(receiver, defaultValue, method, TWO_OBJECTS_ARRAY);
+        TWO_OBJECTS_ARRAY[0] = null;
+        TWO_OBJECTS_ARRAY[1] = null;
+        return result;
+    }
+
+
+    public static Object invoke(Object receiver, Object defaultValue, Method method,
+                                Object firstArg, Object secondArg, Object thirdArg) {
+        THREE_OBJECTS_ARRAY[0] = firstArg;
+        THREE_OBJECTS_ARRAY[1] = secondArg;
+        THREE_OBJECTS_ARRAY[2] = thirdArg;
+        Object result = invoke(receiver, defaultValue, method, THREE_OBJECTS_ARRAY);
+        THREE_OBJECTS_ARRAY[0] = null;
+        THREE_OBJECTS_ARRAY[1] = null;
+        THREE_OBJECTS_ARRAY[2] = null;
+        return result;
+    }
+
+    public static Object invoke(Object receiver, Object defaultValue, Method method,
+                                Object firstArg, Object secondArg,
+                                Object thirdArg, Object fourthArg) {
+        FOUR_OBJECTS_ARRAY[0] = firstArg;
+        FOUR_OBJECTS_ARRAY[1] = secondArg;
+        FOUR_OBJECTS_ARRAY[2] = thirdArg;
+        FOUR_OBJECTS_ARRAY[3] = fourthArg;
+        Object result = invoke(receiver, defaultValue, method, FOUR_OBJECTS_ARRAY);
+        FOUR_OBJECTS_ARRAY[0] = null;
+        FOUR_OBJECTS_ARRAY[1] = null;
+        FOUR_OBJECTS_ARRAY[2] = null;
+        FOUR_OBJECTS_ARRAY[3] = null;
+        return result;
+    }
+
 }

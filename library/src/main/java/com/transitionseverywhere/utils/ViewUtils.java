@@ -115,24 +115,8 @@ public class ViewUtils {
             ReflectionUtils.setFieldValue(v, FIELD_VIEW_FLAGS, value);
         }
 
-        private Integer[] mTempIntArray = new Integer[4];
-
         public void setLeftTopRightBottom(View v, int left, int top, int right, int bottom) {
-            // optimizations for reflection invoke autoboxing
-            if (mTempIntArray[0] == null || mTempIntArray[0].intValue() != left) {
-                mTempIntArray[0] = left;
-            }
-            if (mTempIntArray[1] == null || mTempIntArray[1].intValue() != top) {
-                mTempIntArray[1] = top;
-            }
-            if (mTempIntArray[2] == null || mTempIntArray[2].intValue() != right) {
-                mTempIntArray[2] = right;
-            }
-            if (mTempIntArray[3] == null || mTempIntArray[3].intValue() != bottom) {
-                mTempIntArray[3] = bottom;
-            }
-
-            ReflectionUtils.invoke(v, null, METHOD_SET_FRAME, mTempIntArray);
+            ReflectionUtils.invoke(v, null, METHOD_SET_FRAME, left, top, right, bottom);
         }
 
     }

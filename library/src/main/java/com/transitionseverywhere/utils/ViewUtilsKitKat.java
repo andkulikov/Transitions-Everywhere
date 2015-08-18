@@ -37,12 +37,9 @@ class ViewUtilsKitKat extends ViewUtils.ViewUtilsJellyBeanMR2 {
         return v.isLaidOut();
     }
 
-    private Float[] mTempFloatArray = new Float[1];
-
     @Override
     public void setTransitionAlpha(View v, float alpha) {
-        mTempFloatArray[0] = alpha;
-        ReflectionUtils.invoke(v, null, METHOD_setTransitionAlpha, mTempFloatArray);
+        ReflectionUtils.invoke(v, null, METHOD_setTransitionAlpha, alpha);
     }
 
     @Override
