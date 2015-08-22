@@ -418,6 +418,7 @@ public class ChangeBounds extends Transition {
                 view.draw(canvas);
                 final BitmapDrawable drawable = new BitmapDrawable(
                         sceneRoot.getContext().getResources(), bitmap);
+                drawable.setBounds(0, 0, view.getWidth(), view.getHeight());
                 Animator anim;
                 anim = AnimatorUtils.ofPointF(drawable, DRAWABLE_ORIGIN_PROPERTY, getPathMotion(),
                         startX - tempLocation[0], startY - tempLocation[1],
