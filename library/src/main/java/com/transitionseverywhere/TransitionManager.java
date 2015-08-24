@@ -70,7 +70,7 @@ public class TransitionManager {
 
     private static String LOG_TAG = "TransitionManager";
 
-    private static Transition sDefaultTransition = new AutoTransition();
+    protected static Transition sDefaultTransition = new AutoTransition();
 
     private static final String[] EMPTY_STRINGS = new String[0];
 
@@ -181,7 +181,7 @@ public class TransitionManager {
      * @param scene      The scene being entered
      * @param transition The transition to play for this scene change
      */
-    private static void changeScene(Scene scene, Transition transition) {
+    protected static void changeScene(Scene scene, Transition transition) {
 
         final ViewGroup sceneRoot = scene.getSceneRoot();
         if (!sPendingTransitions.contains(sceneRoot)) {

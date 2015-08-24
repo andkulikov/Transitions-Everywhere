@@ -24,4 +24,5 @@
     <item type="id" name="parentMatrix" />
     <item type="id" name="scene_layoutid_cache"/>
     <item type="id" name="group_layouttransition_cache"/>
+    <item type="id" name="phantom_view"/>
 </resources>
