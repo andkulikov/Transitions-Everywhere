@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 // Version Information
 def versionMajor = 1
-def versionMinor = 5
+def versionMinor = 6
 def versionPatch = 0
 def versionBuild = 10
 
