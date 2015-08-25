@@ -25,7 +25,7 @@ Changelog
 ============
 <b>1.6.0</b><br>
 Merge with final Android Marshmallow SDK<br>
-PathMotion aka Curved motion is backported! [What is it and how to use it][6]<br>
+PathMotion aka <b>Curved motion is backported</b>! [What is it and how to use it][6]<br>
 Bug fixes and performance optimizations. Animations now works on Android 4.0+ (instead of 3.1+ in previous version)
 
 <b>1.5.0</b><br>
