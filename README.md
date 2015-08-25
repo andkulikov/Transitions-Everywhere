@@ -1,6 +1,6 @@
 Transitions Everywhere
 ============
-Backport of [Transitions API from Android KitKat and Lollipop][1]. Compatible with <b>Android 2.2+</b>.
+Backport of [Android Transitions API][1]. Animations backported to <b>Android 4.0+</b>. API compatible with <b>Android 2.2+</b>
 
 About Transitions API
 ============
@@ -16,13 +16,18 @@ Usage
 Gradle:
 ```
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.5.0"
+    compile "com.andkulikov:transitionseverywhere:1.6.0"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+<b>1.6.0</b><br>
+Merge with final Android Marshmallow SDK<br>
+PathMotion aka Curved motion is backported! [What is it and how to use it][6]<br>
+Bug fixes and performance optimizations. Animations now works on Android 4.0+ (instead of 3.1+ in previous version)
+
 <b>1.5.0</b><br>
 Merge with Android M Preview 2<br>
 Migrate to <b>new library package name</b> and <b>maven artifact id</b>:<br>
@@ -30,12 +35,6 @@ Please update imports in your classes<br>
 from `android.transitions.everywhere.*` to `com.transitionseverywhere`<br>
 And gradle dependency<br>
 from `com.github.andkulikov:transitions-everywhere` to `com.andkulikov:transitionseverywhere`<br>
-<br>
-<b>1.4.0</b> - Merge with Android M Preview sources<br>
-<b>1.3.1 - 1.3.2</b> - Bug fix<br>
-<b>1.3.0</b> - Merge with changes from Android 5.1<br>
-<b>1.2.0 - 1.2.2</b> - Bug fix<br>
-<b>1.1.0</b> - Port of new transitions from <b>Android 5.0 Lollipop</b>
 
 Transitions via XML
 ============
@@ -58,8 +57,8 @@ Android 5.0 adds new method `setTransitionName()` for `View` class. With this li
 
 About library
 ============
-Transition animations backported to <b>Android 3.1</b>.<br>
-For Android ver. <b>>= 2.2</b> and < <b>3.0</b> scene to scene (layout to layout) changes is executed by the same API  but without animations.
+Transition animations backported to <b>Android 4.0+</b>.<br>
+For Android ver. <b>>= 2.2</b> and < <b>4.0</b> scene to scene (layout to layout) changes is executed by the same API  but without animations.
 
 <b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find it in package  `com.transitionseverywhere.hidden`.
 
@@ -77,6 +76,7 @@ ProGuard configs
 [3]: http://habrahabr.ru/post/243363/
 [4]: https://github.com/pardom/TransitionSupportLibrary
 [5]: https://github.com/guerwan/TransitionsBackport
+[6]: http://blog.stylingandroid.com/curved-motion-part-1
 
 <br>
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-transitions--everywhere-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1050)
