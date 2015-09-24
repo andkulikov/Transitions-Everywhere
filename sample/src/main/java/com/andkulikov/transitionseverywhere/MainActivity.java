@@ -106,11 +106,29 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.open_new_activity_1:
-                ActivityTransitionManager.startActivity(MainActivity.this, NewActivity1.class);
+                TransitionSet set = new TransitionSet();
+                Slide slide = new Slide(Gravity.LEFT);
+                slide.addTarget(R.id.transition_title);
+                set.addTransition(slide);
+                ChangeBounds changeBounds = new ChangeBounds();
+                changeBounds.setReparent(true);
+                set.addTransition(changeBounds);
+                set.addTransition(new ChangeImageTransform());
+                set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+                set.setDuration(1000);
+                ActivityTransitionManager.startActivity(MainActivity.this, NewActivity1.class, set);
                 break;
             case R.id.open_new_activity_2:
-                View view = findViewById(R.id.transition_image);
-                ActivityTransitionManager.startActivity(MainActivity.this, NewActivity2.class, view);
+//                View view = findViewById(R.id.transition_image);
+//                TransitionSet set = new TransitionSet();
+//                Slide slide = new Slide(Gravity.LEFT);
+//                slide.addTarget(R.id.transition_title);
+//                set.addTransition(slide);
+//                set.addTransition(new ChangeBounds());
+//                set.addTransition(new ChangeImageTransform());
+//                set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+//                set.setDuration(350);
+//                ActivityTransitionManager.startActivity(MainActivity.this, NewActivity2.class, view, set);
                 break;
         }
     }

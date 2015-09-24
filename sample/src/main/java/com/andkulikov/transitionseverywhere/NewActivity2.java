@@ -21,7 +21,7 @@ public class NewActivity2 extends Activity {
             TransitionSet set = new TransitionSet();
             set.addTransition(new ChangeBounds());
             set.setDuration(350);
-            ActivityTransitionManager.setContentView(this, R.layout.new_activity_2, params, set);
+            ActivityTransitionManager.setContentView(this, R.layout.new_activity_2);
         }
     }
 

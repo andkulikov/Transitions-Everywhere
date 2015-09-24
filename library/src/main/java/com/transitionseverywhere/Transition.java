@@ -1727,11 +1727,14 @@ public abstract class Transition implements Cloneable {
      * createAnimators() to set things up and create all of the animations and then
      * runAnimations() to actually start the animations.
      */
-    void playTransition(ViewGroup sceneRoot) {
+    void playTransition(ViewGroup sceneRoot, boolean isReverse) {
         mStartValuesList = new ArrayList<TransitionValues>();
         mEndValuesList = new ArrayList<TransitionValues>();
-        matchStartAndEnd(mStartValues, mEndValues);
-
+        if (isReverse) {
+            matchStartAndEnd(mEndValues, mStartValues);
+        } else {
+            matchStartAndEnd(mStartValues, mEndValues);
+        }
         ArrayMap<Animator, AnimationInfo> runningAnimators = getRunningAnimators();
         synchronized (sRunningAnimators) {
             int numOldAnims = runningAnimators.size();
@@ -2442,5 +2445,4 @@ public abstract class Transition implements Cloneable {
          */
         public abstract Rect onGetEpicenter(Transition transition);
     }
-
 }
