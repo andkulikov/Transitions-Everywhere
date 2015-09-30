@@ -25,6 +25,7 @@ import android.view.View;
 
 import com.transitionseverywhere.utils.AnimatorUtils;
 import com.transitionseverywhere.utils.PointFProperty;
+import com.transitionseverywhere.utils.ViewUtils;
 
 /**
  * This class is used by Slide and Explode to create an animator that goes from the start

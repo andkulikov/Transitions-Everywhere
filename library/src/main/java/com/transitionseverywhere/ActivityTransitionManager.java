@@ -3,21 +3,23 @@ package com.transitionseverywhere;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
-import com.transitionseverywhere.activity.TransitionData;
+import com.transitionseverywhere.utils.BitmapUtil;
 import com.transitionseverywhere.utils.ViewGroupOverlayUtils;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ActivityTransitionManager extends TransitionManager {
     private static final String LOG_TAG = "ActivityTransitionManager";
-    private static Transition transition;
     private static Transition transitionClone = null;
-    private static ArrayList<TransitionData> transitionData;
 
     public static void startActivity(Activity activity, Class<?> cls) {
         ViewGroup content = (ViewGroup) activity.findViewById(android.R.id.content);
@@ -29,17 +31,16 @@ public class ActivityTransitionManager extends TransitionManager {
         startActivity(activity, cls, content, transition);
     }
 
-    public static void startActivity(Activity activity, Class<?> cls, View content, Transition transition) {
+    public static void startActivity(Activity activity, Class<?> cls, ViewGroup content,
+                                     Transition transition) {
         Intent intent = new Intent(activity, cls);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             if (isTransitionsAllowed()) {
-
                 if (transition != null) {
-                    ActivityTransitionManager.transition = transition;
                     transitionClone = transition.clone();
                 }
             }
-            sceneChangeSetup((ViewGroup) content, transitionClone);
+            sceneChangeSetup(content, transitionClone);
         }
         activity.startActivity(intent);
         activity.overridePendingTransition(0, 0);
@@ -74,6 +75,10 @@ public class ActivityTransitionManager extends TransitionManager {
 
             @Override
             public void onTransitionEnd(Transition transition) {
+//                Bitmap bitmap =  BitmapUtil.createBitmap(content);
+//                content.setBackground(new BitmapDrawable(bitmap));
+//                content.removeAllViews();
+                transitionClone = null;
                 activity.finish();
                 activity.overridePendingTransition(0, 0);
             }

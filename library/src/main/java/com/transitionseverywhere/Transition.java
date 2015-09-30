@@ -525,13 +525,18 @@ public abstract class Transition implements Cloneable {
      * and mEndValuesList and removes them from unmatchedStart and unmatchedEnd.
      */
     private void matchInstances(ArrayMap<View, TransitionValues> unmatchedStart,
-                                ArrayMap<View, TransitionValues> unmatchedEnd) {
+                                ArrayMap<View, TransitionValues> unmatchedEnd, boolean isReverse) {
         for (int i = unmatchedStart.size() - 1; i >= 0; i--) {
             View view = unmatchedStart.keyAt(i);
             if (view != null && isValidTarget(view)) {
                 TransitionValues end = unmatchedEnd.remove(view);
                 if (end != null && end.view != null && isValidTarget(end.view)) {
                     TransitionValues start = unmatchedStart.removeAt(i);
+                    if (isReverse) {
+                        View temp = start.view;
+                        start.view = end.view;
+                        end.view = temp;
+                    }
                     mStartValuesList.add(start);
                     mEndValuesList.add(end);
                 }
@@ -546,7 +551,7 @@ public abstract class Transition implements Cloneable {
      */
     private void matchItemIds(ArrayMap<View, TransitionValues> unmatchedStart,
                               ArrayMap<View, TransitionValues> unmatchedEnd,
-                              LongSparseArray<View> startItemIds, LongSparseArray<View> endItemIds) {
+                              LongSparseArray<View> startItemIds, LongSparseArray<View> endItemIds, boolean isReverse) {
         int numStartIds = startItemIds.size();
         for (int i = 0; i < numStartIds; i++) {
             View startView = startItemIds.valueAt(i);
@@ -556,6 +561,11 @@ public abstract class Transition implements Cloneable {
                     TransitionValues startValues = unmatchedStart.get(startView);
                     TransitionValues endValues = unmatchedEnd.get(endView);
                     if (startValues != null && endValues != null) {
+                        if (isReverse) {
+                            View temp = startValues.view;
+                            startValues.view = endValues.view;
+                            endValues.view = temp;
+                        }
                         mStartValuesList.add(startValues);
                         mEndValuesList.add(endValues);
                         unmatchedStart.remove(startView);
@@ -573,7 +583,7 @@ public abstract class Transition implements Cloneable {
      */
     private void matchIds(ArrayMap<View, TransitionValues> unmatchedStart,
                           ArrayMap<View, TransitionValues> unmatchedEnd,
-                          SparseArray<View> startIds, SparseArray<View> endIds) {
+                          SparseArray<View> startIds, SparseArray<View> endIds, boolean isReverse) {
         int numStartIds = startIds.size();
         for (int i = 0; i < numStartIds; i++) {
             View startView = startIds.valueAt(i);
@@ -583,6 +593,11 @@ public abstract class Transition implements Cloneable {
                     TransitionValues startValues = unmatchedStart.get(startView);
                     TransitionValues endValues = unmatchedEnd.get(endView);
                     if (startValues != null && endValues != null) {
+                        if (isReverse) {
+                            View temp = startValues.view;
+                            startValues.view = endValues.view;
+                            endValues.view = temp;
+                        }
                         mStartValuesList.add(startValues);
                         mEndValuesList.add(endValues);
                         unmatchedStart.remove(startView);
@@ -600,7 +615,7 @@ public abstract class Transition implements Cloneable {
      */
     private void matchNames(ArrayMap<View, TransitionValues> unmatchedStart,
                             ArrayMap<View, TransitionValues> unmatchedEnd,
-                            ArrayMap<String, View> startNames, ArrayMap<String, View> endNames) {
+                            ArrayMap<String, View> startNames, ArrayMap<String, View> endNames, boolean isReverse) {
         int numStartNames = startNames.size();
         for (int i = 0; i < numStartNames; i++) {
             View startView = startNames.valueAt(i);
@@ -610,6 +625,11 @@ public abstract class Transition implements Cloneable {
                     TransitionValues startValues = unmatchedStart.get(startView);
                     TransitionValues endValues = unmatchedEnd.get(endView);
                     if (startValues != null && endValues != null) {
+                        if (isReverse) {
+                            View temp = startValues.view;
+                            startValues.view = endValues.view;
+                            endValues.view = temp;
+                        }
                         mStartValuesList.add(startValues);
                         mEndValuesList.add(endValues);
                         unmatchedStart.remove(startView);
@@ -640,32 +660,38 @@ public abstract class Transition implements Cloneable {
     }
 
     private void matchStartAndEnd(TransitionValuesMaps startValues,
-                                  TransitionValuesMaps endValues) {
+                                  TransitionValuesMaps endValues, boolean isReverse) {
         ArrayMap<View, TransitionValues> unmatchedStart =
                 new ArrayMap<View, TransitionValues>(startValues.viewValues);
+//                new ArrayMap<View, TransitionValues>(isReverse ? endValues.viewValues : startValues.viewValues);
         ArrayMap<View, TransitionValues> unmatchedEnd =
                 new ArrayMap<View, TransitionValues>(endValues.viewValues);
+//                new ArrayMap<View, TransitionValues>(isReverse ? startValues.viewValues : endValues.viewValues);
 
         for (int i = 0; i < mMatchOrder.length; i++) {
             switch (mMatchOrder[i]) {
                 case MATCH_INSTANCE:
-                    matchInstances(unmatchedStart, unmatchedEnd);
+                    matchInstances(unmatchedStart, unmatchedEnd, isReverse);
                     break;
                 case MATCH_NAME:
                     matchNames(unmatchedStart, unmatchedEnd,
-                            startValues.nameValues, endValues.nameValues);
+                            startValues.nameValues, endValues.nameValues, isReverse);
                     break;
                 case MATCH_ID:
                     matchIds(unmatchedStart, unmatchedEnd,
-                            startValues.idValues, endValues.idValues);
+                            startValues.idValues, endValues.idValues, isReverse);
                     break;
                 case MATCH_ITEM_ID:
                     matchItemIds(unmatchedStart, unmatchedEnd,
-                            startValues.itemIdValues, endValues.itemIdValues);
+                            startValues.itemIdValues, endValues.itemIdValues, isReverse);
                     break;
             }
         }
-        addUnmatched(unmatchedStart, unmatchedEnd);
+//        if (isReverse) {
+//            addUnmatched(unmatchedEnd, unmatchedStart);
+//        } else {
+            addUnmatched(unmatchedStart, unmatchedEnd);
+//        }
     }
 
     /**
@@ -1731,9 +1757,9 @@ public abstract class Transition implements Cloneable {
         mStartValuesList = new ArrayList<TransitionValues>();
         mEndValuesList = new ArrayList<TransitionValues>();
         if (isReverse) {
-            matchStartAndEnd(mEndValues, mStartValues);
+            matchStartAndEnd(mEndValues, mStartValues, true);
         } else {
-            matchStartAndEnd(mStartValues, mEndValues);
+            matchStartAndEnd(mStartValues, mEndValues, false);
         }
         ArrayMap<Animator, AnimationInfo> runningAnimators = getRunningAnimators();
         synchronized (sRunningAnimators) {
@@ -2169,7 +2195,7 @@ public abstract class Transition implements Cloneable {
     void setCanRemoveViews(boolean canRemoveViews) {
         mCanRemoveViews = canRemoveViews;
     }
-    
+
     public boolean canRemoveViews() {
         return mCanRemoveViews;
     }
@@ -2444,5 +2470,21 @@ public abstract class Transition implements Cloneable {
          * there is no epicenter.
          */
         public abstract Rect onGetEpicenter(Transition transition);
+    }
+
+    public TransitionValuesMaps getStartValues() {
+        return mStartValues;
+    }
+
+    public TransitionValuesMaps getEndValues() {
+        return mEndValues;
+    }
+
+    public void setStartValues(TransitionValuesMaps mStartValues) {
+        this.mStartValues = mStartValues;
+    }
+
+    public void setEndValues(TransitionValuesMaps mEndValues) {
+        this.mEndValues = mEndValues;
     }
 }

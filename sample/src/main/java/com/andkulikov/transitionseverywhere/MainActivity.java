@@ -110,10 +110,10 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                 Slide slide = new Slide(Gravity.LEFT);
                 slide.addTarget(R.id.transition_title);
                 set.addTransition(slide);
+                set.addTransition(new ChangeImageTransform());
                 ChangeBounds changeBounds = new ChangeBounds();
                 changeBounds.setReparent(true);
                 set.addTransition(changeBounds);
-                set.addTransition(new ChangeImageTransform());
                 set.setOrdering(TransitionSet.ORDERING_TOGETHER);
                 set.setDuration(1000);
                 ActivityTransitionManager.startActivity(MainActivity.this, NewActivity1.class, set);
