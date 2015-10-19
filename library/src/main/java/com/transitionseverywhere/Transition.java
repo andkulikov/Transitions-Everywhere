@@ -238,6 +238,8 @@ public abstract class Transition implements Cloneable {
     // for adding curves to x/y View motion.
     private PathMotion mPathMotion = PathMotion.STRAIGHT_PATH_MOTION;
 
+    private boolean isReverse;
+
     /**
      * Constructs a Transition object with no target objects. A transition with
      * no targets defaults to running on all target objects in the scene hierarchy
@@ -1753,7 +1755,7 @@ public abstract class Transition implements Cloneable {
      * createAnimators() to set things up and create all of the animations and then
      * runAnimations() to actually start the animations.
      */
-    void playTransition(ViewGroup sceneRoot, boolean isReverse) {
+    void playTransition(ViewGroup sceneRoot) {
         mStartValuesList = new ArrayList<TransitionValues>();
         mEndValuesList = new ArrayList<TransitionValues>();
         if (isReverse) {
@@ -2472,19 +2474,11 @@ public abstract class Transition implements Cloneable {
         public abstract Rect onGetEpicenter(Transition transition);
     }
 
-    public TransitionValuesMaps getStartValues() {
-        return mStartValues;
+    public boolean isReverse() {
+        return isReverse;
     }
 
-    public TransitionValuesMaps getEndValues() {
-        return mEndValues;
-    }
-
-    public void setStartValues(TransitionValuesMaps mStartValues) {
-        this.mStartValues = mStartValues;
-    }
-
-    public void setEndValues(TransitionValuesMaps mEndValues) {
-        this.mEndValues = mEndValues;
+    public void setIsReverse(boolean isReverse) {
+        this.isReverse = isReverse;
     }
 }

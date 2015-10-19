@@ -582,4 +582,12 @@ public class TransitionSet extends Transition {
         }
         return clone;
     }
+
+    @Override
+    public void setIsReverse(boolean isReverse) {
+        super.setIsReverse(isReverse);
+        for (Transition transition : mTransitions) {
+            transition.setIsReverse(isReverse);
+        }
+    }
 }

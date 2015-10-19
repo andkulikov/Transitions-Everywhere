@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.transitionseverywhere.utils.AnimatorUtils;
+import com.transitionseverywhere.utils.BitmapUtil;
 import com.transitionseverywhere.utils.ViewGroupOverlayUtils;
 import com.transitionseverywhere.utils.ViewGroupUtils;
 import com.transitionseverywhere.utils.ViewUtils;
@@ -50,6 +51,7 @@ public abstract class Visibility extends Transition {
     static final String PROPNAME_VISIBILITY = "android:visibility:visibility";
     private static final String PROPNAME_PARENT = "android:visibility:parent";
     protected static final String PROPNAME_SCREEN_LOCATION = "android:visibility:screenLocation";
+    protected static final String PROPNAME_BITMAP = "android:bitmap";
 
     /**
      * Mode used in {@link #setMode(int)} to make the transition
@@ -140,6 +142,7 @@ public abstract class Visibility extends Transition {
         int[] loc = new int[2];
         transitionValues.view.getLocationOnScreen(loc);
         transitionValues.values.put(PROPNAME_SCREEN_LOCATION, loc);
+        transitionValues.values.put(PROPNAME_BITMAP, BitmapUtil.createBitmap(transitionValues.view));
     }
 
     @Override
@@ -431,6 +434,9 @@ public abstract class Visibility extends Transition {
                         ViewGroupOverlayUtils.removeOverlay(sceneRoot, finalOverlayView);
                     }
                 });
+            }
+            if (isReverse()) {
+                startValues.view.setVisibility(View.GONE);
             }
             return animator;
         }

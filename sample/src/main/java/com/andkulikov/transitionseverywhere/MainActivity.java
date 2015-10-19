@@ -110,7 +110,6 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                 Slide slide = new Slide(Gravity.LEFT);
                 slide.addTarget(R.id.transition_title);
                 set.addTransition(slide);
-                set.addTransition(new ChangeImageTransform());
                 ChangeBounds changeBounds = new ChangeBounds();
                 changeBounds.setReparent(true);
                 set.addTransition(changeBounds);
@@ -119,17 +118,21 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                 ActivityTransitionManager.startActivity(MainActivity.this, NewActivity1.class, set);
                 break;
             case R.id.open_new_activity_2:
-//                View view = findViewById(R.id.transition_image);
-//                TransitionSet set = new TransitionSet();
-//                Slide slide = new Slide(Gravity.LEFT);
-//                slide.addTarget(R.id.transition_title);
-//                set.addTransition(slide);
-//                set.addTransition(new ChangeBounds());
-//                set.addTransition(new ChangeImageTransform());
-//                set.setOrdering(TransitionSet.ORDERING_TOGETHER);
-//                set.setDuration(350);
-//                ActivityTransitionManager.startActivity(MainActivity.this, NewActivity2.class, view, set);
+                openNewActivity2();
                 break;
         }
+    }
+
+    private void openNewActivity2(){
+//        View view = findViewById(R.id.transition_image);
+//        TransitionSet set = new TransitionSet();
+//        Slide slide = new Slide(Gravity.LEFT);
+//        slide.addTarget(R.id.transition_title);
+//        set.addTransition(slide);
+//        set.addTransition(new ChangeBounds());
+//        set.addTransition(new ChangeImageTransform());
+//        set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+//        set.setDuration(350);
+//        ActivityTransitionManager.startActivity(MainActivity.this, NewActivity2.class, view, set);
     }
 }

@@ -280,7 +280,7 @@ public class TransitionManager {
                 }
             }
             if (mIsActivity) {
-                run(true);
+                run();
             }
             mTransition.clearValues(true);
         }
@@ -294,12 +294,12 @@ public class TransitionManager {
                 return true;
             }
 
-            run(false);
+            run();
 
             return true;
         }
 
-        public void run(boolean isReverse) {
+        public void run() {
             // Add to running list, handle end to remove it
             final ArrayMap<ViewGroup, ArrayList<Transition>> runningTransitions =
                     getRunningTransitions();
@@ -326,7 +326,7 @@ public class TransitionManager {
                     runningTransition.resume(mSceneRoot);
                 }
             }
-            mTransition.playTransition(mSceneRoot, isReverse);
+            mTransition.playTransition(mSceneRoot);
         }
 
     }
