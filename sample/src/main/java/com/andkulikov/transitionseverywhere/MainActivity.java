@@ -10,6 +10,7 @@ import android.widget.RadioGroup;
 import com.transitionseverywhere.ActivityTransitionManager;
 import com.transitionseverywhere.ChangeBounds;
 import com.transitionseverywhere.ChangeImageTransform;
+import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Scene;
 import com.transitionseverywhere.Slide;
 import com.transitionseverywhere.TransitionInflater;
@@ -111,8 +112,10 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                 slide.addTarget(R.id.transition_title);
                 set.addTransition(slide);
                 ChangeBounds changeBounds = new ChangeBounds();
+                Fade fade = new Fade();
                 changeBounds.setReparent(true);
                 set.addTransition(changeBounds);
+                set.addTransition(fade);
                 set.setOrdering(TransitionSet.ORDERING_TOGETHER);
                 set.setDuration(1000);
                 ActivityTransitionManager.startActivity(MainActivity.this, NewActivity1.class, set);
