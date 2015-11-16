@@ -121,9 +121,10 @@ public class Recolor extends Transition {
             ColorDrawable startColor = (ColorDrawable) startBackground;
             ColorDrawable endColor = (ColorDrawable) endBackground;
             if (startColor.getColor() != endColor.getColor()) {
+                final int finalColor = endColor.getColor();
                 endColor.setColor(startColor.getColor());
                 return ObjectAnimator.ofObject(endColor, COLORDRAWABLE_COLOR,
-                        new ArgbEvaluator(), startColor.getColor(), endColor.getColor());
+                        new ArgbEvaluator(), startColor.getColor(), finalColor);
             }
         }
         if (view instanceof TextView) {
