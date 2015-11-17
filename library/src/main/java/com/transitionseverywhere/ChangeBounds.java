@@ -427,13 +427,15 @@ public class ChangeBounds extends Transition {
                     final float transitionAlpha = ViewUtils.getTransitionAlpha(view);
                     ViewUtils.setTransitionAlpha(view, 0);
                     ViewOverlayUtils.addOverlay(sceneRoot, drawable);
-                    anim.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            ViewOverlayUtils.removeOverlay(sceneRoot, drawable);
-                            ViewUtils.setTransitionAlpha(view, transitionAlpha);
-                        }
-                    });
+                    if (!isReverse()) {
+                        anim.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                ViewOverlayUtils.removeOverlay(sceneRoot, drawable);
+                                ViewUtils.setTransitionAlpha(view, transitionAlpha);
+                            }
+                        });
+                    }
                 }
                 return anim;
             }

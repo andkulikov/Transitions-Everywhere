@@ -7,25 +7,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
+import com.transitionseverywhere.ActivityTransitionManager;
 import com.transitionseverywhere.ChangeBounds;
 import com.transitionseverywhere.ChangeImageTransform;
+import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Scene;
 import com.transitionseverywhere.Slide;
 import com.transitionseverywhere.TransitionInflater;
 import com.transitionseverywhere.TransitionManager;
 import com.transitionseverywhere.TransitionSet;
 
-public class MainActivity extends Activity implements RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends Activity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
     // We transition between these Scenes
     private Scene mScene1;
     private Scene mScene2;
     private Scene mScene3;
 
-    /** A custom TransitionManager */
+    /**
+     * A custom TransitionManager
+     */
     private TransitionManager mTransitionManagerForScene3;
 
-    /** Transitions take place in this ViewGroup. We retain this for the dynamic transition on scene 4. */
+    /**
+     * Transitions take place in this ViewGroup. We retain this for the dynamic transition on scene 4.
+     */
     private ViewGroup mSceneRoot;
 
     @Override
@@ -45,6 +51,9 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
 
         // Another scene from a layout resource file.
         mScene3 = Scene.getSceneForLayout(mSceneRoot, R.layout.scene3, this);
+
+        findViewById(R.id.open_new_activity_1).setOnClickListener(this);
+        findViewById(R.id.open_new_activity_2).setOnClickListener(this);
 
         // We create a custom TransitionManager for Scene 3, in which ChangeBounds, Fade and
         // ChangeImageTransform take place at the same time.
@@ -94,4 +103,39 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.open_new_activity_1:
+                TransitionSet set = new TransitionSet();
+                Slide slide = new Slide(Gravity.LEFT);
+                slide.addTarget(R.id.transition_title);
+                set.addTransition(slide);
+                ChangeBounds changeBounds = new ChangeBounds();
+                Fade fade = new Fade();
+                changeBounds.setReparent(true);
+                set.addTransition(changeBounds);
+                set.addTransition(fade);
+                set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+                set.setDuration(1000);
+                ActivityTransitionManager.startActivity(MainActivity.this, NewActivity1.class, set);
+                break;
+            case R.id.open_new_activity_2:
+                openNewActivity2();
+                break;
+        }
+    }
+
+    private void openNewActivity2(){
+//        View view = findViewById(R.id.transition_image);
+//        TransitionSet set = new TransitionSet();
+//        Slide slide = new Slide(Gravity.LEFT);
+//        slide.addTarget(R.id.transition_title);
+//        set.addTransition(slide);
+//        set.addTransition(new ChangeBounds());
+//        set.addTransition(new ChangeImageTransform());
+//        set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+//        set.setDuration(350);
+//        ActivityTransitionManager.startActivity(MainActivity.this, NewActivity2.class, view, set);
+    }
 }

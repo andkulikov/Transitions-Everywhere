@@ -67,6 +67,23 @@ public final class Scene {
         }
     }
 
+
+    public static Scene getSceneForView(ViewGroup sceneRoot, View view) {
+        SparseArray<Scene> scenes = (SparseArray<Scene>) sceneRoot.getTag(R.id.scene_layoutid_cache);
+        if (scenes == null) {
+            scenes = new SparseArray<Scene>();
+            sceneRoot.setTag(R.id.scene_layoutid_cache, scenes);
+        }
+        Scene scene = scenes.get(view.getId());
+        if (scene != null) {
+            return scene;
+        } else {
+            scene = new Scene(sceneRoot, view);
+            scenes.put(view.getId(), scene);
+            return scene;
+        }
+    }
+
     /**
      * Constructs a Scene with no information about how values will change
      * when this scene is applied. This constructor might be used when

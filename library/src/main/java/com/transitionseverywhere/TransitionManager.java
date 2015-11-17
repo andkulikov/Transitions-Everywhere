@@ -70,7 +70,7 @@ public class TransitionManager {
 
     private static String LOG_TAG = "TransitionManager";
 
-    private static Transition sDefaultTransition = new AutoTransition();
+    protected static Transition sDefaultTransition = new AutoTransition();
 
     private static final String[] EMPTY_STRINGS = new String[0];
 
@@ -80,8 +80,7 @@ public class TransitionManager {
     private static ThreadLocal<WeakReference<ArrayMap<ViewGroup, ArrayList<Transition>>>>
             sRunningTransitions =
             new ThreadLocal<WeakReference<ArrayMap<ViewGroup, ArrayList<Transition>>>>();
-    private static ArrayList<ViewGroup> sPendingTransitions = new ArrayList<ViewGroup>();
-
+    protected static ArrayList<ViewGroup> sPendingTransitions = new ArrayList<ViewGroup>();
 
     /**
      * Sets the transition to be used for any scene change for which no
@@ -181,7 +180,7 @@ public class TransitionManager {
      * @param scene      The scene being entered
      * @param transition The transition to play for this scene change
      */
-    private static void changeScene(Scene scene, Transition transition) {
+    protected static void changeScene(Scene scene, Transition transition) {
 
         final ViewGroup sceneRoot = scene.getSceneRoot();
         if (!sPendingTransitions.contains(sceneRoot)) {
@@ -223,12 +222,12 @@ public class TransitionManager {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-    private static void sceneChangeRunTransition(final ViewGroup sceneRoot,
-                                                 final Transition transition) {
+    protected static void sceneChangeRunTransition(final ViewGroup sceneRoot,
+                                                   final Transition transition) {
         if (transition != null && sceneRoot != null) {
             if (isTransitionsAllowed()) {
                 ViewGroupOverlayUtils.initializeOverlay(sceneRoot);
-                MultiListener listener = new MultiListener(transition, sceneRoot);
+                MultiListener listener = new MultiListener(transition, sceneRoot, false);
                 sceneRoot.addOnAttachStateChangeListener(listener);
                 sceneRoot.getViewTreeObserver().addOnPreDrawListener(listener);
             } else {
@@ -236,6 +235,7 @@ public class TransitionManager {
             }
         }
     }
+
 
     /**
      * This private utility class is used to listen for both OnPreDraw and
@@ -246,15 +246,17 @@ public class TransitionManager {
      * clean up things since the OnPreDraw listener didn't get called in time.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-    private static class MultiListener implements ViewTreeObserver.OnPreDrawListener,
+    protected static class MultiListener implements ViewTreeObserver.OnPreDrawListener,
             View.OnAttachStateChangeListener {
 
         Transition mTransition;
         ViewGroup mSceneRoot;
+        private boolean mIsActivity;
 
-        MultiListener(Transition transition, ViewGroup sceneRoot) {
+        MultiListener(Transition transition, ViewGroup sceneRoot, boolean isActivity) {
             mTransition = transition;
             mSceneRoot = sceneRoot;
+            mIsActivity = isActivity;
         }
 
         private void removeListeners() {
@@ -277,6 +279,9 @@ public class TransitionManager {
                     runningTransition.resume(mSceneRoot);
                 }
             }
+            if (mIsActivity) {
+                run();
+            }
             mTransition.clearValues(true);
         }
 
@@ -284,11 +289,17 @@ public class TransitionManager {
         public boolean onPreDraw() {
             removeListeners();
 
-            // Don't start the transition if it's no longer pending.
-            if (!sPendingTransitions.remove(mSceneRoot)) {
+//             Don't start the transition if it's no longer pending.
+            if (!mIsActivity && !sPendingTransitions.remove(mSceneRoot)) {
                 return true;
             }
 
+            run();
+
+            return true;
+        }
+
+        public void run() {
             // Add to running list, handle end to remove it
             final ArrayMap<ViewGroup, ArrayList<Transition>> runningTransitions =
                     getRunningTransitions();
@@ -316,12 +327,11 @@ public class TransitionManager {
                 }
             }
             mTransition.playTransition(mSceneRoot);
-
-            return true;
         }
+
     }
 
-    private static void sceneChangeSetup(ViewGroup sceneRoot, Transition transition) {
+    protected static void sceneChangeSetup(ViewGroup sceneRoot, Transition transition) {
         if (isTransitionsAllowed()) {
             // Capture current values
             ArrayList<Transition> runningTransitions = getRunningTransitions().get(sceneRoot);
@@ -479,7 +489,7 @@ public class TransitionManager {
     /**
      * Returns the name of the View to be used to identify Views in Transitions.
      * Names should be unique in the View hierarchy.
-     *
+     * <p/>
      * <p>This returns null if the View has not been given a name.</p>
      *
      * @return The name used of the View to be used to identify Views in Transitions or null

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/container"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +11,8 @@
         android:layout_height="@dimen/square_size_normal"
         android:layout_alignParentBottom="true"
         android:background="#990000"
-        android:gravity="center"/>
+        android:gravity="center" />
+
 
     <ImageView
         android:id="@+id/transition_image"
@@ -19,13 +20,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/ic_launcher" />
 
     <View
         android:id="@+id/transition_oval"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/oval"/>
+        android:background="@drawable/oval" />
 
 </RelativeLayout>
