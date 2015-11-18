@@ -23,5 +23,6 @@
     <item type="id" name="transitionName" />
     <item type="id" name="parentMatrix" />
     <item type="id" name="scene_layoutid_cache"/>
-    <item type="id" name="group_layouttransition_cache"/>
+    <item type="id" name="group_layouttransition_backup"/>
+    <item type="id" name="overlay_layout_params_backup"/>
 </resources>

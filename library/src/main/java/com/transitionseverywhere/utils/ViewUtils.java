@@ -22,6 +22,9 @@ public class ViewUtils {
         private static final Field FIELD_VIEW_FLAGS =
                 ReflectionUtils.getPrivateField(View.class, "mViewFlags");
 
+        private static final Field FIELD_LAYOUT_PARAMS =
+                ReflectionUtils.getPrivateField(View.class, "mLayoutParams");
+
         private static final int VIEW_VISIBILITY_MASK = 0x0000000C;
 
         private static final Method METHOD_SET_FRAME =
@@ -117,6 +120,10 @@ public class ViewUtils {
 
         public void setLeftTopRightBottom(View v, int left, int top, int right, int bottom) {
             ReflectionUtils.invoke(v, null, METHOD_SET_FRAME, left, top, right, bottom);
+        }
+
+        public void setLayoutParamsSilently(View view, ViewGroup.LayoutParams layoutParams) {
+            ReflectionUtils.setFieldValue(view, FIELD_LAYOUT_PARAMS, layoutParams);
         }
 
     }
@@ -268,11 +275,15 @@ public class ViewUtils {
      *
      * @param visibility One of View.VISIBLE, View.INVISIBLE, or View.GONE.
      */
-    public static void setTransitionVisibility(View v, int visibility) {
-        IMPL.setTransitionVisibility(v, visibility);
+    public static void setTransitionVisibility(View view, int visibility) {
+        IMPL.setTransitionVisibility(view, visibility);
     }
 
     public static void setLeftTopRightBottom(View view, int left, int top, int right, int bottom) {
         IMPL.setLeftTopRightBottom(view, left, top, right, bottom);
+    }
+
+    public static void setLayoutParamsSilently(View view, ViewGroup.LayoutParams layoutParams) {
+        IMPL.setLayoutParamsSilently(view, layoutParams);
     }
 }

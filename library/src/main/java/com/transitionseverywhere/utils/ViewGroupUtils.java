@@ -37,7 +37,7 @@ public class ViewGroupUtils {
             if (suppress) {
                 LayoutTransition layoutTransition = group.getLayoutTransition();
                 if (layoutTransition != null && layoutTransition != sEmptyLayoutTransition) {
-                    group.setTag(R.id.group_layouttransition_cache, group.getLayoutTransition());
+                    group.setTag(R.id.group_layouttransition_backup, group.getLayoutTransition());
                 }
                 group.setLayoutTransition(sEmptyLayoutTransition);
             } else {
@@ -53,9 +53,9 @@ public class ViewGroupUtils {
                     group.requestLayout();
                 }
                 final LayoutTransition layoutTransition = (LayoutTransition)
-                        group.getTag(R.id.group_layouttransition_cache);
+                        group.getTag(R.id.group_layouttransition_backup);
                 if (layoutTransition != null) {
-                    group.setTag(R.id.group_layouttransition_cache, null);
+                    group.setTag(R.id.group_layouttransition_backup, null);
                     group.post(new Runnable() {
                         @Override
                         public void run() {

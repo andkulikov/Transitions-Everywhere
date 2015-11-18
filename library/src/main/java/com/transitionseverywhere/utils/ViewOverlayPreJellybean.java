@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.transitionseverywhere.R;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,7 @@ class ViewOverlayPreJellybean extends FrameLayout {
         mDrawableOverlays = new ArrayList<Drawable>();
     }
 
+    @Override
     public void addView(View child, int left, int top) {
         if (child.getParent() instanceof ViewGroup) {
             ViewGroup parent = (ViewGroup) child.getParent();
@@ -66,8 +69,17 @@ class ViewOverlayPreJellybean extends FrameLayout {
                 return;
             }
         }
+        child.setTag(R.id.overlay_layout_params_backup, child.getLayoutParams());
         addView(child, initParams(child, left, top));
         invalidate();
+    }
+
+    @Override
+    public void removeView(View view) {
+        super.removeView(view);
+        ViewUtils.setLayoutParamsSilently(view, (ViewGroup.LayoutParams)
+                view.getTag(R.id.overlay_layout_params_backup));
+        view.setTag(R.id.overlay_layout_params_backup, null);
     }
 
     public void moveView(View view, int left, int top) {
