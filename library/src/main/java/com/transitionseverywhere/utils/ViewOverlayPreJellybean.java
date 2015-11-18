@@ -61,9 +61,13 @@ class ViewOverlayPreJellybean extends FrameLayout {
                 parent.setLayoutTransition(layoutTransition);
             }
 
-            // fail-safe if view is still attached for any reason
-            if (child.getParent() != null && FIELD_VIEW_PARENT != null) {
-                ReflectionUtils.setFieldValue(child, FIELD_VIEW_PARENT, null);
+            if (child.getParent() != null) {
+                // LayoutTransition will cause the child to delay removal - cancel it
+                ViewGroupUtils.cancelLayoutTransition(parent);
+                // fail-safe if view is still attached for any reason
+                if (child.getParent() != null && FIELD_VIEW_PARENT != null) {
+                    ReflectionUtils.setFieldValue(child, FIELD_VIEW_PARENT, null);
+                }
             }
             if (child.getParent() != null) {
                 return;

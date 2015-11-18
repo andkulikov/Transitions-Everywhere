@@ -26,6 +26,7 @@ import android.view.ViewTreeObserver;
 
 import com.transitionseverywhere.utils.ArrayMap;
 import com.transitionseverywhere.utils.ViewGroupOverlayUtils;
+import com.transitionseverywhere.utils.ViewGroupUtils;
 import com.transitionseverywhere.utils.ViewUtils;
 
 import java.lang.ref.WeakReference;
@@ -309,6 +310,7 @@ public class TransitionManager {
                     currentTransitions.remove(transition);
                 }
             });
+            boolean somethingCanBeChanged = cancelAllSystemLayoutTransitions(mSceneRoot);
             mTransition.captureValues(mSceneRoot, false);
             if (previousRunningTransitions != null) {
                 for (Transition runningTransition : previousRunningTransitions) {
@@ -317,8 +319,20 @@ public class TransitionManager {
             }
             mTransition.playTransition(mSceneRoot);
 
-            return true;
+            return !somethingCanBeChanged;
         }
+    }
+
+    private static boolean cancelAllSystemLayoutTransitions(View view) {
+        boolean canceled = false;
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            canceled = ViewGroupUtils.cancelLayoutTransition(viewGroup);
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                canceled = cancelAllSystemLayoutTransitions(viewGroup.getChildAt(i)) || canceled;
+            }
+        }
+        return canceled;
     }
 
     private static void sceneChangeSetup(ViewGroup sceneRoot, Transition transition) {

@@ -19,6 +19,8 @@ public class ViewGroupUtils {
 
         private static Field sFieldLayoutSuppressed;
         private static LayoutTransition sEmptyLayoutTransition;
+        private static final Method METHOD_LAYOUT_TRANSITION_CANCEL =
+                ReflectionUtils.getPrivateMethod(LayoutTransition.class, "cancel");
 
         public void suppressLayout(final ViewGroup group, boolean suppress) {
             if (sEmptyLayoutTransition == null) {
@@ -35,6 +37,7 @@ public class ViewGroupUtils {
                 sEmptyLayoutTransition.setAnimator(LayoutTransition.CHANGING, null);
             }
             if (suppress) {
+                cancelLayoutTransition(group);
                 LayoutTransition layoutTransition = group.getLayoutTransition();
                 if (layoutTransition != null && layoutTransition != sEmptyLayoutTransition) {
                     group.setTag(R.id.group_layouttransition_backup, group.getLayoutTransition());
@@ -65,13 +68,25 @@ public class ViewGroupUtils {
                 }
             }
         }
+
+        public boolean cancelLayoutTransition(ViewGroup group) {
+            if (group != null) {
+                final LayoutTransition layoutTransition = group.getLayoutTransition();
+                if (layoutTransition != null && layoutTransition.isRunning() &&
+                        METHOD_LAYOUT_TRANSITION_CANCEL != null) {
+                    ReflectionUtils.invoke(group.getLayoutTransition(), null, METHOD_LAYOUT_TRANSITION_CANCEL);
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     @TargetApi(VERSION_CODES.JELLY_BEAN_MR2)
     static class JellyBeanMr2ViewGroupUtils extends BaseViewGroupUtils {
 
-        private static final Method METHOD_suppressLayout = ReflectionUtils.getMethod(ViewGroup.class, "suppressLayout",
-                boolean.class);
+        private static final Method METHOD_suppressLayout = ReflectionUtils.getMethod(ViewGroup.class,
+                "suppressLayout", boolean.class);
 
         @Override
         public void suppressLayout(ViewGroup group, boolean suppress) {
@@ -93,5 +108,12 @@ public class ViewGroupUtils {
         if (group != null) {
             IMPL.suppressLayout(group, suppress);
         }
+    }
+
+    /**
+     * @return is cancel performed
+     */
+    public static boolean cancelLayoutTransition(ViewGroup group) {
+        return IMPL.cancelLayoutTransition(group);
     }
 }
