@@ -16,13 +16,16 @@ Usage
 Gradle:
 ```
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.6.0"
+    compile "com.andkulikov:transitionseverywhere:1.6.1"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+<b>1.6.1</b><br>
+Bug fix
+
 <b>1.6.0</b><br>
 Merge with final Android Marshmallow SDK<br>
 PathMotion aka <b>Curved motion is backported</b>! [What is it and how to use it][6]<br>
