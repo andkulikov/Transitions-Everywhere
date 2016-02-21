@@ -14,7 +14,7 @@ Simple example
 Usage
 ============
 Gradle:
-```
+```groovy
 dependencies {
     compile "com.andkulikov:transitionseverywhere:1.6.1"
 }
@@ -42,7 +42,7 @@ from `com.github.andkulikov:transitions-everywhere` to `com.andkulikov:transitio
 Transitions via XML
 ============
 If you use XML files to create your transitions you need to put them in the res/anim folder instead of the res/transition folder. You need to use application attributes namespase instead of `android:`. For example:
-```
+```xml
 <transitionSet xmlns:app="http://schemas.android.com/apk/res-auto"
                app:duration="400">
     <changeBounds/>
