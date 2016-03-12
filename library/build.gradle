@@ -1,20 +1,14 @@
 apply plugin: 'com.android.library'
 
-// Version Information
-def versionMajor = 1
-def versionMinor = 6
-def versionPatch = 1
-def versionBuild = 11
-
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion parent.ext.targetSdkVersion
+    buildToolsVersion parent.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 22
-        versionCode versionBuild
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        minSdkVersion parent.ext.minSdkVersion
+        targetSdkVersion parent.ext.targetSdkVersion
+        versionCode parent.ext.versionCode
+        versionName parent.ext.versionName
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
 }

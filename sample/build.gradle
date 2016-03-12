@@ -2,37 +2,17 @@ apply plugin: 'com.android.application'
 
 dependencies {
     compile project(':library')
-//    compile "com.andkulikov:transitionseverywhere:1.6.1"
     compile 'com.android.support:appcompat-v7:22.2.1'
 }
 
-// Version Information
-def versionMajor = 1
-def versionMinor = 0
-def versionPatch = 0
-def versionBuild = 1
-
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion parent.ext.targetSdkVersion
+    buildToolsVersion parent.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 22
-        versionCode versionBuild
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        minSdkVersion parent.ext.minSdkVersion
+        targetSdkVersion parent.ext.targetSdkVersion
+        versionCode parent.ext.versionCode
+        versionName parent.ext.versionName
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
