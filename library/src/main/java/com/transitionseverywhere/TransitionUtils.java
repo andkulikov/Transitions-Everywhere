@@ -33,6 +33,9 @@ import android.widget.ImageView;
 
 import com.transitionseverywhere.utils.ViewUtils;
 
+import java.lang.ref.WeakReference;
+import java.util.WeakHashMap;
+
 /**
  * Static utility methods for Transitions.
  *
@@ -41,6 +44,8 @@ import com.transitionseverywhere.utils.ViewUtils;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class TransitionUtils {
     private static int MAX_IMAGE_SIZE = (1024 * 1024);
+
+    private final static WeakHashMap<View, WeakReference<ImageView>> VIEW_COPIES_MAP = new WeakHashMap<>();
 
     public static Animator mergeAnimators(Animator animator1, Animator animator2) {
         if (animator1 == null) {
@@ -90,6 +95,11 @@ public class TransitionUtils {
      * @param parent The parent of view.
      */
     public static View copyViewImage(ViewGroup sceneRoot, View view, View parent) {
+        WeakReference<ImageView> cachedRef = VIEW_COPIES_MAP.get(view);
+        View cachedView = cachedRef == null ? null : cachedRef.get();
+        if (cachedView != null) {
+            return cachedView;
+        }
         Matrix matrix = new Matrix();
         matrix.setTranslate(-parent.getScrollX(), -parent.getScrollY());
         ViewUtils.transformMatrixToGlobal(view, matrix);
@@ -111,6 +121,7 @@ public class TransitionUtils {
         int heightSpec = View.MeasureSpec.makeMeasureSpec(bottom - top, View.MeasureSpec.EXACTLY);
         copy.measure(widthSpec, heightSpec);
         copy.layout(left, top, right, bottom);
+        VIEW_COPIES_MAP.put(view, new WeakReference<>(copy));
         return copy;
     }
 
