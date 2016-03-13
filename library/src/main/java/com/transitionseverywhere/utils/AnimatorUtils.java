@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.graphics.Path;
 import android.os.Build.VERSION_CODES;
+import android.util.Property;
 import android.view.View;
 
 import com.transitionseverywhere.PathMotion;
@@ -37,7 +38,17 @@ public class AnimatorUtils {
         }
 
         public boolean hasOverlappingRendering(View view) {
-            return false;
+            return true;
+        }
+
+        public ObjectAnimator ofFloat(View view, Property<View, Float> property,
+                                      float startFraction, float endFraction) {
+            return null;
+        }
+
+        public ObjectAnimator ofInt(View view, Property<View, Integer> property,
+                                    float startFraction, float endFraction) {
+            return null;
         }
     }
 
@@ -63,6 +74,30 @@ public class AnimatorUtils {
         @Override
         public boolean isAnimatorStarted(Animator anim) {
             return anim.isStarted();
+        }
+
+        @Override
+        public ObjectAnimator ofFloat(View view, Property<View, Float> property,
+                                      float startFraction, float endFraction) {
+            float start = property.get(view) * startFraction;
+            float end = property.get(view) * endFraction;
+            if (start == end) {
+                return null;
+            }
+            property.set(view, start);
+            return ObjectAnimator.ofFloat(view, property, end);
+        }
+
+        @Override
+        public ObjectAnimator ofInt(View view, Property<View, Integer> property,
+                                    float startFraction, float endFraction) {
+            int start = (int) (property.get(view) * startFraction);
+            int end = (int) (property.get(view) * endFraction);
+            if (start == end) {
+                return null;
+            }
+            property.set(view, start);
+            return ObjectAnimator.ofInt(view, property, end);
         }
     }
 
@@ -165,6 +200,16 @@ public class AnimatorUtils {
 
     public static boolean hasOverlappingRendering(View view) {
         return IMPL.hasOverlappingRendering(view);
+    }
+
+    public static ObjectAnimator ofFloat(View view, Property<View, Float> property,
+                                         float startFraction, float endFraction) {
+        return IMPL.ofFloat(view, property, startFraction, endFraction);
+    }
+
+    public static ObjectAnimator ofInt(View view, Property<View, Integer> property,
+                                       float startFraction, float endFraction) {
+        return IMPL.ofInt(view, property, startFraction, endFraction);
     }
 
 }

@@ -26,6 +26,7 @@ import android.util.Xml;
 import android.view.InflateException;
 import android.view.ViewGroup;
 
+import com.transitionseverywhere.extra.Scale;
 import com.transitionseverywhere.hidden.Recolor;
 import com.transitionseverywhere.utils.ArrayMap;
 
@@ -179,6 +180,8 @@ public class TransitionInflater {
                 transition = new ChangeScroll(mContext, attrs);
             } else if ("transitionSet".equals(name)) {
                 transition = new TransitionSet(mContext, attrs);
+            } else if ("scale".equals(name)) {
+                transition = new Scale(mContext, attrs);
             } else if ("transition".equals(name)) {
                 transition = (Transition) createCustom(attrs, Transition.class, "transition");
             } else if ("targets".equals(name)) {
