@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.transitionseverywhere.R;
+import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionUtils;
 import com.transitionseverywhere.TransitionValues;
 import com.transitionseverywhere.Visibility;
@@ -72,7 +73,19 @@ public class Scale extends Visibility {
     @Override
     public Animator onDisappear(ViewGroup sceneRoot, final View view, TransitionValues startValues,
                                 TransitionValues endValues) {
-        return createAnimation(view, 1f, mDisappearedScale);
+        Animator animator = createAnimation(view, 1f, mDisappearedScale);
+        if (animator != null) {
+            final float initialScaleX = view.getScaleX();
+            final float initialScaleY = view.getScaleY();
+            addListener(new TransitionListenerAdapter() {
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    view.setScaleX(initialScaleX);
+                    view.setScaleY(initialScaleY);
+                }
+            });
+        }
+        return animator;
     }
 
 }
