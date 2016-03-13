@@ -88,7 +88,6 @@ public class MainActivity extends Activity implements RadioGroup.OnCheckedChange
                 params.width = newSize;
                 params.height = newSize;
                 square.setLayoutParams(params);
-                square.invalidate();
                 break;
             }
         }
