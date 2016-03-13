@@ -182,10 +182,14 @@ public class TransitionUtils {
             bitmapHeight *= scale;
             matrix.postTranslate(-bounds.left, -bounds.top);
             matrix.postScale(scale, scale);
-            bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            canvas.concat(matrix);
-            view.draw(canvas);
+            try {
+                bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                canvas.concat(matrix);
+                view.draw(canvas);
+            } catch (OutOfMemoryError e) {
+                // ignore
+            }
         }
         return bitmap;
     }
