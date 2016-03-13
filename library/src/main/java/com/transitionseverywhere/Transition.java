@@ -488,8 +488,9 @@ public abstract class Transition implements Cloneable {
      * @param matches A list of zero or more of {@link #MATCH_INSTANCE},
      *                {@link #MATCH_NAME}, {@link #MATCH_ITEM_ID}, and {@link #MATCH_ID}.
      *                If none are provided, then the default match order will be set.
+     * @return This transition object.
      */
-    public void setMatchOrder(int... matches) {
+    public Transition setMatchOrder(int... matches) {
         if (matches == null || matches.length == 0) {
             mMatchOrder = DEFAULT_MATCH_ORDER;
         } else {
@@ -504,6 +505,7 @@ public abstract class Transition implements Cloneable {
             }
             mMatchOrder = matches.clone();
         }
+        return this;
     }
 
     private static boolean isValidMatch(int match) {
@@ -1996,9 +1998,11 @@ public abstract class Transition implements Cloneable {
      * {@link Transition.EpicenterCallback} allows a Transition to
      * dynamically retrieve the epicenter during a Transition.
      * @param epicenterCallback The callback to use to find the epicenter of the Transition.
+     * @return This transition object.
      */
-    public void setEpicenterCallback(EpicenterCallback epicenterCallback) {
+    public Transition setEpicenterCallback(EpicenterCallback epicenterCallback) {
         mEpicenterCallback = epicenterCallback;
+        return this;
     }
 
     /**
@@ -2061,16 +2065,18 @@ public abstract class Transition implements Cloneable {
      *
      * @param pathMotion Algorithm object to use for determining how to interpolate in two
      *                   dimensions. If null, a straight-path algorithm will be used.
+     * @return This transition object.
      * @see ArcMotion
      * @see PatternPathMotion
      * @see PathMotion
      */
-    public void setPathMotion(PathMotion pathMotion) {
+    public Transition setPathMotion(PathMotion pathMotion) {
         if (pathMotion == null) {
             mPathMotion = PathMotion.STRAIGHT_PATH_MOTION;
         } else {
             mPathMotion = pathMotion;
         }
+        return this;
     }
 
     /**
@@ -2116,9 +2122,11 @@ public abstract class Transition implements Cloneable {
      * @param transitionPropagation The class used to determine the start delay of
      *                              Animators created by this Transition. A null value
      *                              indicates that no delay should be used.
+     * @return This transition object.
      */
-    public void setPropagation(TransitionPropagation transitionPropagation) {
+    public Transition setPropagation(TransitionPropagation transitionPropagation) {
         mPropagation = transitionPropagation;
+        return this;
     }
 
     /**

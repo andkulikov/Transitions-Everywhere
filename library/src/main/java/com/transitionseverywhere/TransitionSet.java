@@ -326,11 +326,12 @@ public class TransitionSet extends Transition {
     }
 
     @Override
-    public void setPathMotion(PathMotion pathMotion) {
+    public TransitionSet setPathMotion(PathMotion pathMotion) {
         super.setPathMotion(pathMotion);
         for (int i = 0; i < mTransitions.size(); i++) {
             mTransitions.get(i).setPathMotion(pathMotion);
         }
+        return this;
     }
 
     /** @hide */
@@ -546,21 +547,23 @@ public class TransitionSet extends Transition {
     }
 
     @Override
-    public void setPropagation(TransitionPropagation propagation) {
+    public TransitionSet setPropagation(TransitionPropagation propagation) {
         super.setPropagation(propagation);
         int numTransitions = mTransitions.size();
         for (int i = 0; i < numTransitions; ++i) {
             mTransitions.get(i).setPropagation(propagation);
         }
+        return this;
     }
 
     @Override
-    public void setEpicenterCallback(Transition.EpicenterCallback epicenterCallback) {
+    public TransitionSet setEpicenterCallback(Transition.EpicenterCallback epicenterCallback) {
         super.setEpicenterCallback(epicenterCallback);
         int numTransitions = mTransitions.size();
         for (int i = 0; i < numTransitions; ++i) {
             mTransitions.get(i).setEpicenterCallback(epicenterCallback);
         }
+        return this;
     }
 
     @Override

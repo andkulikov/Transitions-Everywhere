@@ -103,13 +103,15 @@ public abstract class Visibility extends Transition {
      *
      * @param mode The behavior supported by this transition, a combination of
      *             {@link #MODE_IN} and {@link #MODE_OUT}.
+     * @return This Visibility object.
      * @attr ref android.R.styleable#VisibilityTransition_transitionVisibilityMode
      */
-    public void setMode(int mode) {
+    public Visibility setMode(int mode) {
         if ((mode & ~(MODE_IN | MODE_OUT)) != 0) {
             throw new IllegalArgumentException("Only MODE_IN and MODE_OUT flags are allowed");
         }
         mMode = mode;
+        return this;
     }
 
     /**
