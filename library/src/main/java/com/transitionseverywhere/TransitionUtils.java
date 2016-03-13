@@ -93,12 +93,15 @@ public class TransitionUtils {
      * @param sceneRoot The ViewGroup in which the view copy will be displayed.
      * @param view The view to create a copy of.
      * @param parent The parent of view.
+     * @param useCache True if copies cache should be enabled.
      */
-    public static View copyViewImage(ViewGroup sceneRoot, View view, View parent) {
-        WeakReference<ImageView> cachedRef = VIEW_COPIES_MAP.get(view);
-        View cachedView = cachedRef == null ? null : cachedRef.get();
-        if (cachedView != null) {
-            return cachedView;
+    public static View copyViewImage(ViewGroup sceneRoot, View view, View parent, boolean useCache) {
+        if (useCache) {
+            WeakReference<ImageView> cachedRef = VIEW_COPIES_MAP.get(view);
+            View cachedView = cachedRef == null ? null : cachedRef.get();
+            if (cachedView != null) {
+                return cachedView;
+            }
         }
         Matrix matrix = new Matrix();
         matrix.setTranslate(-parent.getScrollX(), -parent.getScrollY());
@@ -121,7 +124,9 @@ public class TransitionUtils {
         int heightSpec = View.MeasureSpec.makeMeasureSpec(bottom - top, View.MeasureSpec.EXACTLY);
         copy.measure(widthSpec, heightSpec);
         copy.layout(left, top, right, bottom);
-        VIEW_COPIES_MAP.put(view, new WeakReference<>(copy));
+        if (useCache) {
+            VIEW_COPIES_MAP.put(view, new WeakReference<>(copy));
+        }
         return copy;
     }
 

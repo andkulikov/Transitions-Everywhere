@@ -388,7 +388,7 @@ public abstract class Visibility extends Transition {
                             getVisibilityChangeInfo(startParentValues, endParentValues);
                     if (!parentVisibilityInfo.visibilityChange) {
                         overlayView = TransitionUtils.copyViewImage(sceneRoot, startView,
-                                startParent);
+                                startParent, true);
                     } else if (startParent.getParent() == null) {
                         int id = startParent.getId();
                         if (id != View.NO_ID && sceneRoot.findViewById(id) != null
