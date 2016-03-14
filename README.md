@@ -25,7 +25,7 @@ Changelog
 ============
 <b>1.6.2</b><br>
 Fixed issue with incorrect disappearing when set of more than one Visibility transitions animates the same view
-<br>Added two "extra" transitions: Scale(for scaling appearing & disappearing) and TranslationTransition(animates changes of translationX and translationY)
+<br>Added two "extra" transitions: Scale (for scaled appearing & disappearing) and TranslationTransition (animates changes of translationX and translationY)
 
 <b>1.6.0</b><br>
 Merge with final Android Marshmallow SDK<br>
