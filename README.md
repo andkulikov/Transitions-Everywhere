@@ -16,15 +16,16 @@ Usage
 Gradle:
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.6.1"
+    compile "com.andkulikov:transitionseverywhere:1.6.2"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
-<b>1.6.1</b><br>
-Bug fix
+<b>1.6.2</b><br>
+Fixed issue with incorrect disappearing when set of more than one Visibility transitions animates the same view
+<br>Added two "extra" transitions: Scale (for scaled appearing & disappearing) and TranslationTransition (animates changes of translationX and translationY)
 
 <b>1.6.0</b><br>
 Merge with final Android Marshmallow SDK<br>
