@@ -7,8 +7,8 @@
 
     <View
         android:id="@+id/transition_square"
-        android:layout_width="@dimen/square_size_normal"
-        android:layout_height="@dimen/square_size_normal"
+        android:layout_width="@dimen/square_size"
+        android:layout_height="@dimen/square_size"
         android:background="#990000"
         android:gravity="center"/>
 
