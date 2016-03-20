@@ -3,8 +3,9 @@
               android:id="@+id/transitions_container"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="vertical">
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              android:paddingTop="24dp">
 
     <include layout="@layout/button"/>
 
