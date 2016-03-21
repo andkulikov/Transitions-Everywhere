@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Samp
 
     @Override
     public int getSampleCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Samp
             case 0: return "Simple animations with AutoTransition";
             case 1: return "Scene to scene transitions";
             case 2: return "Slide transition";
+            case 3: return "ChangeImageTransform transition";
         }
         return null;
     }
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Samp
             case 0: return new AutoTransitionSample();
             case 1: return new ScenesSample();
             case 2: return new SlideSample();
+            case 3: return new ImageTransformSample();
         }
         return null;
     }

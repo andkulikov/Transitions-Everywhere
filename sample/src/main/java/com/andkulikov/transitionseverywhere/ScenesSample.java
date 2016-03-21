@@ -78,7 +78,6 @@ public class ScenesSample extends Fragment implements RadioGroup.OnCheckedChange
                 slide.addTarget(R.id.transition_title);
                 set.addTransition(slide);
                 set.addTransition(new ChangeBounds());
-                set.addTransition(new ChangeImageTransform());
                 set.setOrdering(TransitionSet.ORDERING_TOGETHER);
                 set.setDuration(350);
                 TransitionManager.go(mScene2, set);
