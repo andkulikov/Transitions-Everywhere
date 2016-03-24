@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.transitionseverywhere.TransitionManager;
@@ -24,20 +23,17 @@ public class AutoTransitionSample extends Fragment {
         final ViewGroup transitionsContainer = (ViewGroup) view.findViewById(R.id.transitions_container);
         final TextView text = (TextView) transitionsContainer.findViewById(R.id.text);
 
-        transitionsContainer.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-
-            private boolean mShowed;
+        transitionsContainer.findViewById(R.id.button).setOnClickListener(new VisibleToggleClickListener() {
 
             @Override
-            public void onClick(View v) {
+            protected void changeVisibility(boolean visible) {
                 TransitionManager.beginDelayedTransition(transitionsContainer);
                 // it is the same as
                 // TransitionManager.beginDelayedTransition(transitionsContainer, new AutoTransition());
                 // where AutoTransition is the set of Fade and ChangeBounds transitions
-
-                mShowed = !mShowed;
-                text.setVisibility(mShowed ? View.VISIBLE : View.GONE);
+                text.setVisibility(visible ? View.VISIBLE : View.GONE);
             }
+
         });
 
         return view;

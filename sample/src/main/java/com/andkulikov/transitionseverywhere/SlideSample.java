@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.transitionseverywhere.Slide;
@@ -26,15 +25,11 @@ public class SlideSample extends Fragment {
         final ViewGroup transitionsContainer = (ViewGroup) view.findViewById(R.id.transitions_container);
         final TextView text = (TextView) transitionsContainer.findViewById(R.id.text);
 
-        transitionsContainer.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-
-            private boolean mShowed;
-
+        transitionsContainer.findViewById(R.id.button).setOnClickListener(new VisibleToggleClickListener() {
             @Override
-            public void onClick(View v) {
+            protected void changeVisibility(boolean visible) {
                 TransitionManager.beginDelayedTransition(transitionsContainer, new Slide(Gravity.RIGHT));
-                mShowed = !mShowed;
-                text.setVisibility(mShowed ? View.VISIBLE : View.GONE);
+                text.setVisibility(visible ? View.VISIBLE : View.GONE);
             }
         });
 
