@@ -31,18 +31,19 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Samp
 
     @Override
     public int getSampleCount() {
-        return 6;
+        return 7;
     }
 
     @Override
     public String getTitleForPosition(int index) {
         switch (index) {
             case 0: return "Simple animations with AutoTransition";
-            case 1: return "Scene to scene transitions";
-            case 2: return "Slide transition";
+            case 1: return "Slide transition";
+            case 2: return "Scale transition";
             case 3: return "ChangeImageTransform transition";
-            case 4: return "Scale transition";
-            case 5: return "Path motion";
+            case 4: return "Path motion";
+            case 5: return "Explode transition and epicenter";
+            case 6: return "Scene to scene transitions";
         }
         return null;
     }
@@ -50,11 +51,12 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Samp
     private Fragment createFragmentForPosition(int index) {
         switch (index) {
             case 0: return new AutoTransitionSample();
-            case 1: return new ScenesSample();
-            case 2: return new SlideSample();
+            case 1: return new SlideSample();
+            case 2: return new ScaleSample();
             case 3: return new ImageTransformSample();
-            case 4: return new ScaleSample();
-            case 5: return new PathMotionSample();
+            case 4: return new PathMotionSample();
+            case 5: return new ExplodeAndEpicenterExample();
+            case 6: return new ScenesSample();
         }
         return null;
     }
