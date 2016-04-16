@@ -405,24 +405,24 @@ public class ChangeBounds extends Transition {
                 return anim;
             }
         } else {
-            int startX = (Integer) startValues.values.get(PROPNAME_WINDOW_X);
-            int startY = (Integer) startValues.values.get(PROPNAME_WINDOW_Y);
-            int endX = (Integer) endValues.values.get(PROPNAME_WINDOW_X);
-            int endY = (Integer) endValues.values.get(PROPNAME_WINDOW_Y);
+            sceneRoot.getLocationInWindow(tempLocation);
+            int startX = (Integer) startValues.values.get(PROPNAME_WINDOW_X) - tempLocation[0];
+            int startY = (Integer) startValues.values.get(PROPNAME_WINDOW_Y) - tempLocation[1];
+            int endX = (Integer) endValues.values.get(PROPNAME_WINDOW_X) - tempLocation[0];
+            int endY = (Integer) endValues.values.get(PROPNAME_WINDOW_Y) - tempLocation[1];
             // TODO: also handle size changes: check bounds and animate size changes
             if (startX != endX || startY != endY) {
-                sceneRoot.getLocationInWindow(tempLocation);
-                Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
-                        Bitmap.Config.ARGB_8888);
+                final int width = view.getWidth();
+                final int height = view.getHeight();
+                Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
                 view.draw(canvas);
                 final BitmapDrawable drawable = new BitmapDrawable(
                         sceneRoot.getContext().getResources(), bitmap);
-                drawable.setBounds(0, 0, view.getWidth(), view.getHeight());
+                drawable.setBounds(startX, startY, startX + width, startY + height);
                 Animator anim;
                 anim = AnimatorUtils.ofPointF(drawable, DRAWABLE_ORIGIN_PROPERTY, getPathMotion(),
-                        startX - tempLocation[0], startY - tempLocation[1],
-                        endX - tempLocation[0], endY - tempLocation[1]);
+                        startX, startY, endX, endY);
                 if (anim != null) {
                     final float transitionAlpha = ViewUtils.getTransitionAlpha(view);
                     ViewUtils.setTransitionAlpha(view, 0);
