@@ -4,6 +4,8 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,38 +21,73 @@ import com.transitionseverywhere.TransitionSet;
  */
 public class ExplodeAndEpicenterExample extends Fragment {
 
+    private RecyclerView recyclerView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.fragment_explode, container, false);
-        for (int i = 0; i < layout.getChildCount(); i++) {
-            View view = layout.getChildAt(i);
-            view.setOnClickListener(new View.OnClickListener() {
+        recyclerView = new RecyclerView(container.getContext());
+        recyclerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT));
+        recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(), 4));
+        recyclerView.setAdapter(new Adapter());
+        return recyclerView;
+    }
+
+    private void letsExplodeIt(View clickedView) {
+        final Rect viewRect = new Rect();
+        clickedView.getGlobalVisibleRect(viewRect);
+
+        TransitionSet set = new TransitionSet()
+            .addTransition(new Explode().setEpicenterCallback(new Transition.EpicenterCallback() {
                 @Override
-                public void onClick(final View clickedView) {
-                    TransitionSet set = new TransitionSet()
-                        .addTransition(new Explode().setEpicenterCallback(new Transition.EpicenterCallback() {
-                            @Override
-                            public Rect onGetEpicenter(Transition transition) {
-                                return new Rect(clickedView.getLeft(), clickedView.getTop(),
-                                    clickedView.getRight(), clickedView.getBottom());
-                            }
-                        }).excludeTarget(clickedView, true))
-                        .addTransition(new Fade().addTarget(clickedView))
-                        .addListener(new Transition.TransitionListenerAdapter() {
-                            @Override
-                            public void onTransitionEnd(Transition transition) {
-                                getActivity().onBackPressed();
-                            }
-                        });
+                public Rect onGetEpicenter(Transition transition) {
+                    return viewRect;
+                }
+            }).excludeTarget(clickedView, true))
+            .addTransition(new Fade().addTarget(clickedView))
+            .addListener(new Transition.TransitionListenerAdapter() {
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    getActivity().onBackPressed();
+                }
+            });
 
-                    TransitionManager.beginDelayedTransition(layout, set);
+        TransitionManager.beginDelayedTransition(recyclerView, set);
+        recyclerView.setAdapter(null);
+    }
 
-                    layout.removeAllViews();
+    private class Adapter extends RecyclerView.Adapter<ViewHolder> {
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(
+                LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.explode_item, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, final int position) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View clickedView) {
+                    letsExplodeIt(clickedView);
                 }
             });
         }
-        return layout;
+
+        @Override
+        public int getItemCount() {
+            return 32;
+        }
+    }
+
+    private class ViewHolder extends RecyclerView.ViewHolder {
+
+        public ViewHolder(View view) {
+            super(view);
+        }
+
     }
 
 }

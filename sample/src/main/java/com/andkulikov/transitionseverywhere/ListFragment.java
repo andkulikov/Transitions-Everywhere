@@ -54,7 +54,7 @@ public class ListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mSampleProvider.getSampleCount();
+            return mSampleProvider == null ? 0 : mSampleProvider.getSampleCount();
         }
     }
 
