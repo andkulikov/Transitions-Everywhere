@@ -116,8 +116,10 @@ class ViewOverlayPreJellybean extends FrameLayout {
     }
 
     public synchronized void addDrawable(Drawable drawable) {
-        this.mDrawableOverlays.add(drawable);
-        invalidate();
+        if (drawable != null) {
+            this.mDrawableOverlays.add(drawable);
+            invalidate();
+        }
     }
 
     public synchronized void removeDrawable(Drawable drawable) {

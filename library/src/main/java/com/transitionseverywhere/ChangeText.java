@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.transitionseverywhere.hidden;
+package com.transitionseverywhere;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -27,9 +27,6 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.TransitionValues;
 
 import java.util.Map;
 

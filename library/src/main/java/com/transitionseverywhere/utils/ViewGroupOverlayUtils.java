@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOverlay;
 
-import com.transitionseverywhere.hidden.Crossfade;
+import com.transitionseverywhere.Crossfade;
 
 public class ViewGroupOverlayUtils {
 
@@ -46,12 +46,24 @@ public class ViewGroupOverlayUtils {
 
         public void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                         BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
-            //TODO ViewOverlay
+            if (view.getParent() != null && view.getParent() instanceof ViewGroup) {
+                ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay((ViewGroup) view.getParent());
+                if (fadeBehavior == Crossfade.FADE_BEHAVIOR_REVEAL) {
+                    viewOverlay.addDrawable(endDrawable);
+                }
+                viewOverlay.addDrawable(startDrawable);
+            }
         }
 
         public void removeCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                            BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
-            //TODO ViewOverlay
+            if (view.getParent() != null && view.getParent() instanceof ViewGroup) {
+                ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay((ViewGroup) view.getParent());
+                viewOverlay.removeDrawable(startDrawable);
+                if (fadeBehavior == Crossfade.FADE_BEHAVIOR_REVEAL) {
+                    viewOverlay.removeDrawable(endDrawable);
+                }
+            }
         }
     }
 
@@ -88,10 +100,10 @@ public class ViewGroupOverlayUtils {
         public void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                         BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
             ViewOverlay overlay = getViewOverlay(useParentOverlay, view);
-            overlay.remove(startDrawable);
             if (fadeBehavior == Crossfade.FADE_BEHAVIOR_REVEAL) {
-                overlay.remove(endDrawable);
+                overlay.add(endDrawable);
             }
+            overlay.add(startDrawable);
         }
 
         @Override
@@ -107,10 +119,10 @@ public class ViewGroupOverlayUtils {
         public void removeCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                            BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
             ViewOverlay overlay = getViewOverlay(useParentOverlay, view);
+            overlay.remove(startDrawable);
             if (fadeBehavior == Crossfade.FADE_BEHAVIOR_REVEAL) {
-                overlay.add(endDrawable);
+                overlay.remove(endDrawable);
             }
-            overlay.add(startDrawable);
         }
 
         private static ViewOverlay getViewOverlay(boolean useParentOverlay, View view) {
@@ -161,11 +173,15 @@ public class ViewGroupOverlayUtils {
 
     public static void addCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                              BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
-        IMPL.addCrossfadeOverlay(useParentOverlay, view, fadeBehavior, startDrawable, endDrawable);
+        if (view != null) {
+            IMPL.addCrossfadeOverlay(useParentOverlay, view, fadeBehavior, startDrawable, endDrawable);
+        }
     }
 
     public static void removeCrossfadeOverlay(boolean useParentOverlay, View view, int fadeBehavior,
                                 BitmapDrawable startDrawable, BitmapDrawable endDrawable) {
-        IMPL.removeCrossfadeOverlay(useParentOverlay, view, fadeBehavior, startDrawable, endDrawable);
+        if (view != null) {
+            IMPL.removeCrossfadeOverlay(useParentOverlay, view, fadeBehavior, startDrawable, endDrawable);
+        }
     }
 }

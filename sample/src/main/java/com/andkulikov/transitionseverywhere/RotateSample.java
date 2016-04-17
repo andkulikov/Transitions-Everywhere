@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.transitionseverywhere.TransitionManager;
-import com.transitionseverywhere.hidden.Rotate;
+import com.transitionseverywhere.Rotate;
 
 /**
  * Created by Andrey Kulikov on 17/04/16.

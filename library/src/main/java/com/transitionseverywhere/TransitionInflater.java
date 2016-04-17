@@ -28,7 +28,6 @@ import android.view.ViewGroup;
 
 import com.transitionseverywhere.extra.Scale;
 import com.transitionseverywhere.extra.TranslationTransition;
-import com.transitionseverywhere.hidden.Recolor;
 import com.transitionseverywhere.utils.ArrayMap;
 
 import org.xmlpull.v1.XmlPullParser;

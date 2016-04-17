@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.transitionseverywhere.hidden;
+package com.transitionseverywhere;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;

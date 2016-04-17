@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.transitionseverywhere.hidden;
+package com.transitionseverywhere;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -33,8 +33,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.TransitionValues;
 import com.transitionseverywhere.utils.RectEvaluator;
 import com.transitionseverywhere.utils.ViewGroupOverlayUtils;
 

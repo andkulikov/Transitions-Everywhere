@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.transitionseverywhere.TransitionManager;
-import com.transitionseverywhere.hidden.Recolor;
+import com.transitionseverywhere.Recolor;
 
 /**
  * Created by Andrey Kulikov on 17/04/16.
