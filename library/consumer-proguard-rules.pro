@@ -1,2 +1,0 @@
--keep class com.transitionseverywhere.** { *; }
--keep class com.transitionseverywhere.**.** { *; }

@@ -9,7 +9,6 @@ android {
         targetSdkVersion parent.ext.targetSdkVersion
         versionCode parent.ext.versionCode
         versionName parent.ext.versionName
-        consumerProguardFiles 'consumer-proguard-rules.pro'
     }
 }
 
