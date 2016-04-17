@@ -19,12 +19,12 @@ package com.transitionseverywhere;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.transitionseverywhere.utils.ArrayMap;
 import com.transitionseverywhere.utils.ViewGroupOverlayUtils;
 import com.transitionseverywhere.utils.ViewGroupUtils;
 import com.transitionseverywhere.utils.ViewUtils;
@@ -67,7 +67,6 @@ import java.util.ArrayList;
  * and {@link com.transitionseverywhere.R.styleable#TransitionManager}.
  */
 public class TransitionManager {
-    // TODO: how to handle enter/exit?
 
     private static String LOG_TAG = "TransitionManager";
 

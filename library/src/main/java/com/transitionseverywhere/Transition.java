@@ -24,6 +24,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.v4.util.ArrayMap;
+import android.support.v4.util.LongSparseArray;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -38,9 +40,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.transitionseverywhere.utils.AnimatorUtils;
-import com.transitionseverywhere.utils.ArrayMap;
-import com.transitionseverywhere.utils.LongSparseArray;
-import com.transitionseverywhere.utils.Objects;
 import com.transitionseverywhere.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -1672,7 +1671,7 @@ public abstract class Transition implements Cloneable {
                     Object windowId = ViewUtils.getWindowId(sceneRoot);
                     for (int i = numOldAnims - 1; i >= 0; i--) {
                         AnimationInfo info = runningAnimators.valueAt(i);
-                        if (info.view != null && windowId != null && Objects.equal(windowId, info.windowId)) {
+                        if (info.view != null && windowId != null && windowId.equals(info.windowId)) {
                             Animator anim = runningAnimators.keyAt(i);
                             AnimatorUtils.pause(anim);
                         }
@@ -1706,7 +1705,7 @@ public abstract class Transition implements Cloneable {
                 Object windowId = ViewUtils.getWindowId(sceneRoot);
                 for (int i = numOldAnims - 1; i >= 0; i--) {
                     AnimationInfo info = runningAnimators.valueAt(i);
-                    if (info.view != null && windowId != null && Objects.equal(windowId, info.windowId)) {
+                    if (info.view != null && windowId != null && windowId.equals(info.windowId)) {
                         Animator anim = runningAnimators.keyAt(i);
                         AnimatorUtils.resume(anim);
                     }

@@ -16,11 +16,10 @@
 
 package com.transitionseverywhere;
 
+import android.support.v4.util.ArrayMap;
+import android.support.v4.util.LongSparseArray;
 import android.util.SparseArray;
 import android.view.View;
-
-import com.transitionseverywhere.utils.ArrayMap;
-import com.transitionseverywhere.utils.LongSparseArray;
 
 class TransitionValuesMaps {
     ArrayMap<View, TransitionValues> viewValues =
