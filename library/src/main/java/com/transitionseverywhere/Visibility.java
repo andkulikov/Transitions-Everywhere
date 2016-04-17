@@ -416,7 +416,6 @@ public abstract class Visibility extends Transition {
                 }
             }
         }
-        final int finalVisibility = endVisibility;
 
         if (overlayView != null) {
             // TODO: Need to do this for general case of adding to overlay
@@ -448,7 +447,7 @@ public abstract class Visibility extends Transition {
             Animator animator = onDisappear(sceneRoot, viewToKeep, startValues, endValues);
             if (animator != null) {
                 DisappearListener disappearListener = new DisappearListener(viewToKeep,
-                        finalVisibility, isForcedVisibility);
+                        endVisibility, isForcedVisibility);
                 animator.addListener(disappearListener);
                 AnimatorUtils.addPauseListener(animator, disappearListener);
                 addListener(disappearListener);

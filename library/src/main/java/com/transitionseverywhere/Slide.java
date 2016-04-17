@@ -17,6 +17,7 @@ package com.transitionseverywhere;
 
 import android.animation.Animator;
 import android.animation.TimeInterpolator;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -159,6 +160,7 @@ public class Slide extends Visibility {
      *                  {@link android.view.Gravity#RIGHT}, {@link android.view.Gravity#BOTTOM}.
      * @attr ref android.R.styleable#Slide_slideEdge
      */
+    @SuppressLint("RtlHardcoded")
     public void setSlideEdge(int slideEdge) {
         switch (slideEdge) {
             case Gravity.LEFT:

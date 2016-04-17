@@ -15,6 +15,7 @@
  */
 package com.transitionseverywhere;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.graphics.Rect;
 import android.os.Build;
@@ -122,6 +123,7 @@ public class SidePropagation extends VisibilityPropagation {
         return Math.round(duration * directionMultiplier / mPropagationSpeed * distanceFraction);
     }
 
+    @SuppressLint("RtlHardcoded")
     private int distance(View sceneRoot, int viewX, int viewY, int epicenterX, int epicenterY,
                          int left, int top, int right, int bottom) {
         final int side;
@@ -152,6 +154,7 @@ public class SidePropagation extends VisibilityPropagation {
         return distance;
     }
 
+    @SuppressLint("RtlHardcoded")
     private int getMaxDistance(ViewGroup sceneRoot) {
         switch (mSide) {
             case Gravity.LEFT:
