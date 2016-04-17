@@ -15,7 +15,6 @@ import com.transitionseverywhere.Rotate;
 /**
  * Created by Andrey Kulikov on 17/04/16.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class RotateSample extends Fragment {
 
     @Nullable

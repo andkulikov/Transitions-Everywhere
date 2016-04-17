@@ -11,7 +11,7 @@ android {
     buildToolsVersion parent.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion parent.ext.minSdkVersion
+        minSdkVersion 14
         targetSdkVersion parent.ext.targetSdkVersion
         versionCode parent.ext.versionCode
         versionName parent.ext.versionName
