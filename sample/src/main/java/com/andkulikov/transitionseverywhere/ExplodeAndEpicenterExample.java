@@ -21,20 +21,21 @@ import com.transitionseverywhere.TransitionSet;
  */
 public class ExplodeAndEpicenterExample extends Fragment {
 
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        recyclerView = new RecyclerView(container.getContext());
-        recyclerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        mRecyclerView = new RecyclerView(container.getContext());
+        mRecyclerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT));
-        recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(), 4));
-        recyclerView.setAdapter(new Adapter());
-        return recyclerView;
+        mRecyclerView.setLayoutManager(new GridLayoutManager(container.getContext(), 4));
+        mRecyclerView.setAdapter(new Adapter());
+        return mRecyclerView;
     }
 
     private void letsExplodeIt(View clickedView) {
+        // save rect of view in screen coordinated
         final Rect viewRect = new Rect();
         clickedView.getGlobalVisibleRect(viewRect);
 
@@ -52,9 +53,10 @@ public class ExplodeAndEpicenterExample extends Fragment {
                     getActivity().onBackPressed();
                 }
             });
+        TransitionManager.beginDelayedTransition(mRecyclerView, set);
 
-        TransitionManager.beginDelayedTransition(recyclerView, set);
-        recyclerView.setAdapter(null);
+        // remove all views from Recycler View
+        mRecyclerView.setAdapter(null);
     }
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
