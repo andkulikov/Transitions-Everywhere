@@ -20,9 +20,7 @@ public class ListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RecyclerView view = new RecyclerView(container.getContext());
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT));
+        RecyclerView view = (RecyclerView) inflater.inflate(R.layout.fragment_list, container, false);
         view.setLayoutManager(new LinearLayoutManager(container.getContext()));
         view.setAdapter(new Adapter());
         return view;
