@@ -10,19 +10,23 @@ About Transitions API
 Simple example
 ============
 <img src="http://habrastorage.org/getpro/habr/post_images/e93/37c/0da/e9337c0dacc355523adddf1545b57e5a.gif"/>
+<br>Sample application contain a lot of examples how to use transitions.
 
 Usage
 ============
 Gradle:
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.6.2"
+    compile "com.andkulikov:transitionseverywhere:1.6.3"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+<b>1.6.3</b><br>
+Hidden transitions is moved in main package. Proguard rules are removed. Some internal fixes.
+
 <b>1.6.2</b><br>
 Fixed issue with incorrect disappearing when set of more than one Visibility transitions animates the same view
 <br>Added two "extra" transitions: Scale (for scaled appearing & disappearing) and TranslationTransition (animates changes of translationX and translationY)
@@ -30,15 +34,11 @@ Fixed issue with incorrect disappearing when set of more than one Visibility tra
 <b>1.6.0</b><br>
 Merge with final Android Marshmallow SDK<br>
 PathMotion aka <b>Curved motion is backported</b>! [What is it and how to use it][6]<br>
-Bug fixes and performance optimizations. Animations now works on Android 4.0+ (instead of 3.1+ in previous version)
+Bug fixes and performance optimizations.
 
-<b>1.5.0</b><br>
-Merge with Android M Preview 2<br>
-Migrate to <b>new library package name</b> and <b>maven artifact id</b>:<br>
-Please update imports in your classes<br>
-from `android.transitions.everywhere.*` to `com.transitionseverywhere`<br>
-And gradle dependency<br>
-from `com.github.andkulikov:transitions-everywhere` to `com.andkulikov:transitionseverywhere`<br>
+Transition names of views
+============
+Android 5.0 adds new method `setTransitionName()` for `View` class. With this library you should call `TransitionManager.setTransitionName(View v, String transitionName)` method instead to provide backward compatibility.
 
 Transitions via XML
 ============
@@ -55,25 +55,12 @@ If you use XML files to create your transitions you need to put them in the res/
 </transitionSet>
 ```
 
-Transition names of views
-============
-Android 5.0 adds new method `setTransitionName()` for `View` class. With this library you should call `TransitionManager.setTransitionName(View v, String transitionName)` method instead to provide backward compatibility.
-
-About library
+About library [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-transitions--everywhere-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1050)
 ============
 Transition animations backported to <b>Android 4.0+</b>.<br>
-For Android ver. <b>>= 2.2</b> and < <b>4.0</b> scene to scene (layout to layout) changes is executed by the same API  but without animations.
-
-<b>Note:</b> some of transitions classes was marked as hidden by developers of Android. You can find it in package  `com.transitionseverywhere.hidden`.
+For Android ver. <b>>= 2.2</b> and < <b>4.0</b> scene to scene (layout to layout) changes is executed by the same API but without animations.
 
 Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>  
-
-ProGuard configs
-============
-```
--keep class com.transitionseverywhere.** { *; }
--keep class com.transitionseverywhere.**.** { *; }
-```
 
 [1]: http://developer.android.com/reference/android/transition/package-summary.html
 [2]: https://www.youtube.com/watch?v=S3H7nJ4QaD8
@@ -81,6 +68,3 @@ ProGuard configs
 [4]: https://github.com/pardom/TransitionSupportLibrary
 [5]: https://github.com/guerwan/TransitionsBackport
 [6]: http://blog.stylingandroid.com/curved-motion-part-1
-
-<br>
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-transitions--everywhere-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1050)
