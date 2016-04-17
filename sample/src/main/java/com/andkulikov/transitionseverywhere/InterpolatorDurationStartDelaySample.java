@@ -1,22 +1,27 @@
 package com.andkulikov.transitionseverywhere;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 
-import com.transitionseverywhere.ArcMotion;
 import com.transitionseverywhere.ChangeBounds;
+import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
 
 /**
- * Created by Andrey Kulikov on 24/03/16.
+ * Created by Andrey Kulikov on 17/04/16.
  */
-public class PathMotionSample extends Fragment {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class InterpolatorDurationStartDelaySample extends Fragment {
 
     @Nullable
     @Override
@@ -32,13 +37,16 @@ public class PathMotionSample extends Fragment {
 
             @Override
             public void onClick(View v) {
-                TransitionManager.beginDelayedTransition(transitionsContainer,
-                    new ChangeBounds().setPathMotion(new ArcMotion()).setDuration(500));
-
                 mToRightAnimation = !mToRightAnimation;
+
+                Transition transition = new ChangeBounds();
+                transition.setDuration(mToRightAnimation ? 700 : 300);
+                transition.setInterpolator(mToRightAnimation ? new FastOutSlowInInterpolator() : new AccelerateInterpolator());
+                transition.setStartDelay(mToRightAnimation ? 0 : 500);
+                TransitionManager.beginDelayedTransition(transitionsContainer, transition);
+
                 FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) button.getLayoutParams();
-                params.gravity = mToRightAnimation ? (Gravity.RIGHT | Gravity.BOTTOM) :
-                    (Gravity.LEFT | Gravity.TOP);
+                params.gravity = mToRightAnimation ? (Gravity.RIGHT | Gravity.TOP) : (Gravity.LEFT | Gravity.TOP);
                 button.setLayoutParams(params);
             }
 
@@ -46,6 +54,5 @@ public class PathMotionSample extends Fragment {
 
         return view;
     }
-
 
 }

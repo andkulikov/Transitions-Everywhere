@@ -31,21 +31,22 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Samp
 
     @Override
     public int getSampleCount() {
-        return 9;
+        return 10;
     }
 
     @Override
     public String getTitleForPosition(int index) {
         switch (index) {
             case 0: return "Simple animations with AutoTransition";
-            case 1: return "Slide transition";
-            case 2: return "Scale transition";
-            case 3: return "ChangeImageTransform transition";
-            case 4: return "Path motion";
+            case 1: return "Interpolator, duration, start delay";
+            case 2: return "Path motion";
+            case 3: return "Slide transition";
+            case 4: return "Scale transition";
             case 5: return "Explode transition and epicenter";
-            case 6: return "Recolor transitions";
-            case 7: return "Rotate transitions";
-            case 8: return "Scene to scene transitions";
+            case 6: return "ChangeImageTransform transition";
+            case 7: return "Recolor transitions";
+            case 8: return "Rotate transitions";
+            case 9: return "Scene to scene transitions";
         }
         return null;
     }
@@ -53,14 +54,15 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Samp
     private Fragment createFragmentForPosition(int index) {
         switch (index) {
             case 0: return new AutoTransitionSample();
-            case 1: return new SlideSample();
-            case 2: return new ScaleSample();
-            case 3: return new ImageTransformSample();
-            case 4: return new PathMotionSample();
+            case 1: return new InterpolatorDurationStartDelaySample();
+            case 2: return new PathMotionSample();
+            case 3: return new SlideSample();
+            case 4: return new ScaleSample();
             case 5: return new ExplodeAndEpicenterExample();
-            case 6: return new RecolorSample();
-            case 7: return new RotateSample();
-            case 8: return new ScenesSample();
+            case 6: return new ImageTransformSample();
+            case 7: return new RecolorSample();
+            case 8: return new RotateSample();
+            case 9: return new ScenesSample();
         }
         return null;
     }
