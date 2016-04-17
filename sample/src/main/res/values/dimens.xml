@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="square_size">50dp</dimen>
-    <dimen name="image_collapsed_size">150dp</dimen>
 </resources>

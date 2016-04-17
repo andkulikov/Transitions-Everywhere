@@ -37,22 +37,15 @@ public class ImageTransformSample extends Fragment {
             public void onClick(View v) {
                 mExpanded = !mExpanded;
 
-                TransitionManager.beginDelayedTransition(transitionsContainer,
-                    new TransitionSet()
-                        .addTransition(new ChangeImageTransform())
-                        .addTransition(new ChangeBounds()));
+                TransitionManager.beginDelayedTransition(transitionsContainer, new TransitionSet()
+                    .addTransition(new ChangeBounds())
+                    .addTransition(new ChangeImageTransform()));
 
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imageView.getLayoutParams();
-                if (mExpanded) {
-                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    params.gravity = Gravity.CENTER;
-                } else {
-                    params.width = getResources().getDimensionPixelSize(R.dimen.image_collapsed_size);
-                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-                }
+                ViewGroup.LayoutParams params = imageView.getLayoutParams();
+                params.height = mExpanded ? ViewGroup.LayoutParams.MATCH_PARENT : ViewGroup.LayoutParams.WRAP_CONTENT;
                 imageView.setLayoutParams(params);
+
+                imageView.setScaleType(mExpanded ? ImageView.ScaleType.CENTER_CROP : ImageView.ScaleType.FIT_CENTER);
             }
         });
 
