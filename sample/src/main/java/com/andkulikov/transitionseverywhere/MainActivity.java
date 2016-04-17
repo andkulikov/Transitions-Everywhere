@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Samp
 
     @Override
     public int getSampleCount() {
-        return 8;
+        return 9;
     }
 
     @Override
@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Samp
             case 4: return "Path motion";
             case 5: return "Explode transition and epicenter";
             case 6: return "Recolor transitions";
-            case 7: return "Scene to scene transitions";
+            case 7: return "Rotate transitions";
+            case 8: return "Scene to scene transitions";
         }
         return null;
     }
@@ -58,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Samp
             case 4: return new PathMotionSample();
             case 5: return new ExplodeAndEpicenterExample();
             case 6: return new RecolorSample();
-            case 7: return new ScenesSample();
+            case 7: return new RotateSample();
+            case 8: return new ScenesSample();
         }
         return null;
     }
