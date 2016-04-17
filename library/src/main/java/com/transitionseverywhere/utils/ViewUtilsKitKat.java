@@ -2,7 +2,6 @@ package com.transitionseverywhere.utils;
 
 import android.annotation.TargetApi;
 import android.os.Build.VERSION_CODES;
-import android.util.FloatProperty;
 import android.util.Property;
 import android.view.View;
 
@@ -15,7 +14,7 @@ class ViewUtilsKitKat extends ViewUtils.ViewUtilsJellyBeanMR2 {
     private static final Method METHOD_setTransitionAlpha = ReflectionUtils.getMethod(View.class, "setTransitionAlpha",
             float.class);
 
-    public static final Property<View, Float> VIEW_TRANSITION_ALPHA = new FloatProperty<View>("transitionAlpha") {
+    public static final Property<View, Float> VIEW_TRANSITION_ALPHA = new FloatProperty<View>() {
         @Override
         public void setValue(View object, float value) {
             ViewUtils.setTransitionAlpha(object, value);

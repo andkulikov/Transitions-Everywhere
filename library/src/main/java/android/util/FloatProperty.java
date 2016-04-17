@@ -1,5 +1,6 @@
 package android.util;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 
@@ -19,6 +20,7 @@ public abstract class FloatProperty<T> extends Property<T, Float> {
 
     public abstract void setValue(T object, float value);
 
+    @SuppressLint("NewApi")
     @Override
     final public void set(T object, Float value) {
         setValue(object, value);

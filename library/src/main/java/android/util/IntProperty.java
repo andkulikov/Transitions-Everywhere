@@ -1,5 +1,6 @@
 package android.util;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 
@@ -19,9 +20,10 @@ public abstract class IntProperty<T> extends Property<T, Integer> {
 
     public abstract void setValue(T object, int value);
 
+    @SuppressLint("NewApi")
     @Override
     final public void set(T object, Integer value) {
-        setValue(object, value.intValue());
+        setValue(object, value);
     }
 
 }

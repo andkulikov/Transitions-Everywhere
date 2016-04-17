@@ -77,7 +77,7 @@ public class ChangeBounds extends Transition {
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            DRAWABLE_ORIGIN_PROPERTY = new PointFProperty<Drawable>("boundsOrigin") {
+            DRAWABLE_ORIGIN_PROPERTY = new PointFProperty<Drawable>() {
 
                 private Rect mBounds = new Rect();
 
@@ -94,19 +94,19 @@ public class ChangeBounds extends Transition {
                     return new PointF(mBounds.left, mBounds.top);
                 }
             };
-            TOP_LEFT_PROPERTY = new PointFProperty<ViewBounds>("topLeft") {
+            TOP_LEFT_PROPERTY = new PointFProperty<ViewBounds>() {
                 @Override
                 public void set(ViewBounds viewBounds, PointF topLeft) {
                     viewBounds.setTopLeft(topLeft);
                 }
             };
-            BOTTOM_RIGHT_PROPERTY = new PointFProperty<ViewBounds>("bottomRight") {
+            BOTTOM_RIGHT_PROPERTY = new PointFProperty<ViewBounds>() {
                 @Override
                 public void set(ViewBounds viewBounds, PointF bottomRight) {
                     viewBounds.setBottomRight(bottomRight);
                 }
             };
-            BOTTOM_RIGHT_ONLY_PROPERTY = new PointFProperty<View>("bottomRight") {
+            BOTTOM_RIGHT_ONLY_PROPERTY = new PointFProperty<View>() {
                 @Override
                 public void set(View view, PointF bottomRight) {
                     int left = view.getLeft();
@@ -116,7 +116,7 @@ public class ChangeBounds extends Transition {
                     ViewUtils.setLeftTopRightBottom(view, left, top, right, bottom);
                 }
             };
-            TOP_LEFT_ONLY_PROPERTY = new PointFProperty<View>("topLeft") {
+            TOP_LEFT_ONLY_PROPERTY = new PointFProperty<View>() {
                 @Override
                 public void set(View view, PointF topLeft) {
                     int left = Math.round(topLeft.x);
@@ -126,7 +126,7 @@ public class ChangeBounds extends Transition {
                     ViewUtils.setLeftTopRightBottom(view, left, top, right, bottom);
                 }
             };
-            POSITION_PROPERTY = new PointFProperty<View>("position") {
+            POSITION_PROPERTY = new PointFProperty<View>() {
                 @Override
                 public void set(View view, PointF topLeft) {
                     int left = Math.round(topLeft.x);
