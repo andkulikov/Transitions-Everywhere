@@ -3,6 +3,8 @@ package com.andkulikov.transitionseverywhere;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,8 +46,11 @@ public class ScaleSample extends Fragment {
 
             @Override
             protected void changeVisibility(boolean visible) {
-                TransitionManager.beginDelayedTransition(transitionsContainer,
-                    new TransitionSet().addTransition(new Scale(0.7f)).addTransition(new Fade()));
+                TransitionSet set = new TransitionSet()
+                    .addTransition(new Scale(0.7f))
+                    .addTransition(new Fade())
+                    .setInterpolator(visible ? new LinearOutSlowInInterpolator() : new FastOutLinearInInterpolator());
+                TransitionManager.beginDelayedTransition(transitionsContainer, set);
                 text2.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
             }
 
