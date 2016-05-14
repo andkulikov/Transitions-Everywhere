@@ -9,7 +9,11 @@ About Transitions API
 
 Simple example
 ============
-<img src="http://habrastorage.org/getpro/habr/post_images/e93/37c/0da/e9337c0dacc355523adddf1545b57e5a.gif"/>
+```java
+TransitionManager.beginDelayedTransition(transitionsContainer);
+text.setVisibility(visible ? View.VISIBLE : View.GONE);      
+```
+<img src="https://habrastorage.org/files/c51/b1e/b26/c51b1eb26fb941698ad5a1368d06603b.gif"/>
 <br>Sample application contain a lot of examples how to use transitions.
 
 Usage
@@ -36,29 +40,10 @@ Merge with final Android Marshmallow SDK<br>
 PathMotion aka <b>Curved motion is backported</b>! [What is it and how to use it][6]<br>
 Bug fixes and performance optimizations.
 
-Transition names of views
-============
-Android 5.0 adds new method `setTransitionName()` for `View` class. With this library you should call `TransitionManager.setTransitionName(View v, String transitionName)` method instead to provide backward compatibility.
-
-Transitions via XML
-============
-If you use XML files to create your transitions you need to put them in the res/anim folder instead of the res/transition folder. You need to use application attributes namespase instead of `android:`. For example:
-```xml
-<transitionSet xmlns:app="http://schemas.android.com/apk/res-auto"
-               app:duration="400">
-    <changeBounds/>
-    <fade app:fadingMode="fade_in">
-        <targets>
-            <target app:targetId="@id/transition_title"/>
-        </targets>
-    </fade>
-</transitionSet>
-```
-
 About library [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-transitions--everywhere-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1050)
 ============
 Transition animations backported to <b>Android 4.0+</b>.<br>
-For Android ver. <b>>= 2.2</b> and < <b>4.0</b> scene to scene (layout to layout) changes is executed by the same API but without animations.
+For Android ver. <b>>= 2.2</b> and < <b>4.0</b> scene to scene (layout to layout) changes is executed by the same API but without any real animations.
 
 Thanks to github users: <b>[pardom][4]</b> and <b>[guerwan][5]</b>  
 
