@@ -18,7 +18,6 @@ text.setVisibility(visible ? View.VISIBLE : View.GONE);
 
 Quick start
 ============
-:
 ```groovy
 dependencies {
     compile "com.andkulikov:transitionseverywhere:1.6.3"
