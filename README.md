@@ -16,9 +16,9 @@ text.setVisibility(visible ? View.VISIBLE : View.GONE);
 <img src="https://habrastorage.org/files/c51/b1e/b26/c51b1eb26fb941698ad5a1368d06603b.gif"/>
 <br>Article and sample application contains a lot of examples how to use transitions.
 
-Usage
+Quick start
 ============
-Gradle:
+:
 ```groovy
 dependencies {
     compile "com.andkulikov:transitionseverywhere:1.6.3"
