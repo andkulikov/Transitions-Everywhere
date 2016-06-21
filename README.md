@@ -20,13 +20,16 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.6.3"
+    compile "com.andkulikov:transitionseverywhere:1.6.4"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+<b>1.6.4</b><br>
+Bug fix. Thanks to [raycoarana][4].
+
 <b>1.6.3</b><br>
 Hidden transitions is moved in main package. Proguard rules are removed. Some internal fixes.
 
@@ -42,3 +45,4 @@ Bug fixes and performance optimizations.
 [1]: http://developer.android.com/reference/android/transition/package-summary.html
 [2]: https://medium.com/@andkulikov/animate-all-the-things-transitions-in-android-914af5477d50
 [3]: http://habrahabr.ru/post/243363/
+[4]: https://github.com/raycoarana
