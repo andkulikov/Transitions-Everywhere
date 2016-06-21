@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.1.2'
     }
 
     project.ext {
@@ -11,8 +11,8 @@ buildscript {
         minSdkVersion = 8
         targetSdkVersion = 23
 
-        versionCode = 13
-        versionName = "1.6.3"
+        versionCode = 14
+        versionName = "1.6.4"
     }
 }
 
