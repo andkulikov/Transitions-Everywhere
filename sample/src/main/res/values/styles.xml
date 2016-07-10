@@ -9,7 +9,7 @@
     </style>
 
     <style name="AppTheme.White">
-        <item name="colorControlHighlight">@android:color/white</item>
+        <item name="colorControlHighlight">#88ffffff</item>
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
