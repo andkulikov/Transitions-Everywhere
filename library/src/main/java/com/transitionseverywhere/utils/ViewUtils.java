@@ -171,7 +171,9 @@ public class ViewUtils {
 
     static {
         final int version = VERSION.SDK_INT;
-        if (version >= VERSION_CODES.LOLLIPOP) {
+        if (version >= VERSION_CODES.LOLLIPOP_MR1) {
+            IMPL = new ViewUtilsLollipopMr1();
+        } else if (version >= VERSION_CODES.LOLLIPOP) {
             IMPL = new ViewUtilsLollipop();
         } else if (version >= VERSION_CODES.KITKAT) {
             IMPL = new ViewUtilsKitKat();
@@ -280,7 +282,9 @@ public class ViewUtils {
     }
 
     public static void setLeftTopRightBottom(View view, int left, int top, int right, int bottom) {
-        IMPL.setLeftTopRightBottom(view, left, top, right, bottom);
+        if (view != null) {
+            IMPL.setLeftTopRightBottom(view, left, top, right, bottom);
+        }
     }
 
     public static void setLayoutParamsSilently(View view, ViewGroup.LayoutParams layoutParams) {
