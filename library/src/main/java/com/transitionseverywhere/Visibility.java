@@ -298,9 +298,13 @@ public abstract class Visibility extends Transition {
         }
         final boolean isForcedVisibility = mForcedStartVisibility != -1 ||
                 mForcedEndVisibility != -1;
-        if (isForcedVisibility && !ViewUtils.isTransitionAlphaCompatMode()) {
+        if (isForcedVisibility) {
             // Make sure that we reverse the effect of onDisappear's setTransitionAlpha(0)
-            ViewUtils.setTransitionAlpha(endValues.view, 1);
+            Object savedAlpha = endValues.view.getTag(R.id.transitionAlpha);
+            if (savedAlpha instanceof Float) {
+                ViewUtils.setTransitionAlpha(endValues.view, (Float) savedAlpha);
+                endValues.view.setTag(R.id.transitionAlpha, null);
+            }
         }
         return onAppear(sceneRoot, endValues.view, startValues, endValues);
     }
@@ -567,9 +571,8 @@ public abstract class Visibility extends Transition {
         private void hideViewWhenNotCanceled() {
             if (!mCanceled) {
                 if (mIsForcedVisibility) {
-                    if (!ViewUtils.isTransitionAlphaCompatMode()) {
-                        ViewUtils.setTransitionAlpha(mView, 0);
-                    }
+                    mView.setTag(R.id.transitionAlpha, mView.getAlpha());
+                    ViewUtils.setTransitionAlpha(mView, 0);
                 } else if (!mFinalVisibilitySet) {
                     // Recreate the parent's display list in case it includes mView.
                     ViewUtils.setTransitionVisibility(mView, mFinalVisibility);

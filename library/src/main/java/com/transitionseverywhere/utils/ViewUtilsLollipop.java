@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * Created by Andrey Kulikov on 20.10.14.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-class ViewUtilsLollipop extends ViewUtilsKitKat {
+class ViewUtilsLollipop extends ViewUtils.ViewUtilsKitKat {
 
     private static final Class CLASS_GhostView = ReflectionUtils.getClass("android.view.GhostView");
     private static final Method METHOD_addGhost = ReflectionUtils.getMethod(CLASS_GhostView,

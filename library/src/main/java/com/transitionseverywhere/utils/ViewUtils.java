@@ -60,10 +60,6 @@ public class ViewUtils {
             v.setAlpha(alpha);
         }
 
-        public boolean isTransitionAlphaCompatMode() {
-            return true;
-        }
-
         public Property<View, Float> getAlphaProperty() {
             return View.ALPHA;
         }
@@ -167,6 +163,14 @@ public class ViewUtils {
         }
     }
 
+    @TargetApi(VERSION_CODES.KITKAT)
+    static class ViewUtilsKitKat extends ViewUtilsJellyBeanMR2 {
+        @Override
+        public boolean isLaidOut(View v, boolean defaultValue) {
+            return v.isLaidOut();
+        }
+    }
+
     private static final BaseViewUtils IMPL;
 
     static {
@@ -206,10 +210,6 @@ public class ViewUtils {
 
     public static void setTransitionAlpha(View v, float alpha) {
         IMPL.setTransitionAlpha(v, alpha);
-    }
-
-    public static boolean isTransitionAlphaCompatMode() {
-        return IMPL.isTransitionAlphaCompatMode();
     }
 
     public static Property<View, Float> getAlphaProperty() {

@@ -111,15 +111,11 @@ public class Fade extends Visibility {
      * Utility method to handle creating and running the Animator.
      */
     private Animator createAnimation(final View view, float startAlpha, float endAlpha) {
-        final float endListenerAlpha;
-        if (ViewUtils.isTransitionAlphaCompatMode()) {
-            float curAlpha = view.getAlpha();
-            startAlpha = curAlpha * startAlpha;
-            endAlpha = curAlpha * endAlpha;
-            endListenerAlpha = curAlpha;
-        } else {
-            endListenerAlpha = 1f;
-        }
+        float curAlpha = view.getAlpha();
+        startAlpha = curAlpha * startAlpha;
+        endAlpha = curAlpha * endAlpha;
+        final float endListenerAlpha = curAlpha;
+
         if (startAlpha == endAlpha) {
             return null;
         }
