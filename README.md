@@ -5,7 +5,7 @@ Backport of [Android Transitions API][1]. Animations backported to <b>Android 4.
 About
 ============
 [Article about transitions and library. More info here][2]<br>
-[And in Russian language][3]
+[And in the Russian language][3]
 
 Simple example
 ============
@@ -20,13 +20,16 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.6.4"
+    compile "com.andkulikov:transitionseverywhere:1.6.5"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+<b>1.6.5</b><br>
+Optimizations for ChangeBounds and Fade
+
 <b>1.6.4</b><br>
 Bug fix. Thanks to [raycoarana][4].
 
@@ -39,7 +42,7 @@ Fixed issue with incorrect disappearing when set of more than one Visibility tra
 
 <b>1.6.0</b><br>
 Merge with final Android Marshmallow SDK<br>
-PathMotion aka <b>Curved motion is backported</b>!<br>
+PathMotion aka Curved motion is backported!<br>
 Bug fixes and performance optimizations.
 
 [1]: http://developer.android.com/reference/android/transition/package-summary.html
