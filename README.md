@@ -5,7 +5,9 @@ Backport of [Android Transitions API][1]. Animations backported to <b>Android 4.
 About
 ============
 [Article about transitions and library. More info here][2]<br>
-[And in the Russian language][3]
+[Russian version][3]<br>
+[Chinese version][5]
+
 
 Simple example
 ============
@@ -49,3 +51,4 @@ Bug fixes and performance optimizations.
 [2]: https://medium.com/@andkulikov/animate-all-the-things-transitions-in-android-914af5477d50
 [3]: http://habrahabr.ru/post/243363/
 [4]: https://github.com/raycoarana
+[5]: https://yanlu.me/animate-all-the-things-transitions-in-android/
