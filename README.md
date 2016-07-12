@@ -6,8 +6,7 @@ About
 ============
 [Article about transitions and library. More info here][2]<br>
 [Russian version][3]<br>
-[Chinese version][5]<br>
-[Article about transitions and this library, Chinese version][6]<br>
+Chinese: [version 1][5], [version 2][6]<br>
 
 Simple example
 ============
