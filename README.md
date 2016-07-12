@@ -6,8 +6,8 @@ About
 ============
 [Article about transitions and library. More info here][2]<br>
 [Russian version][3]<br>
-[Chinese version][5]
-
+[Chinese version][5]<br>
+[Article about transitions and this library, Chinese version][6]<br>
 
 Simple example
 ============
@@ -52,3 +52,4 @@ Bug fixes and performance optimizations.
 [3]: http://habrahabr.ru/post/243363/
 [4]: https://github.com/raycoarana
 [5]: https://yanlu.me/animate-all-the-things-transitions-in-android/
+[6]: http://www.jianshu.com/p/98f2ec280945
