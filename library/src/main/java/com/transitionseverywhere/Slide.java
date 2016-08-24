@@ -22,6 +22,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -30,6 +31,9 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.transitionseverywhere.utils.ViewUtils;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * This transition tracks changes to the visibility of target views in the
@@ -46,7 +50,11 @@ public class Slide extends Visibility {
     protected static final TimeInterpolator sDecelerate = new DecelerateInterpolator();
     protected static final TimeInterpolator sAccelerate = new AccelerateInterpolator();
     protected CalculateSlide mSlideCalculator = sCalculateBottom;
-    private int mSlideEdge = Gravity.BOTTOM;
+    private @GravityFlag int mSlideEdge = Gravity.BOTTOM;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({Gravity.LEFT, Gravity.TOP, Gravity.RIGHT, Gravity.BOTTOM, Gravity.START, Gravity.END})
+    public @interface GravityFlag {}
 
     protected interface CalculateSlide {
 
@@ -140,7 +148,7 @@ public class Slide extends Visibility {
     /**
      * Constructor using the provided slide edge direction.
      */
-    public Slide(int slideEdge) {
+    public Slide(@GravityFlag int slideEdge) {
         setSlideEdge(slideEdge);
     }
 
@@ -161,7 +169,7 @@ public class Slide extends Visibility {
      * @attr ref android.R.styleable#Slide_slideEdge
      */
     @SuppressLint("RtlHardcoded")
-    public void setSlideEdge(int slideEdge) {
+    public void setSlideEdge(@GravityFlag int slideEdge) {
         switch (slideEdge) {
             case Gravity.LEFT:
                 mSlideCalculator = sCalculateLeft;
@@ -199,6 +207,7 @@ public class Slide extends Visibility {
      *         {@link android.view.Gravity#START}, {@link android.view.Gravity#END}.
      * @attr ref android.R.styleable#Slide_slideEdge
      */
+    @GravityFlag
     public int getSlideEdge() {
         return mSlideEdge;
     }

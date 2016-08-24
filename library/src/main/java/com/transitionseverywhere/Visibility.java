@@ -22,6 +22,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,9 @@ import com.transitionseverywhere.utils.AnimatorUtils;
 import com.transitionseverywhere.utils.ViewGroupOverlayUtils;
 import com.transitionseverywhere.utils.ViewGroupUtils;
 import com.transitionseverywhere.utils.ViewUtils;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * This transition tracks changes to the visibility of target views in the
@@ -50,6 +54,10 @@ public abstract class Visibility extends Transition {
     static final String PROPNAME_VISIBILITY = "android:visibility:visibility";
     private static final String PROPNAME_PARENT = "android:visibility:parent";
     protected static final String PROPNAME_SCREEN_LOCATION = "android:visibility:screenLocation";
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef(flag=true, value={MODE_IN, MODE_OUT})
+    @interface VisibilityMode {}
 
     /**
      * Mode used in {@link #setMode(int)} to make the transition
@@ -106,7 +114,7 @@ public abstract class Visibility extends Transition {
      * @return This Visibility object.
      * @attr ref android.R.styleable#VisibilityTransition_transitionVisibilityMode
      */
-    public Visibility setMode(int mode) {
+    public Visibility setMode(@VisibilityMode int mode) {
         if ((mode & ~(MODE_IN | MODE_OUT)) != 0) {
             throw new IllegalArgumentException("Only MODE_IN and MODE_OUT flags are allowed");
         }
@@ -121,6 +129,7 @@ public abstract class Visibility extends Transition {
      *         {@link #MODE_IN} and {@link #MODE_OUT}.
      * @attr ref android.R.styleable#VisibilityTransition_transitionVisibilityMode
      */
+    @VisibilityMode
     public int getMode() {
         return mMode;
     }
