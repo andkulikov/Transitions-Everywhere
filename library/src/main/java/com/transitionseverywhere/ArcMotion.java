@@ -206,7 +206,7 @@ public class ArcMotion extends PathMotion {
             ey = (startY + endY) / 2;
         } else {
             float deltaX = endX - startX;
-            float deltaY = startY - endY; // Y is inverted compared to diagram above.
+            float deltaY = endY - startY;
             // hypotenuse squared.
             float h2 = deltaX * deltaX + deltaY * deltaY;
 
@@ -218,6 +218,7 @@ public class ArcMotion extends PathMotion {
             float midDist2 = h2 * 0.25f;
 
             float minimumArcDist2 = 0;
+            boolean isQuadrant1Or3 = (deltaX * deltaY) > 0;
 
             if (Math.abs(deltaX) < Math.abs(deltaY)) {
                 // Similar triangles bfa and bde mean that (ab/fb = eb/bd)
@@ -226,16 +227,26 @@ public class ArcMotion extends PathMotion {
                 // bd = hypotenuse/2
                 // fb = deltaY
                 float eDistY = h2 / (2 * deltaY);
-                ey = endY + eDistY;
-                ex = endX;
+                if (isQuadrant1Or3) {
+                    ey = startY + eDistY;
+                    ex = startX;
+                } else {
+                    ey = endY - eDistY;
+                    ex = endX;
+                }
 
                 minimumArcDist2 = midDist2 * mMinimumVerticalTangent
                         * mMinimumVerticalTangent;
             } else {
                 // Same as above, but flip X & Y
                 float eDistX = h2 / (2 * deltaX);
-                ex = endX + eDistX;
-                ey = endY;
+                if (isQuadrant1Or3) {
+                    ex = endX - eDistX;
+                    ey = endY;
+                } else {
+                    ex = startX + eDistX;
+                    ey = startY;
+                }
 
                 minimumArcDist2 = midDist2 * mMinimumHorizontalTangent
                         * mMinimumHorizontalTangent;
