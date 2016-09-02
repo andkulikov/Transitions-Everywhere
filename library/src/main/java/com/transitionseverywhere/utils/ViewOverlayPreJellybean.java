@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -76,6 +77,12 @@ class ViewOverlayPreJellybean extends FrameLayout {
         child.setTag(R.id.overlay_layout_params_backup, child.getLayoutParams());
         addView(child, initParams(child, left, top));
         invalidate();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        // Intercept and noop all touch events - overlays do not allow touch events
+        return false;
     }
 
     @Override
