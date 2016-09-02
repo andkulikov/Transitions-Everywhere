@@ -202,7 +202,7 @@ public final class Scene {
      * @return The current Scene set on this view. A value of null indicates that
      * no Scene is currently set.
      */
-    static Scene getCurrentScene(View view) {
+    public static Scene getCurrentScene(View view) {
         return (Scene) view.getTag(com.transitionseverywhere.R.id.current_scene);
     }
 
