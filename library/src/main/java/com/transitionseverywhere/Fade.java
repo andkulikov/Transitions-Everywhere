@@ -24,12 +24,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.transitionseverywhere.utils.AnimatorUtils;
-import com.transitionseverywhere.utils.ViewUtils;
 
 /**
  * This transition tracks changes to the visibility of target views in the
@@ -64,7 +62,7 @@ import com.transitionseverywhere.utils.ViewUtils;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Fade extends Visibility {
 
-    private static final String LOG_TAG = "Fade";
+    static final String PROPNAME_ALPHA = "fade:alpha";
 
     /**
      * Fading mode used in {@link #Fade(int)} to make the transition
@@ -102,37 +100,49 @@ public class Fade extends Visibility {
     public Fade(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Fade);
-        int fadingMode = a.getInt(R.styleable.Fade_fadingMode, getMode());
+        @VisibilityMode int fadingMode = a.getInt(R.styleable.Fade_fadingMode, getMode());
         a.recycle();
         setMode(fadingMode);
+    }
+
+    @Override
+    public void captureStartValues(TransitionValues transitionValues) {
+        super.captureStartValues(transitionValues);
+        if (transitionValues.view != null) {
+            transitionValues.values.put(PROPNAME_ALPHA, transitionValues.view.getAlpha());
+        }
     }
 
     /**
      * Utility method to handle creating and running the Animator.
      */
-    private Animator createAnimation(final View view, float startAlpha, float endAlpha) {
+    private Animator createAnimation(final View view, float startAlpha, float endAlpha, TransitionValues values) {
         float curAlpha = view.getAlpha();
         startAlpha = curAlpha * startAlpha;
         endAlpha = curAlpha * endAlpha;
-        final float endListenerAlpha = curAlpha;
 
-        if (startAlpha == endAlpha) {
-            return null;
+        if (values != null && values.values.containsKey(PROPNAME_ALPHA)) {
+            float savedAlpha = (Float) values.values.get(PROPNAME_ALPHA);
+            // if saved value is not equal curAlpha it means that previous
+            // transition was interrupted and in the onTransitionEnd
+            // we've applied endListenerAlpha. apply proper value to continue
+            // animation from interrupted state
+            if (savedAlpha != curAlpha) {
+                startAlpha = savedAlpha;
+            }
         }
-        ViewUtils.setTransitionAlpha(view, startAlpha);
-        final ObjectAnimator anim = ObjectAnimator.ofFloat(view, ViewUtils.getAlphaProperty(), endAlpha);
-        if (DBG) {
-            Log.d(LOG_TAG, "Created animator " + anim);
-        }
+
+        final float endListenerAlpha = curAlpha;
+        view.setAlpha(startAlpha);
+        final ObjectAnimator anim = ObjectAnimator.ofFloat(view, View.ALPHA, endAlpha);
         final FadeAnimatorListener listener = new FadeAnimatorListener(view, endListenerAlpha);
         anim.addListener(listener);
         addListener(new TransitionListenerAdapter() {
             @Override
             public void onTransitionEnd(Transition transition) {
-                ViewUtils.setTransitionAlpha(view, endListenerAlpha);
+                view.setAlpha(endListenerAlpha);
             }
         });
-        AnimatorUtils.addPauseListener(anim, listener);
         return anim;
     }
 
@@ -140,23 +150,17 @@ public class Fade extends Visibility {
     public Animator onAppear(ViewGroup sceneRoot, View view,
                              TransitionValues startValues,
                              TransitionValues endValues) {
-        if (DBG) {
-            View startView = (startValues != null) ? startValues.view : null;
-            Log.d(LOG_TAG, "Fade.onAppear: startView, startVis, endView, endVis = " +
-                    startView + ", " + view);
-        }
-        return createAnimation(view, 0, 1);
+        return createAnimation(view, 0, 1, startValues);
     }
 
     @Override
     public Animator onDisappear(ViewGroup sceneRoot, final View view, TransitionValues startValues,
                                 TransitionValues endValues) {
-        return createAnimation(view, 1, 0);
+        return createAnimation(view, 1, 0, startValues);
     }
 
     private static class FadeAnimatorListener extends AnimatorListenerAdapter {
         private final View mView;
-        private float mPausedAlpha = -1;
         private float mEndListenerAlpha;
         private boolean mLayerTypeChanged = false;
 
@@ -176,22 +180,12 @@ public class Fade extends Visibility {
 
         @Override
         public void onAnimationEnd(Animator animator) {
-            ViewUtils.setTransitionAlpha(mView, mEndListenerAlpha);
+            mView.setAlpha(mEndListenerAlpha);
             if (mLayerTypeChanged) {
                 mView.setLayerType(View.LAYER_TYPE_NONE, null);
             }
         }
 
-        @Override
-        public void onAnimationPause(Animator animator) {
-            mPausedAlpha = ViewUtils.getTransitionAlpha(mView);
-            ViewUtils.setTransitionAlpha(mView, mEndListenerAlpha);
-        }
-
-        @Override
-        public void onAnimationResume(Animator animator) {
-            ViewUtils.setTransitionAlpha(mView, mPausedAlpha);
-        }
     }
 
 }

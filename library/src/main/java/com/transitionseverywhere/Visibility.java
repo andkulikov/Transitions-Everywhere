@@ -311,7 +311,7 @@ public abstract class Visibility extends Transition {
             // Make sure that we reverse the effect of onDisappear's setTransitionAlpha(0)
             Object savedAlpha = endValues.view.getTag(R.id.transitionAlpha);
             if (savedAlpha instanceof Float) {
-                ViewUtils.setTransitionAlpha(endValues.view, (Float) savedAlpha);
+                endValues.view.setAlpha((Float) savedAlpha);
                 endValues.view.setTag(R.id.transitionAlpha, null);
             }
         }
@@ -596,7 +596,7 @@ public abstract class Visibility extends Transition {
             if (!mCanceled) {
                 if (mIsForcedVisibility) {
                     mView.setTag(R.id.transitionAlpha, mView.getAlpha());
-                    ViewUtils.setTransitionAlpha(mView, 0);
+                    mView.setAlpha(0);
                 } else if (!mFinalVisibilitySet) {
                     // Recreate the parent's display list in case it includes mView.
                     ViewUtils.setTransitionVisibility(mView, mFinalVisibility);

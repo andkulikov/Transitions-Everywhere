@@ -5,7 +5,6 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -54,14 +53,6 @@ public class ViewUtils {
 
         public String getTransitionName(View v) {
             return (String) v.getTag(R.id.transitionName);
-        }
-
-        public void setTransitionAlpha(View v, float alpha) {
-            v.setAlpha(alpha);
-        }
-
-        public Property<View, Float> getAlphaProperty() {
-            return View.ALPHA;
         }
 
         public void setTranslationZ(View view, float z) {
@@ -206,14 +197,6 @@ public class ViewUtils {
 
     public static Rect getClipBounds(View v) {
         return IMPL.getClipBounds(v);
-    }
-
-    public static void setTransitionAlpha(View v, float alpha) {
-        IMPL.setTransitionAlpha(v, alpha);
-    }
-
-    public static Property<View, Float> getAlphaProperty() {
-        return IMPL.getAlphaProperty();
     }
 
     public static void setTransitionName(View v, String name) {

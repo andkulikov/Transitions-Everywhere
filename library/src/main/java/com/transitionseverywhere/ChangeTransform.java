@@ -360,9 +360,9 @@ public class ChangeTransform extends Transition {
         }
 
         if (startValues.view != endValues.view) {
-            ViewUtils.setTransitionAlpha(view, 0);
+            view.setAlpha(0);
         }
-        ViewUtils.setTransitionAlpha(view, 1);
+        view.setAlpha(1);
     }
 
     private void setMatricesForParent(TransitionValues startValues, TransitionValues endValues) {
