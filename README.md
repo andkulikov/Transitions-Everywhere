@@ -35,7 +35,7 @@ Optimizations for ChangeBounds and Fade
 Bug fix. Thanks to [raycoarana][4].
 
 <b>1.6.3</b><br>
-Hidden transitions is moved in main package. Proguard rules are removed. Some internal fixes.
+Hidden transitions are moved in the main package. Proguard rules are removed. Some internal fixes.
 
 <b>1.6.2</b><br>
 Fixed issue with incorrect disappearing when set of more than one Visibility transitions animates the same view
