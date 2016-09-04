@@ -117,7 +117,7 @@ public class Fade extends Visibility {
      * Utility method to handle creating and running the Animator.
      */
     private Animator createAnimation(final View view, float startAlpha, float endAlpha, TransitionValues values) {
-        float curAlpha = view.getAlpha();
+        final float curAlpha = view.getAlpha();
         startAlpha = curAlpha * startAlpha;
         endAlpha = curAlpha * endAlpha;
 
@@ -125,22 +125,21 @@ public class Fade extends Visibility {
             float savedAlpha = (Float) values.values.get(PROPNAME_ALPHA);
             // if saved value is not equal curAlpha it means that previous
             // transition was interrupted and in the onTransitionEnd
-            // we've applied endListenerAlpha. apply proper value to continue
-            // animation from interrupted state
+            // we've applied endListenerAlpha. we should apply proper value to
+            // continue animation from the interrupted state
             if (savedAlpha != curAlpha) {
                 startAlpha = savedAlpha;
             }
         }
 
-        final float endListenerAlpha = curAlpha;
         view.setAlpha(startAlpha);
         final ObjectAnimator anim = ObjectAnimator.ofFloat(view, View.ALPHA, endAlpha);
-        final FadeAnimatorListener listener = new FadeAnimatorListener(view, endListenerAlpha);
+        final FadeAnimatorListener listener = new FadeAnimatorListener(view, curAlpha);
         anim.addListener(listener);
         addListener(new TransitionListenerAdapter() {
             @Override
             public void onTransitionEnd(Transition transition) {
-                view.setAlpha(endListenerAlpha);
+                view.setAlpha(curAlpha);
             }
         });
         return anim;
