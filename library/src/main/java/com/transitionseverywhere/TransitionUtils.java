@@ -33,19 +33,12 @@ import android.widget.ImageView;
 
 import com.transitionseverywhere.utils.ViewUtils;
 
-import java.lang.ref.WeakReference;
-import java.util.WeakHashMap;
-
 /**
  * Static utility methods for Transitions.
- *
- * @hide
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class TransitionUtils {
     private static int MAX_IMAGE_SIZE = (1024 * 1024);
-
-    private final static WeakHashMap<View, WeakReference<ImageView>> VIEW_COPIES_MAP = new WeakHashMap<>();
 
     public static Animator mergeAnimators(Animator animator1, Animator animator2) {
         if (animator1 == null) {
@@ -92,17 +85,9 @@ public class TransitionUtils {
      *
      * @param sceneRoot The ViewGroup in which the view copy will be displayed.
      * @param view The view to create a copy of.
-     * @param parent The parent of view.
-     * @param useCache True if copies cache should be enabled.
+     * @param parent The parent of view
      */
-    public static View copyViewImage(ViewGroup sceneRoot, View view, View parent, boolean useCache) {
-        if (useCache) {
-            WeakReference<ImageView> cachedRef = VIEW_COPIES_MAP.get(view);
-            View cachedView = cachedRef == null ? null : cachedRef.get();
-            if (cachedView != null) {
-                return cachedView;
-            }
-        }
+    public static View copyViewImage(ViewGroup sceneRoot, View view, View parent) {
         Matrix matrix = new Matrix();
         matrix.setTranslate(-parent.getScrollX(), -parent.getScrollY());
         ViewUtils.transformMatrixToGlobal(view, matrix);
@@ -124,9 +109,6 @@ public class TransitionUtils {
         int heightSpec = View.MeasureSpec.makeMeasureSpec(bottom - top, View.MeasureSpec.EXACTLY);
         copy.measure(widthSpec, heightSpec);
         copy.layout(left, top, right, bottom);
-        if (useCache) {
-            VIEW_COPIES_MAP.put(view, new WeakReference<>(copy));
-        }
         return copy;
     }
 
