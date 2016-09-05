@@ -26,5 +26,5 @@
     <item type="id" name="scene_layoutid_cache"/>
     <item type="id" name="group_layouttransition_backup"/>
     <item type="id" name="overlay_layout_params_backup"/>
-    <item type="id" name="added_to_overlay_scene_root"/>
+    <item type="id" name="overlay_view"/>
 </resources>

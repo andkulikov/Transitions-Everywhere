@@ -392,11 +392,11 @@ public abstract class Visibility extends Transition {
                 // endView does not exist. Use startView only under certain
                 // conditions, because placing a view in an overlay necessitates
                 // it being removed from its current parent
-                if (startView.getTag(R.id.added_to_overlay_scene_root) != null) {
+                if (startView.getTag(R.id.overlay_view) != null) {
                     // we've already created overlay for the start view.
                     // it means that we are applying two visibility
                     // transitions for the same view
-                    overlayView = (View) startView.getTag(R.id.added_to_overlay_scene_root);
+                    overlayView = (View) startView.getTag(R.id.overlay_view);
                     reusingCreatedOverlayView = true;
                 } else if (startView.getParent() == null) {
                     // no parent - safe to use
@@ -449,13 +449,13 @@ public abstract class Visibility extends Transition {
                 final View finalOverlayView = overlayView;
                 final View finalStartView = startView;
                 if (startView != null) {
-                    finalStartView.setTag(R.id.added_to_overlay_scene_root, finalOverlayView);
+                    finalStartView.setTag(R.id.overlay_view, finalOverlayView);
                 }
                 addListener(new TransitionListenerAdapter() {
                     @Override
                     public void onTransitionEnd(Transition transition) {
                         if (finalStartView != null) {
-                            finalStartView.setTag(R.id.added_to_overlay_scene_root, null);
+                            finalStartView.setTag(R.id.overlay_view, null);
                         }
                         ViewGroupOverlayUtils.removeOverlay(sceneRoot, finalOverlayView);
                     }
