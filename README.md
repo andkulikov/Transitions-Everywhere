@@ -21,13 +21,16 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.6.6"
+    compile "com.andkulikov:transitionseverywhere:1.6.7"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+<b>1.6.7</b><br>
+Merge with Android 7.0. Some internal improvements
+
 <b>1.6.5</b><br>
 Optimizations for ChangeBounds and Fade
 
