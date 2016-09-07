@@ -8,6 +8,8 @@ About
 [Russian version][3]<br>
 Chinese: [version 1][5], [version 2][6]<br>
 
+[Article about Support Library for Transitions. Overview and comparison with Transitions-Everywhere][7]
+
 Simple example
 ============
 ```java
@@ -55,3 +57,4 @@ Bug fixes and performance optimizations.
 [4]: https://github.com/raycoarana
 [5]: https://yanlu.me/animate-all-the-things-transitions-in-android/
 [6]: http://www.jianshu.com/p/98f2ec280945
+[7]: https://medium.com/@andkulikov/support-library-for-transitions-overview-and-comparison-c41be713cf8c
