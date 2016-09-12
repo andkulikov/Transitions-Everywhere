@@ -11,8 +11,8 @@ buildscript {
         minSdkVersion = 8
         targetSdkVersion = 23
 
-        versionCode = 16
-        versionName = "1.6.7"
+        versionCode = 17
+        versionName = "1.6.8"
     }
 }
 

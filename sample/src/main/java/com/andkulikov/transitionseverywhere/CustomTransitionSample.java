@@ -70,7 +70,7 @@ public class CustomTransitionSample extends Fragment {
             public Integer get(ProgressBar progressBar) {
                 return progressBar.getProgress();
             }
-        };
+        }.optimize();
 
         /**
          * Internal name of property. Like a bundles for intent
