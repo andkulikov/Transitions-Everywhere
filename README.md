@@ -31,7 +31,10 @@ Use transition classes from package `com.transitionseverywhere.*` instead of `an
 Changelog
 ============
 <b>1.6.8</b><br>
-Bug fix for Recolor. Thanks to [twyatt][8].
+Bug fix for Scenes when we pass null transition
+
+<b>1.6.8</b><br>
+Bug fix for Recolor. Thanks to [twyatt][8]
 
 <b>1.6.7</b><br>
 Merge with Android 7.0. Some internal improvements
@@ -40,7 +43,7 @@ Merge with Android 7.0. Some internal improvements
 Optimizations for ChangeBounds and Fade
 
 <b>1.6.4</b><br>
-Bug fix. Thanks to [raycoarana][4].
+Bug fix. Thanks to [raycoarana][4]
 
 <b>1.6.3</b><br>
 Hidden transitions are moved in the main package. Proguard rules are removed. Some internal fixes.
