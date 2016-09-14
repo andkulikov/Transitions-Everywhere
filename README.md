@@ -23,13 +23,16 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.6.7"
+    compile "com.andkulikov:transitionseverywhere:1.6.8"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+<b>1.6.8</b><br>
+Bug fix for Recolor. Thanks to [twyatt][8].
+
 <b>1.6.7</b><br>
 Merge with Android 7.0. Some internal improvements
 
@@ -58,3 +61,4 @@ Bug fixes and performance optimizations.
 [5]: https://yanlu.me/animate-all-the-things-transitions-in-android/
 [6]: http://www.jianshu.com/p/98f2ec280945
 [7]: https://medium.com/@andkulikov/support-library-for-transitions-overview-and-comparison-c41be713cf8c
+[8]: https://github.com/twyatt
