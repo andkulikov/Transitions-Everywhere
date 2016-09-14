@@ -30,7 +30,7 @@ Use transition classes from package `com.transitionseverywhere.*` instead of `an
 
 Changelog
 ============
-<b>1.6.8</b><br>
+<b>1.6.9</b><br>
 Bug fix for Scenes when we pass null transition
 
 <b>1.6.8</b><br>
