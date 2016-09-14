@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.transitionseverywhere.ChangeBounds;
-import com.transitionseverywhere.ChangeImageTransform;
 import com.transitionseverywhere.Scene;
 import com.transitionseverywhere.Slide;
 import com.transitionseverywhere.TransitionInflater;

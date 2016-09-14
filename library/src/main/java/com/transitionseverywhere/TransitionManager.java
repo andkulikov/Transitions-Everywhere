@@ -225,15 +225,13 @@ public class TransitionManager {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     private static void sceneChangeRunTransition(final ViewGroup sceneRoot,
                                                  final Transition transition) {
-        if (transition != null && sceneRoot != null) {
-            if (isTransitionsAllowed()) {
-                ViewGroupOverlayUtils.initializeOverlay(sceneRoot);
-                MultiListener listener = new MultiListener(transition, sceneRoot);
-                sceneRoot.addOnAttachStateChangeListener(listener);
-                sceneRoot.getViewTreeObserver().addOnPreDrawListener(listener);
-            } else {
-                sPendingTransitions.remove(sceneRoot);
-            }
+        if (transition != null && sceneRoot != null && isTransitionsAllowed()) {
+            ViewGroupOverlayUtils.initializeOverlay(sceneRoot);
+            MultiListener listener = new MultiListener(transition, sceneRoot);
+            sceneRoot.addOnAttachStateChangeListener(listener);
+            sceneRoot.getViewTreeObserver().addOnPreDrawListener(listener);
+        } else {
+            sPendingTransitions.remove(sceneRoot);
         }
     }
 
