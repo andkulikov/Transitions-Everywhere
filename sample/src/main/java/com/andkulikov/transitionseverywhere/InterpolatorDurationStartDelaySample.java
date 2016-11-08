@@ -26,7 +26,7 @@ public class InterpolatorDurationStartDelaySample extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_path, container, false);
+        View view = inflater.inflate(R.layout.fragment_interpolator, container, false);
 
         final ViewGroup transitionsContainer = (ViewGroup) view.findViewById(R.id.transitions_container);
         final View button = transitionsContainer.findViewById(R.id.button);
