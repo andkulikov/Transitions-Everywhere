@@ -34,24 +34,19 @@ import java.util.Map;
  * "Fader" as "android:fader:alpha".
  * <p/>
  * <p>These values are cached during the
- * {@link Transition#captureStartValues(TransitionValues)}
+ * {@link Transition#captureStartValues(android.support.transition.TransitionValues)}
  * capture} phases of a scene change, once when the start values are captured
  * and again when the end values are captured. These start/end values are then
  * passed into the transitions via the
- * for {@link Transition#createAnimator(ViewGroup, TransitionValues, TransitionValues)}
+ * for {@link Transition#createAnimator(ViewGroup, android.support.transition.TransitionValues, android.support.transition.TransitionValues)}
  * method.</p>
  */
-public class TransitionValues {
+public class TransitionValues extends android.support.transition.TransitionValues {
 
-    /**
-     * The View with these values
-     */
-    public View view;
 
     /**
      * The set of values tracked by transitions for this scene
      */
-    public final Map<String, Object> values = new ArrayMap<String, Object>();
     /**
      * The Transitions that targeted this view.
      */

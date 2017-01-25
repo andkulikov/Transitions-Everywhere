@@ -70,7 +70,7 @@ public class TranslationTransition extends Transition {
         super(context, attrs);
     }
 
-    private void captureValues(TransitionValues transitionValues) {
+    private void captureValues(android.support.transition.TransitionValues transitionValues) {
         if (transitionValues.view != null) {
             transitionValues.values.put(TRANSLATION_X, transitionValues.view.getTranslationX());
             transitionValues.values.put(TRANSLATION_Y, transitionValues.view.getTranslationY());
@@ -78,18 +78,19 @@ public class TranslationTransition extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(ViewGroup sceneRoot,
+                                   android.support.transition.TransitionValues startValues,
+                                   android.support.transition.TransitionValues endValues) {
         if (startValues != null && endValues != null && TRANSLATION_PROPERTY != null) {
             return AnimatorUtils.ofPointF(endValues.view, TRANSLATION_PROPERTY, getPathMotion(),
                     (float) startValues.values.get(TRANSLATION_X),

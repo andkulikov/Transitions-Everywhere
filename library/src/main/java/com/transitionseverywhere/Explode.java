@@ -34,7 +34,7 @@ import android.view.animation.DecelerateInterpolator;
  * {@link View#setVisibility(int)} state of the view as well as whether it
  * is parented in the current view hierarchy. Disappearing Views are
  * limited as described in {@link Visibility#onDisappear(android.view.ViewGroup,
- * TransitionValues, int, TransitionValues, int)}.
+ * android.support.transition.TransitionValues, int, android.support.transition.TransitionValues, int)}.
  * <p>Views move away from the focal View or the center of the Scene if
  * no epicenter was provided.</p>
  */
@@ -56,7 +56,7 @@ public class Explode extends Visibility {
         setPropagation(new CircularPropagation());
     }
 
-    private void captureValues(TransitionValues transitionValues) {
+    private void captureValues(android.support.transition.TransitionValues transitionValues) {
         View view = transitionValues.view;
         view.getLocationOnScreen(mTempLoc);
         int left = mTempLoc[0];
@@ -67,20 +67,21 @@ public class Explode extends Visibility {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         super.captureStartValues(transitionValues);
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
         super.captureEndValues(transitionValues);
         captureValues(transitionValues);
     }
 
     @Override
     public Animator onAppear(ViewGroup sceneRoot, View view,
-                             TransitionValues startValues, TransitionValues endValues) {
+                             android.support.transition.TransitionValues startValues,
+                             android.support.transition.TransitionValues endValues) {
         if (endValues == null) {
             return null;
         }
@@ -97,7 +98,8 @@ public class Explode extends Visibility {
 
     @Override
     public Animator onDisappear(ViewGroup sceneRoot, View view,
-                                TransitionValues startValues, TransitionValues endValues) {
+                                android.support.transition.TransitionValues startValues,
+                                android.support.transition.TransitionValues endValues) {
         if (startValues == null) {
             return null;
         }

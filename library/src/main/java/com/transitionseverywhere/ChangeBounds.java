@@ -215,7 +215,7 @@ public class ChangeBounds extends Transition {
         mReparent = reparent;
     }
 
-    private void captureValues(TransitionValues values) {
+    private void captureValues(android.support.transition.TransitionValues values) {
         View view = values.view;
         if (ViewUtils.isLaidOut(view, false) || view.getWidth() != 0 || view.getHeight() != 0) {
             values.values.put(PROPNAME_BOUNDS, new Rect(view.getLeft(), view.getTop(),
@@ -233,19 +233,19 @@ public class ChangeBounds extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     private boolean parentMatches(View startParent, View endParent) {
         boolean parentMatches = true;
         if (mReparent) {
-            TransitionValues endValues = getMatchedTransitionValues(startParent, true);
+            android.support.transition.TransitionValues endValues = getMatchedTransitionValues(startParent, true);
             if (endValues == null) {
                 parentMatches = startParent == endParent;
             } else {
@@ -256,8 +256,9 @@ public class ChangeBounds extends Transition {
     }
 
     @Override
-    public Animator createAnimator(final ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(final ViewGroup sceneRoot,
+                                   android.support.transition.TransitionValues startValues,
+                                   android.support.transition.TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
         }

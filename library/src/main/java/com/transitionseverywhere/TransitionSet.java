@@ -92,8 +92,8 @@ public class TransitionSet extends Transition {
      * Sets the play order of this set's child transitions.
      *
      * @param ordering {@link #ORDERING_TOGETHER} to play this set's child
-     *                 transitions together, {@link #ORDERING_SEQUENTIAL} to play the child
-     *                 transitions in sequence.
+     * transitions together, {@link #ORDERING_SEQUENTIAL} to play the child
+     * transitions in sequence.
      * @return This transitionSet object.
      */
     public TransitionSet setOrdering(int ordering) {
@@ -151,6 +151,7 @@ public class TransitionSet extends Transition {
 
     /**
      * Adds child transition to array
+     *
      * @param transition A child transition to be added.
      */
     private void addTransitionInternal(Transition transition) {
@@ -416,7 +417,8 @@ public class TransitionSet extends Transition {
                 long childStartDelay = childTransition.getStartDelay();
                 if (childStartDelay > 0) {
                     childTransition.setStartDelay(startDelay + childStartDelay);
-                } else {
+                }
+                else {
                     childTransition.setStartDelay(startDelay);
                 }
             }
@@ -455,7 +457,8 @@ public class TransitionSet extends Transition {
             if (firstTransition != null) {
                 firstTransition.runAnimators();
             }
-        } else {
+        }
+        else {
             for (int i = 0; i < numTransitions; ++i) {
                 mTransitions.get(i).runAnimators();
             }
@@ -463,24 +466,24 @@ public class TransitionSet extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         if (isValidTarget(transitionValues.view)) {
             for (Transition childTransition : mTransitions) {
                 if (childTransition.isValidTarget(transitionValues.view)) {
                     childTransition.captureStartValues(transitionValues);
-                    transitionValues.targetedTransitions.add(childTransition);
+                    ((TransitionValues) transitionValues).targetedTransitions.add(childTransition);
                 }
             }
         }
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
         if (isValidTarget(transitionValues.view)) {
             for (Transition childTransition : mTransitions) {
                 if (childTransition.isValidTarget(transitionValues.view)) {
                     childTransition.captureEndValues(transitionValues);
-                    transitionValues.targetedTransitions.add(childTransition);
+                    ((TransitionValues) transitionValues).targetedTransitions.add(childTransition);
                 }
             }
         }

@@ -84,7 +84,7 @@ public class ChangeImageTransform extends Transition {
         super(context, attrs);
     }
 
-    private void captureValues(TransitionValues transitionValues) {
+    private void captureValues(android.support.transition.TransitionValues transitionValues) {
         View view = transitionValues.view;
         if (!(view instanceof ImageView) || view.getVisibility() != View.VISIBLE) {
             return;
@@ -128,12 +128,12 @@ public class ChangeImageTransform extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
@@ -153,8 +153,9 @@ public class ChangeImageTransform extends Transition {
      * the Drawable changed, the View is not VISIBLE, or there was no change.
      */
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(ViewGroup sceneRoot,
+                                   android.support.transition.TransitionValues startValues,
+                                   android.support.transition.TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
         }

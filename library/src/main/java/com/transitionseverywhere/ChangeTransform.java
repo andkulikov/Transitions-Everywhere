@@ -170,7 +170,7 @@ public class ChangeTransform extends Transition {
         return sTransitionProperties;
     }
 
-    private void captureValues(TransitionValues transitionValues) {
+    private void captureValues(android.support.transition.TransitionValues transitionValues) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
@@ -202,18 +202,19 @@ public class ChangeTransform extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(ViewGroup sceneRoot,
+                                   android.support.transition.TransitionValues startValues,
+                                   android.support.transition.TransitionValues endValues) {
         if (startValues == null || endValues == null ||
                 Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ||
                 !startValues.values.containsKey(PROPNAME_PARENT) ||
@@ -252,8 +253,9 @@ public class ChangeTransform extends Transition {
         return transformAnimator;
     }
 
-    private ObjectAnimator createTransformAnimator(TransitionValues startValues,
-                                                   TransitionValues endValues, final boolean handleParentChange) {
+    private ObjectAnimator createTransformAnimator(android.support.transition.TransitionValues startValues,
+                                                   android.support.transition.TransitionValues endValues,
+                                                   final boolean handleParentChange) {
         Matrix startMatrix = (Matrix) startValues.values.get(PROPNAME_MATRIX);
         Matrix endMatrix = (Matrix) endValues.values.get(PROPNAME_MATRIX);
 
@@ -332,7 +334,7 @@ public class ChangeTransform extends Transition {
         if (!isValidTarget(startParent) || !isValidTarget(endParent)) {
             parentsMatch = startParent == endParent;
         } else {
-            TransitionValues endValues = getMatchedTransitionValues(startParent, true);
+            android.support.transition.TransitionValues endValues = getMatchedTransitionValues(startParent, true);
             if (endValues != null) {
                 parentsMatch = endParent == endValues.view;
             }
@@ -340,8 +342,9 @@ public class ChangeTransform extends Transition {
         return parentsMatch;
     }
 
-    private void createGhostView(final ViewGroup sceneRoot, TransitionValues startValues,
-                                 TransitionValues endValues) {
+    private void createGhostView(final ViewGroup sceneRoot,
+                                 android.support.transition.TransitionValues startValues,
+                                 android.support.transition.TransitionValues endValues) {
         View view = endValues.view;
 
         Matrix endMatrix = (Matrix) endValues.values.get(PROPNAME_PARENT_MATRIX);
@@ -365,7 +368,8 @@ public class ChangeTransform extends Transition {
         view.setAlpha(1);
     }
 
-    private void setMatricesForParent(TransitionValues startValues, TransitionValues endValues) {
+    private void setMatricesForParent(android.support.transition.TransitionValues startValues,
+                                      android.support.transition.TransitionValues endValues) {
         Matrix endParentMatrix = (Matrix) endValues.values.get(PROPNAME_PARENT_MATRIX);
         endValues.view.setTag(R.id.parentMatrix, endParentMatrix);
 

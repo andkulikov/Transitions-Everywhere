@@ -166,8 +166,9 @@ public class Crossfade extends Transition {
     }
 
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(ViewGroup sceneRoot,
+                                   android.support.transition.TransitionValues startValues,
+                                   android.support.transition.TransitionValues endValues) {
         if (startValues == null || endValues == null ||
                 Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return null;
@@ -255,7 +256,7 @@ public class Crossfade extends Transition {
         }
     }
 
-    private void captureValues(TransitionValues transitionValues) {
+    private void captureValues(android.support.transition.TransitionValues transitionValues) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return;
         }
@@ -285,12 +286,12 @@ public class Crossfade extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 }

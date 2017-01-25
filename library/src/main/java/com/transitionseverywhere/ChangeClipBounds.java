@@ -62,12 +62,14 @@ public class ChangeClipBounds extends Transition {
                 }
 
             };
-        } else {
+        }
+        else {
             VIEW_CLIP_BOUNDS = null;
         }
     }
 
-    public ChangeClipBounds() {}
+    public ChangeClipBounds() {
+    }
 
     public ChangeClipBounds(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -78,7 +80,7 @@ public class ChangeClipBounds extends Transition {
         return sTransitionProperties;
     }
 
-    private void captureValues(TransitionValues values) {
+    private void captureValues(android.support.transition.TransitionValues values) {
         View view = values.view;
         if (view.getVisibility() == View.GONE) {
             return;
@@ -93,18 +95,19 @@ public class ChangeClipBounds extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public Animator createAnimator(final ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(final ViewGroup sceneRoot,
+                                   android.support.transition.TransitionValues startValues,
+                                   android.support.transition.TransitionValues endValues) {
         if (startValues == null || endValues == null
                 || !startValues.values.containsKey(PROPNAME_CLIP)
                 || !endValues.values.containsKey(PROPNAME_CLIP)) {
@@ -118,7 +121,8 @@ public class ChangeClipBounds extends Transition {
 
         if (start == null) {
             start = (Rect) startValues.values.get(PROPNAME_BOUNDS);
-        } else if (end == null) {
+        }
+        else if (end == null) {
             end = (Rect) endValues.values.get(PROPNAME_BOUNDS);
         }
         if (start.equals(end)) {

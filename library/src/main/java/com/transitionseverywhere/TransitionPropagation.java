@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 /**
  * Extend <code>TransitionPropagation</code> to customize start delays for Animators created
  * in {@link Transition#createAnimator(android.view.ViewGroup,
- * TransitionValues, TransitionValues)}.
+ * android.support.transition.TransitionValues, android.support.transition.TransitionValues)}.
  * A Transition such as {@link Explode}
  * defaults to using {@link CircularPropagation} and Views closer to the
  * epicenter will move out of the scene later and into the scene sooner than Views farther

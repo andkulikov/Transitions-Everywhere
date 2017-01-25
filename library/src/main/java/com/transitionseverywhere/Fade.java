@@ -106,7 +106,7 @@ public class Fade extends Visibility {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         super.captureStartValues(transitionValues);
         if (transitionValues.view != null) {
             transitionValues.values.put(PROPNAME_ALPHA, transitionValues.view.getAlpha());
@@ -116,7 +116,7 @@ public class Fade extends Visibility {
     /**
      * Utility method to handle creating and running the Animator.
      */
-    private Animator createAnimation(final View view, float startAlpha, float endAlpha, TransitionValues values) {
+    private Animator createAnimation(final View view, float startAlpha, float endAlpha, android.support.transition.TransitionValues values) {
         final float curAlpha = view.getAlpha();
         startAlpha = curAlpha * startAlpha;
         endAlpha = curAlpha * endAlpha;
@@ -147,14 +147,15 @@ public class Fade extends Visibility {
 
     @Override
     public Animator onAppear(ViewGroup sceneRoot, View view,
-                             TransitionValues startValues,
-                             TransitionValues endValues) {
+                             android.support.transition.TransitionValues startValues,
+                             android.support.transition.TransitionValues endValues) {
         return createAnimation(view, 0, 1, startValues);
     }
 
     @Override
-    public Animator onDisappear(ViewGroup sceneRoot, final View view, TransitionValues startValues,
-                                TransitionValues endValues) {
+    public Animator onDisappear(ViewGroup sceneRoot, final View view,
+                                android.support.transition.TransitionValues startValues,
+                                android.support.transition.TransitionValues endValues) {
         return createAnimation(view, 1, 0, startValues);
     }
 

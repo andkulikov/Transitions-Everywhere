@@ -93,16 +93,16 @@ public class CustomTransitionSample extends Fragment {
         private static final String PROPNAME_PROGRESS = "ProgressTransition:progress";
 
         @Override
-        public void captureStartValues(TransitionValues transitionValues) {
+        public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
             captureValues(transitionValues);
         }
 
         @Override
-        public void captureEndValues(TransitionValues transitionValues) {
+        public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
             captureValues(transitionValues);
         }
 
-        private void captureValues(TransitionValues transitionValues) {
+        private void captureValues(android.support.transition.TransitionValues transitionValues) {
             if (transitionValues.view instanceof ProgressBar) {
                 // save current progress in the values map
                 ProgressBar progressBar = ((ProgressBar) transitionValues.view);
@@ -111,7 +111,7 @@ public class CustomTransitionSample extends Fragment {
         }
 
         @Override
-        public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues, TransitionValues endValues) {
+        public Animator createAnimator(ViewGroup sceneRoot, android.support.transition.TransitionValues startValues, android.support.transition.TransitionValues endValues) {
             if (startValues != null && endValues != null && endValues.view instanceof ProgressBar) {
                 ProgressBar progressBar = (ProgressBar) endValues.view;
                 int start = (Integer) startValues.values.get(PROPNAME_PROGRESS);

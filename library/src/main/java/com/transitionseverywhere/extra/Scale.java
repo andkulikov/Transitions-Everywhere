@@ -38,7 +38,7 @@ import com.transitionseverywhere.Visibility;
  * {@link View#setVisibility(int)} state of the view as well as whether it
  * is parented in the current view hierarchy. Disappearing Views are
  * limited as described in {@link Visibility#onDisappear(android.view.ViewGroup,
- * TransitionValues, int, TransitionValues, int)}.
+ * android.support.transition.TransitionValues, int, android.support.transition.TransitionValues, int)}.
  * <p/>
  * Created by Andrey Kulikov on 13/03/16.
  */
@@ -63,7 +63,7 @@ public class Scale extends Visibility {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         super.captureStartValues(transitionValues);
         if (transitionValues.view != null) {
             transitionValues.values.put(PROPNAME_SCALE_X, transitionValues.view.getScaleX());
@@ -93,7 +93,7 @@ public class Scale extends Visibility {
     }
 
     @Nullable
-    private Animator createAnimation(final View view, float startScale, float endScale, TransitionValues values) {
+    private Animator createAnimation(final View view, float startScale, float endScale, android.support.transition.TransitionValues values) {
         final float initialScaleX = view.getScaleX();
         final float initialScaleY = view.getScaleY();
         float startScaleX = initialScaleX * startScale;
@@ -133,14 +133,16 @@ public class Scale extends Visibility {
     }
 
     @Override
-    public Animator onAppear(ViewGroup sceneRoot, final View view, TransitionValues startValues,
-                             TransitionValues endValues) {
+    public Animator onAppear(ViewGroup sceneRoot, final View view,
+                             android.support.transition.TransitionValues startValues,
+                             android.support.transition.TransitionValues endValues) {
         return createAnimation(view, mDisappearedScale, 1f, startValues);
     }
 
     @Override
-    public Animator onDisappear(ViewGroup sceneRoot, final View view, TransitionValues startValues,
-                                TransitionValues endValues) {
+    public Animator onDisappear(ViewGroup sceneRoot, final View view,
+                                android.support.transition.TransitionValues startValues,
+                                android.support.transition.TransitionValues endValues) {
         return createAnimation(view, 1f, mDisappearedScale, startValues);
     }
 

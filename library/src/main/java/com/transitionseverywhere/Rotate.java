@@ -36,18 +36,19 @@ public class Rotate extends Transition {
     private static final String PROPNAME_ROTATION = "android:rotate:rotation";
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         transitionValues.values.put(PROPNAME_ROTATION, transitionValues.view.getRotation());
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
         transitionValues.values.put(PROPNAME_ROTATION, transitionValues.view.getRotation());
     }
 
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(ViewGroup sceneRoot,
+                                   android.support.transition.TransitionValues startValues,
+                                   android.support.transition.TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
         }

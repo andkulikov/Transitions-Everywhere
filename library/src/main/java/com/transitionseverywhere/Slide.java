@@ -42,7 +42,7 @@ import java.lang.annotation.RetentionPolicy;
  * {@link View#setVisibility(int)} state of the view as well as whether it
  * is parented in the current view hierarchy. Disappearing Views are
  * limited as described in {@link Visibility#onDisappear(android.view.ViewGroup,
- * TransitionValues, int, TransitionValues, int)}.
+ * android.support.transition.TransitionValues, int, android.support.transition.TransitionValues, int)}.
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Slide extends Visibility {
@@ -214,7 +214,7 @@ public class Slide extends Visibility {
 
     @Override
     public Animator onAppear(ViewGroup sceneRoot, View view,
-                             TransitionValues startValues, TransitionValues endValues) {
+                             android.support.transition.TransitionValues startValues, android.support.transition.TransitionValues endValues) {
         if (endValues == null) {
             return null;
         }
@@ -230,7 +230,7 @@ public class Slide extends Visibility {
 
     @Override
     public Animator onDisappear(ViewGroup sceneRoot, View view,
-                                TransitionValues startValues, TransitionValues endValues) {
+                                android.support.transition.TransitionValues startValues, android.support.transition.TransitionValues endValues) {
         if (startValues == null) {
             return null;
         }

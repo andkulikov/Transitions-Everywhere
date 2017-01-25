@@ -126,7 +126,7 @@ public class ChangeText extends Transition {
         return mChangeBehavior;
     }
 
-    private void captureValues(TransitionValues transitionValues) {
+    private void captureValues(android.support.transition.TransitionValues transitionValues) {
         if (transitionValues.view instanceof TextView) {
             TextView textview = (TextView) transitionValues.view;
             transitionValues.values.put(PROPNAME_TEXT, textview.getText());
@@ -143,18 +143,19 @@ public class ChangeText extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(android.support.transition.TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(ViewGroup sceneRoot,
+                                   android.support.transition.TransitionValues startValues,
+                                   android.support.transition.TransitionValues endValues) {
         if (startValues == null || endValues == null ||
                 !(startValues.view instanceof TextView) || !(endValues.view instanceof TextView)) {
             return null;
