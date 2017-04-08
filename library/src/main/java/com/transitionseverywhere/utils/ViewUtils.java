@@ -100,7 +100,7 @@ public class ViewUtils {
         }
 
         public Object getWindowId(View view) {
-            return null;
+            return view.getWindowToken();
         }
 
         public boolean isRtl(View view) {
