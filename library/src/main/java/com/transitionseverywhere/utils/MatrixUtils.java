@@ -215,6 +215,9 @@ public class MatrixUtils {
 
     public static void animateTransform(ImageView imageView, Matrix matrix) {
         Drawable drawable = imageView.getDrawable();
+        if (drawable == null) {
+            return;
+        }
         if (matrix == null || drawable.getIntrinsicWidth() == -1
                 || drawable.getIntrinsicHeight() == -1) {
             drawable.setBounds(0, 0, imageView.getWidth(), imageView.getHeight());
