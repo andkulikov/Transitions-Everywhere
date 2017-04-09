@@ -7,7 +7,7 @@ android {
     defaultConfig {
         minSdkVersion parent.ext.minSdkVersion
         targetSdkVersion parent.ext.targetSdkVersion
-        versionCode parent.ext.versionCode
+        versionCode 1
         versionName parent.ext.versionName
     }
 }

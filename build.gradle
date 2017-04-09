@@ -9,10 +9,9 @@ buildscript {
     project.ext {
         buildToolsVersion = "23.0.2"
         minSdkVersion = 8
-        targetSdkVersion = 23
+        targetSdkVersion = 25
 
-        versionCode = 19
-        versionName = "1.7.0"
+        versionName = "1.7.1"
     }
 }
 

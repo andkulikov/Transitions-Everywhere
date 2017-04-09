@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 
 dependencies {
     compile project(':library')
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
 }
 
 android {
@@ -13,7 +13,7 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion parent.ext.targetSdkVersion
-        versionCode parent.ext.versionCode
+        versionCode 1
         versionName parent.ext.versionName
     }
 }
