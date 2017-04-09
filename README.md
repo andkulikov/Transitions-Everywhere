@@ -30,6 +30,9 @@ Use transition classes from package `com.transitionseverywhere.*` instead of `an
 
 Changelog
 ============
+<b>1.7.1</b><br>
+Npe fix, WindowId backport, update PathParser version
+
 <b>1.7.0</b><br>
 Bug fix for rare NPE. Thanks to [TealOcean][9]
 
