@@ -1919,13 +1919,13 @@ public abstract class Transition implements Cloneable {
             }
             for (int i = 0; i < mStartValues.itemIdValues.size(); ++i) {
                 View view = mStartValues.itemIdValues.valueAt(i);
-                if (ViewUtils.hasTransientState(view)) {
+                if (view != null) {
                     ViewUtils.setHasTransientState(view, false);
                 }
             }
             for (int i = 0; i < mEndValues.itemIdValues.size(); ++i) {
                 View view = mEndValues.itemIdValues.valueAt(i);
-                if (ViewUtils.hasTransientState(view)) {
+                if (view != null) {
                     ViewUtils.setHasTransientState(view, false);
                 }
             }
