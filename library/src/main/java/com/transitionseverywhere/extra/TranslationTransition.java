@@ -91,11 +91,13 @@ public class TranslationTransition extends Transition {
     public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
                                    TransitionValues endValues) {
         if (startValues != null && endValues != null && TRANSLATION_PROPERTY != null) {
-            return AnimatorUtils.ofPointF(endValues.view, TRANSLATION_PROPERTY, getPathMotion(),
-                    (float) startValues.values.get(TRANSLATION_X),
-                    (float) startValues.values.get(TRANSLATION_Y),
-                    (float) endValues.values.get(TRANSLATION_X),
-                    (float) endValues.values.get(TRANSLATION_Y));
+            float startX = (float) startValues.values.get(TRANSLATION_X);
+            float startY = (float) startValues.values.get(TRANSLATION_Y);
+            float endX = (float) endValues.values.get(TRANSLATION_X);
+            float endY = (float) endValues.values.get(TRANSLATION_Y);
+            endValues.view.setTranslationX(startX);
+            endValues.view.setTranslationY(startY);
+            return AnimatorUtils.ofPointF(endValues.view, TRANSLATION_PROPERTY, getPathMotion(), startX, startY, endX, endY);
         } else {
             return null;
         }
