@@ -438,7 +438,7 @@ public abstract class Visibility extends Transition {
 
         if (overlayView != null) {
             // TODO: Need to do this for general case of adding to overlay
-            int[] screenLoc = (int[]) startValues.values.get(PROPNAME_SCREEN_LOCATION);
+            final int[] screenLoc = (int[]) startValues.values.get(PROPNAME_SCREEN_LOCATION);
             if (!reusingCreatedOverlayView) {
                 ViewGroupOverlayUtils.addOverlay(sceneRoot, overlayView, screenLoc[0], screenLoc[1]);
             }
@@ -452,6 +452,22 @@ public abstract class Visibility extends Transition {
                     finalStartView.setTag(R.id.overlay_view, finalOverlayView);
                 }
                 addListener(new TransitionListenerAdapter() {
+
+                    @Override
+                    public void onTransitionPause(Transition transition) {
+                        ViewGroupOverlayUtils.removeOverlay(sceneRoot, finalOverlayView);
+                    }
+
+                    @Override
+                    public void onTransitionResume(Transition transition) {
+                        if (finalOverlayView.getParent() != null) {
+                            ViewGroupOverlayUtils.addOverlay(sceneRoot, finalOverlayView, screenLoc[0], screenLoc[1]);
+                        }
+                        else {
+                            cancel();
+                        }
+                    }
+
                     @Override
                     public void onTransitionEnd(Transition transition) {
                         if (finalStartView != null) {
