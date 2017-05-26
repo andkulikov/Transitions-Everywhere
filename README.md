@@ -17,19 +17,23 @@ TransitionManager.beginDelayedTransition(transitionsContainer);
 text.setVisibility(visible ? View.VISIBLE : View.GONE);      
 ```
 <img src="https://habrastorage.org/files/c51/b1e/b26/c51b1eb26fb941698ad5a1368d06603b.gif"/>
+
 <br>[Article][2] and sample application contain a lot of examples how to use transitions.
 
 Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.7.2"
+    compile "com.andkulikov:transitionseverywhere:1.7.3"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+<b>1.7.3</b><br>
+Fix for TranslationTransition, fix for Visibility transition cancelation when it is using an overlay 
+
 <b>1.7.1, 1.7.2</b><br>
 Npe fix, WindowId backport, update PathParser version
 
