@@ -244,7 +244,7 @@ public class ChangeText extends Transition {
                         public void onAnimationUpdate(ValueAnimator animation) {
                             int currAlpha = (Integer) animation.getAnimatedValue();
                             view.setTextColor(currAlpha << 24 | Color.red(endColor) << 16 |
-                                    Color.green(endColor) << 8 | Color.red(endColor));
+                                    Color.green(endColor) << 8 | Color.blue(endColor));
                         }
                     });
                     inAnim.addListener(new AnimatorListenerAdapter() {
