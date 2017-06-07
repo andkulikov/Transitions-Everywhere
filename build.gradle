@@ -11,7 +11,7 @@ buildscript {
         minSdkVersion = 8
         targetSdkVersion = 25
 
-        versionName = "1.7.3"
+        versionName = "1.7.4"
     }
 }
 
