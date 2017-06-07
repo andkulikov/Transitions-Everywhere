@@ -31,6 +31,9 @@ Use transition classes from package `com.transitionseverywhere.*` instead of `an
 
 Changelog
 ============
+<b>1.7.4</b><br>
+Fix for color change in ChangeText with CHANGE_BEHAVIOR_OUT_IN. Thanks to [droidluv][10]
+
 <b>1.7.3</b><br>
 Fix for TranslationTransition, fix for Visibility transition cancelation when it is using an overlay 
 
@@ -76,3 +79,4 @@ Bug fixes and performance optimizations.
 [7]: https://medium.com/@andkulikov/support-library-for-transitions-overview-and-comparison-c41be713cf8c
 [8]: https://github.com/twyatt
 [9]: https://github.com/TealOcean
+[10]: https://github.com/droidluv
