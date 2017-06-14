@@ -388,6 +388,7 @@ public class ChangeBounds extends Transition {
                             if (!mCanceled) {
                                 ViewGroupUtils.suppressLayout(parent, false);
                             }
+                            transition.removeListener(this);
                         }
 
                         @Override

@@ -65,6 +65,7 @@ public class ExplodeAndEpicenterExample extends Fragment {
             .addListener(new Transition.TransitionListenerAdapter() {
                 @Override
                 public void onTransitionEnd(Transition transition) {
+                    transition.removeListener(this);
                     getActivity().onBackPressed();
                 }
             });

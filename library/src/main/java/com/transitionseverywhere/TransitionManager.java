@@ -291,6 +291,7 @@ public class TransitionManager {
                 public void onTransitionEnd(Transition transition) {
                     ArrayList<Transition> currentTransitions = getRunningTransitions(mSceneRoot);
                     currentTransitions.remove(transition);
+                    transition.removeListener(this);
                 }
             });
             boolean somethingCanBeChanged = cancelAllSystemLayoutTransitions(mSceneRoot);

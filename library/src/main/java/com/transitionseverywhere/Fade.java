@@ -140,6 +140,7 @@ public class Fade extends Visibility {
             @Override
             public void onTransitionEnd(Transition transition) {
                 view.setAlpha(curAlpha);
+                transition.removeListener(this);
             }
         });
         return anim;

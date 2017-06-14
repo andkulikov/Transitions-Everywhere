@@ -127,6 +127,7 @@ public class Scale extends Visibility {
             public void onTransitionEnd(Transition transition) {
                 view.setScaleX(initialScaleX);
                 view.setScaleY(initialScaleY);
+                transition.removeListener(this);
             }
         });
         return animator;
