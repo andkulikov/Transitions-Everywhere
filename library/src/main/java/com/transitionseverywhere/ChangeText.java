@@ -211,7 +211,7 @@ public class ChangeText extends Transition {
                 ValueAnimator outAnim = null, inAnim = null;
                 if (mChangeBehavior == CHANGE_BEHAVIOR_OUT_IN ||
                         mChangeBehavior == CHANGE_BEHAVIOR_OUT) {
-                    outAnim = ValueAnimator.ofInt(255, 0);
+                    outAnim = ValueAnimator.ofInt(Color.alpha(startColor), 0);
                     outAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
                         public void onAnimationUpdate(ValueAnimator animation) {
@@ -238,7 +238,7 @@ public class ChangeText extends Transition {
                 }
                 if (mChangeBehavior == CHANGE_BEHAVIOR_OUT_IN ||
                         mChangeBehavior == CHANGE_BEHAVIOR_IN) {
-                    inAnim = ValueAnimator.ofInt(0, 255);
+                    inAnim = ValueAnimator.ofInt(0, Color.alpha(endColor));
                     inAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
                         public void onAnimationUpdate(ValueAnimator animation) {
