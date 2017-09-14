@@ -1,6 +1,9 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.2'
@@ -11,12 +14,15 @@ buildscript {
         minSdkVersion = 8
         targetSdkVersion = 25
 
-        versionName = "1.7.5"
+        versionName = "1.7.6"
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
     }
 }
