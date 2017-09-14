@@ -24,15 +24,15 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.7.4"
+    compile "com.andkulikov:transitionseverywhere:1.7.5"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
-<b>1.7.4</b><br>
-Fix for color change in ChangeText with CHANGE_BEHAVIOR_OUT_IN. Thanks to [droidluv][10]
+<b>1.7.4, 1.7.5</b><br>
+Fixes for color change in ChangeText. Thanks to [droidluv][10] and [passsy][11]
 
 <b>1.7.3</b><br>
 Fix for TranslationTransition, fix for Visibility transition cancelation when it is using an overlay 
@@ -80,3 +80,4 @@ Bug fixes and performance optimizations.
 [8]: https://github.com/twyatt
 [9]: https://github.com/TealOcean
 [10]: https://github.com/droidluv
+[11]: https://github.com/passsy
