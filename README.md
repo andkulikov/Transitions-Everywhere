@@ -24,13 +24,17 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.7.5"
+    compile "com.andkulikov:transitionseverywhere:1.7.6"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+
+<b>1.7.6</b><br>
+Fix for the case when Visibility transition is removing the view from the previous scene. [Framework bug for it][12]
+
 <b>1.7.4, 1.7.5</b><br>
 Fixes for color change in ChangeText. Thanks to [droidluv][10] and [passsy][11]
 
@@ -81,3 +85,4 @@ Bug fixes and performance optimizations.
 [9]: https://github.com/TealOcean
 [10]: https://github.com/droidluv
 [11]: https://github.com/passsy
+[12]: https://issuetracker.google.com/issues/65688271
