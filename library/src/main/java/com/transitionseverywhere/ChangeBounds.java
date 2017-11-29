@@ -447,8 +447,8 @@ public class ChangeBounds extends Transition {
         private int mTop;
         private int mRight;
         private int mBottom;
-        private boolean mIsTopLeftSet;
-        private boolean mIsBottomRightSet;
+        private int mTopLeftCalls;
+        private int mBottomRightCalls;
         private View mView;
 
         public ViewBounds(View view) {
@@ -458,8 +458,8 @@ public class ChangeBounds extends Transition {
         public void setTopLeft(PointF topLeft) {
             mLeft = Math.round(topLeft.x);
             mTop = Math.round(topLeft.y);
-            mIsTopLeftSet = true;
-            if (mIsBottomRightSet) {
+            mTopLeftCalls++;
+            if (mTopLeftCalls == mBottomRightCalls) {
                 setLeftTopRightBottom();
             }
         }
@@ -467,16 +467,23 @@ public class ChangeBounds extends Transition {
         public void setBottomRight(PointF bottomRight) {
             mRight = Math.round(bottomRight.x);
             mBottom = Math.round(bottomRight.y);
-            mIsBottomRightSet = true;
-            if (mIsTopLeftSet) {
+            mBottomRightCalls++;
+            if (mTopLeftCalls == mBottomRightCalls) {
                 setLeftTopRightBottom();
             }
         }
 
         private void setLeftTopRightBottom() {
             ViewUtils.setLeftTopRightBottom(mView, mLeft, mTop, mRight, mBottom);
-            mIsTopLeftSet = false;
-            mIsBottomRightSet = false;
+            mTopLeftCalls = 0;
+            mBottomRightCalls = 0;
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            if (mTopLeftCalls > 0 || mBottomRightCalls > 0) {
+                setLeftTopRightBottom();
+            }
         }
     }
 
