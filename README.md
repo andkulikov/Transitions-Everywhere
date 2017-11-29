@@ -24,13 +24,16 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.7.7"
+    compile "com.andkulikov:transitionseverywhere:1.7.8"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+
+<b>1.7.8</b><br>
+Fix for ChangeBounds sometimes not applying the latest values. Thanks to [lukaville][13]
 
 <b>1.7.7</b><br>
 Fix version resolving issue when use together with the latest suppport libs
@@ -89,3 +92,4 @@ Bug fixes and performance optimizations.
 [10]: https://github.com/droidluv
 [11]: https://github.com/passsy
 [12]: https://issuetracker.google.com/issues/65688271
+[13]: https://github.com/lukaville
