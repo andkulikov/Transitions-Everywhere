@@ -1,6 +1,6 @@
 Transitions Everywhere
 ============
-Backport of [Android Transitions API][1]. Animations backported to <b>Android 4.0+</b>. API compatible with <b>Android 2.2+</b>
+Backport of [Android Transitions API][1]. Animations backported to <b>Android 4.0+</b>. API compatible with <b>Android 2.3+</b>
 
 About
 ============
@@ -24,13 +24,16 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.7.6"
+    compile "com.andkulikov:transitionseverywhere:1.7.7"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+
+<b>1.7.7</b><br>
+Fix version resolving issue when use together with the latest suppport libs
 
 <b>1.7.6</b><br>
 Fix for the case when Visibility transition is removing the view from the previous scene. [Framework bug for it][12]
