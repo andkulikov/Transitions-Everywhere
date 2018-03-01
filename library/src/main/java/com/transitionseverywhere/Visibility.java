@@ -465,7 +465,7 @@ public abstract class Visibility extends Transition {
 
                     @Override
                     public void onTransitionResume(Transition transition) {
-                        if (finalOverlayView.getParent() != null) {
+                        if (finalOverlayView.getParent() == null) {
                             ViewGroupOverlayUtils.addOverlay(sceneRoot, finalOverlayView, screenLoc[0], screenLoc[1]);
                         }
                         else {
