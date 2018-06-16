@@ -24,13 +24,16 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.7.9"
+    compile "com.andkulikov:transitionseverywhere:1.8.0"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
 
 Changelog
 ============
+
+<b>1.8.0</b><br>
+Provides @NonNull and @Nullable annotations for all the methods to make the library more Kotlin friendly
 
 <b>1.7.9</b><br>
 Fix bug with typo in restoring paused Visibility transition when it is using an overlay
