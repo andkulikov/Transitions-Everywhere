@@ -27,6 +27,8 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -40,7 +42,8 @@ import com.transitionseverywhere.utils.ViewUtils;
 public class TransitionUtils {
     private static int MAX_IMAGE_SIZE = (1024 * 1024);
 
-    public static Animator mergeAnimators(Animator animator1, Animator animator2) {
+    @Nullable
+    public static Animator mergeAnimators(@Nullable Animator animator1, @Nullable Animator animator2) {
         if (animator1 == null) {
             return animator2;
         } else if (animator2 == null) {
@@ -52,7 +55,8 @@ public class TransitionUtils {
         }
     }
 
-    public static Transition mergeTransitions(Transition... transitions) {
+    @Nullable
+    public static Transition mergeTransitions(@NonNull Transition... transitions) {
         int count = 0;
         int nonNullIndex = -1;
         for (int i = 0; i < transitions.length; i++) {
@@ -87,7 +91,8 @@ public class TransitionUtils {
      * @param view The view to create a copy of.
      * @param parent The parent of view
      */
-    public static View copyViewImage(ViewGroup sceneRoot, View view, View parent) {
+    @NonNull
+    public static View copyViewImage(@NonNull ViewGroup sceneRoot, @NonNull View view, @NonNull View parent) {
         Matrix matrix = new Matrix();
         matrix.setTranslate(-parent.getScrollX(), -parent.getScrollY());
         ViewUtils.transformMatrixToGlobal(view, matrix);
@@ -115,7 +120,8 @@ public class TransitionUtils {
     /**
      * Get a copy of bitmap of given drawable, return null if intrinsic size is zero
      */
-    public static Bitmap createDrawableBitmap(Drawable drawable) {
+    @Nullable
+    public static Bitmap createDrawableBitmap(@NonNull Drawable drawable) {
         int width = drawable.getIntrinsicWidth();
         int height = drawable.getIntrinsicHeight();
         if (width <= 0 || height <= 0) {
@@ -154,7 +160,8 @@ public class TransitionUtils {
      *               view should be presented. Typically, this is matrix.mapRect(viewBounds);
      * @return A bitmap of the given view or null if bounds has no width or height.
      */
-    public static Bitmap createViewBitmap(View view, Matrix matrix, RectF bounds) {
+    @Nullable
+    public static Bitmap createViewBitmap(@NonNull View view, @NonNull Matrix matrix, @NonNull RectF bounds) {
         Bitmap bitmap = null;
         int bitmapWidth = Math.round(bounds.width());
         int bitmapHeight = Math.round(bounds.height());

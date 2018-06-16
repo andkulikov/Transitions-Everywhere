@@ -19,6 +19,8 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,8 +78,8 @@ public class SidePropagation extends VisibilityPropagation {
     }
 
     @Override
-    public long getStartDelay(ViewGroup sceneRoot, Transition transition,
-                              TransitionValues startValues, TransitionValues endValues) {
+    public long getStartDelay(@NonNull ViewGroup sceneRoot, @NonNull Transition transition,
+                              @Nullable TransitionValues startValues, @Nullable TransitionValues endValues) {
         if (startValues == null && endValues == null) {
             return 0;
         }
@@ -125,7 +127,7 @@ public class SidePropagation extends VisibilityPropagation {
     }
 
     @SuppressLint("RtlHardcoded")
-    private int distance(View sceneRoot, int viewX, int viewY, int epicenterX, int epicenterY,
+    private int distance(@NonNull View sceneRoot, int viewX, int viewY, int epicenterX, int epicenterY,
                          int left, int top, int right, int bottom) {
         final int side;
         if (mSide == Gravity.START) {
@@ -156,7 +158,7 @@ public class SidePropagation extends VisibilityPropagation {
     }
 
     @SuppressLint("RtlHardcoded")
-    private int getMaxDistance(ViewGroup sceneRoot) {
+    private int getMaxDistance(@NonNull ViewGroup sceneRoot) {
         switch (mSide) {
             case Gravity.LEFT:
             case Gravity.RIGHT:

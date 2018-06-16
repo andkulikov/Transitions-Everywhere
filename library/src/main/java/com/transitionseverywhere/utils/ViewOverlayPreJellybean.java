@@ -22,6 +22,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -41,21 +43,22 @@ import java.util.List;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 class ViewOverlayPreJellybean extends FrameLayout {
 
+    @Nullable
     private static final Field FIELD_VIEW_PARENT = ReflectionUtils.getPrivateField(View.class, "mParent");
 
     private List<Drawable> mDrawableOverlays;
 
-    public ViewOverlayPreJellybean(Context context) {
+    public ViewOverlayPreJellybean(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public ViewOverlayPreJellybean(Context context, AttributeSet attrs) {
+    public ViewOverlayPreJellybean(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ViewOverlayPreJellybean(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ViewOverlayPreJellybean(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -65,7 +68,7 @@ class ViewOverlayPreJellybean extends FrameLayout {
     }
 
     @Override
-    public void addView(View child, int left, int top) {
+    public void addView(@NonNull View child, int left, int top) {
         if (child.getParent() instanceof ViewGroup) {
             ViewGroup parent = (ViewGroup) child.getParent();
             LayoutTransition layoutTransition = null;
@@ -96,26 +99,27 @@ class ViewOverlayPreJellybean extends FrameLayout {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
+    public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
         // Intercept and noop all touch events - overlays do not allow touch events
         return false;
     }
 
     @Override
-    public void removeView(View view) {
+    public void removeView(@NonNull View view) {
         super.removeView(view);
         ViewUtils.setLayoutParamsSilently(view, (ViewGroup.LayoutParams)
                 view.getTag(R.id.overlay_layout_params_backup));
         view.setTag(R.id.overlay_layout_params_backup, null);
     }
 
-    public void moveView(View view, int left, int top) {
+    public void moveView(@NonNull View view, int left, int top) {
         if (view.getParent() == this) {
             view.setLayoutParams(initParams(view, left, top));
         }
     }
 
-    private LayoutParams initParams(View view, int left, int top) {
+    @NonNull
+    private LayoutParams initParams(@NonNull View view, int left, int top) {
         int[] loc = new int[2];
         getLocationOnScreen(loc);
 
@@ -138,48 +142,43 @@ class ViewOverlayPreJellybean extends FrameLayout {
         return layoutParams;
     }
 
-    public synchronized void addDrawable(Drawable drawable) {
-        if (drawable != null) {
-            this.mDrawableOverlays.add(drawable);
-            invalidate();
-        }
+    public synchronized void addDrawable(@NonNull Drawable drawable) {
+        mDrawableOverlays.add(drawable);
+        invalidate();
     }
 
-    public synchronized void removeDrawable(Drawable drawable) {
+    public synchronized void removeDrawable(@NonNull Drawable drawable) {
         mDrawableOverlays.remove(drawable);
         invalidate();
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         for (Drawable drawable : mDrawableOverlays) {
             drawable.draw(canvas);
         }
     }
 
-    public static ViewOverlayPreJellybean getOverlay(ViewGroup sceneRoot) {
-        if (sceneRoot != null) {
-            ViewGroup group = sceneRoot;
-            while (group.getId() != android.R.id.content && group.getParent() != null &&
-                    group.getParent() instanceof ViewGroup) {
-                group = (ViewGroup) group.getParent();
-            }
-            for (int i = 0; i < group.getChildCount(); i++) {
-                View child = group.getChildAt(i);
-                if (child instanceof ViewOverlayPreJellybean) {
-                    return (ViewOverlayPreJellybean) child;
-                }
-            }
-            final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.gravity = Gravity.FILL;
-            ViewOverlayPreJellybean viewOverlay = new ViewOverlayPreJellybean(sceneRoot.getContext());
-            group.addView(viewOverlay, params);
-            return viewOverlay;
-        } else {
-            return null;
+    @NonNull
+    public static ViewOverlayPreJellybean getOverlay(@NonNull ViewGroup sceneRoot) {
+        ViewGroup group = sceneRoot;
+        while (group.getId() != android.R.id.content && group.getParent() != null &&
+                group.getParent() instanceof ViewGroup) {
+            group = (ViewGroup) group.getParent();
         }
+        for (int i = 0; i < group.getChildCount(); i++) {
+            View child = group.getChildAt(i);
+            if (child instanceof ViewOverlayPreJellybean) {
+                return (ViewOverlayPreJellybean) child;
+            }
+        }
+        final LayoutParams params = new LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.gravity = Gravity.FILL;
+        ViewOverlayPreJellybean viewOverlay = new ViewOverlayPreJellybean(sceneRoot.getContext());
+        group.addView(viewOverlay, params);
+        return viewOverlay;
     }
 
 }

@@ -25,6 +25,8 @@ package android.util;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Dummy class. Permits to extend same hidden class from android framework.
@@ -36,16 +38,20 @@ import android.os.Build;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public abstract class IntProperty<T> extends Property<T, Integer> {
 
-    public IntProperty(String name) {
+    public IntProperty(@Nullable String name) {
         super(Integer.class, name);
     }
 
-    public abstract void setValue(T object, int value);
+    public abstract void setValue(@NonNull T object, int value);
 
     @SuppressLint("NewApi")
     @Override
-    final public void set(T object, Integer value) {
+    final public void set(@NonNull T object, @NonNull Integer value) {
         setValue(object, value);
     }
+
+    @Override
+    @NonNull
+    public abstract Integer get(@NonNull T object);
 
 }

@@ -20,6 +20,8 @@ import android.content.res.TypedArray;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 /**
@@ -36,10 +38,13 @@ import android.util.AttributeSet;
  */
 public class PatternPathMotion extends PathMotion {
 
+    @Nullable
     private Path mOriginalPatternPath;
 
+    @NonNull
     private final Path mPatternPath = new Path();
 
+    @NonNull
     private final Matrix mTempMatrix = new Matrix();
 
     /**
@@ -50,7 +55,7 @@ public class PatternPathMotion extends PathMotion {
         mOriginalPatternPath = mPatternPath;
     }
 
-    public PatternPathMotion(Context context, AttributeSet attrs) {
+    public PatternPathMotion(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PatternPathMotion);
         try {
             String pathData = a.getString(R.styleable.PatternPathMotion_patternPathData);
@@ -73,7 +78,7 @@ public class PatternPathMotion extends PathMotion {
      *
      * @param patternPath A Path to be used as a pattern for two-dimensional motion.
      */
-    public PatternPathMotion(Path patternPath) {
+    public PatternPathMotion(@Nullable Path patternPath) {
         setPatternPath(patternPath);
     }
 
@@ -85,6 +90,7 @@ public class PatternPathMotion extends PathMotion {
      * @return the Path defining a pattern of motion between two coordinates.
      * @attr ref android.R.styleable#PatternPathMotion_patternPathData
      */
+    @Nullable
     public Path getPatternPath() {
         return mOriginalPatternPath;
     }
@@ -97,7 +103,7 @@ public class PatternPathMotion extends PathMotion {
      * @param patternPath A Path to be used as a pattern for two-dimensional motion.
      * @attr ref android.R.styleable#PatternPathMotion_patternPathData
      */
-    public void setPatternPath(Path patternPath) {
+    public void setPatternPath(@Nullable Path patternPath) {
         PathMeasure pathMeasure = new PathMeasure(patternPath, false);
         float length = pathMeasure.getLength();
         float[] pos = new float[2];
@@ -120,11 +126,14 @@ public class PatternPathMotion extends PathMotion {
         mTempMatrix.postScale(scale, scale);
         double angle = Math.atan2(dy, dx);
         mTempMatrix.postRotate((float) Math.toDegrees(-angle));
-        patternPath.transform(mTempMatrix, mPatternPath);
+        if (patternPath != null) {
+            patternPath.transform(mTempMatrix, mPatternPath);
+        }
         mOriginalPatternPath = patternPath;
     }
 
     @Override
+    @NonNull
     public Path getPath(float startX, float startY, float endX, float endY) {
         double dx = endX - startX;
         double dy = endY - startY;

@@ -16,6 +16,7 @@
 
 package com.transitionseverywhere;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,18 +44,25 @@ import java.util.Map;
  */
 public class TransitionValues {
 
+    public TransitionValues(@NonNull View view) {
+        this.view = view;
+    }
+
     /**
      * The View with these values
      */
-    public View view;
+    @NonNull
+    public final View view;
 
     /**
      * The set of values tracked by transitions for this scene
      */
+    @NonNull
     public final Map<String, Object> values = new ArrayMap<String, Object>();
     /**
      * The Transitions that targeted this view.
      */
+    @NonNull
     final ArrayList<Transition> targetedTransitions = new ArrayList<Transition>();
 
     @Override
@@ -74,6 +82,7 @@ public class TransitionValues {
         return 31 * view.hashCode() + values.hashCode();
     }
 
+    @NonNull
     @Override
     public String toString() {
         String returnValue = "TransitionValues@" + Integer.toHexString(hashCode()) + ":\n";

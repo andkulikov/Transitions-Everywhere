@@ -19,6 +19,8 @@ import android.animation.LayoutTransition;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
 import com.transitionseverywhere.R;
@@ -34,11 +36,13 @@ public class ViewGroupUtils {
 
         private static final int LAYOUT_TRANSITION_CHANGING = 4;
 
+        @Nullable
         private static Field sFieldLayoutSuppressed;
         private static LayoutTransition sEmptyLayoutTransition;
+        @Nullable
         private static Method sMethodLayoutTransitionCancel;
 
-        public void suppressLayout(final ViewGroup group, boolean suppress) {
+        public void suppressLayout(final @NonNull ViewGroup group, boolean suppress) {
             if (sEmptyLayoutTransition == null) {
                 sEmptyLayoutTransition = new LayoutTransition() {
                     @Override
@@ -80,16 +84,14 @@ public class ViewGroupUtils {
             }
         }
 
-        public boolean cancelLayoutTransition(ViewGroup group) {
-            if (group != null) {
-                final LayoutTransition layoutTransition = group.getLayoutTransition();
-                if (layoutTransition != null && layoutTransition.isRunning()) {
-                    if (sMethodLayoutTransitionCancel == null) {
-                        sMethodLayoutTransitionCancel = ReflectionUtils.getPrivateMethod(LayoutTransition.class, "cancel");
-                    }
-                    ReflectionUtils.invoke(group.getLayoutTransition(), null, sMethodLayoutTransitionCancel);
-                    return true;
+        public boolean cancelLayoutTransition(@NonNull ViewGroup group) {
+            final LayoutTransition layoutTransition = group.getLayoutTransition();
+            if (layoutTransition != null && layoutTransition.isRunning()) {
+                if (sMethodLayoutTransitionCancel == null) {
+                    sMethodLayoutTransitionCancel = ReflectionUtils.getPrivateMethod(LayoutTransition.class, "cancel");
                 }
+                ReflectionUtils.invoke(group.getLayoutTransition(), null, sMethodLayoutTransitionCancel);
+                return true;
             }
             return false;
         }
@@ -98,10 +100,11 @@ public class ViewGroupUtils {
     @TargetApi(VERSION_CODES.JELLY_BEAN_MR2)
     static class JellyBeanMr2ViewGroupUtils extends BaseViewGroupUtils {
 
+        @Nullable
         private static Method sMethodSuppressLayout;
 
         @Override
-        public void suppressLayout(ViewGroup group, boolean suppress) {
+        public void suppressLayout(@NonNull ViewGroup group, boolean suppress) {
             if (sMethodSuppressLayout == null) {
                 sMethodSuppressLayout = ReflectionUtils.getMethod(ViewGroup.class, "suppressLayout", boolean.class);
             }
@@ -109,6 +112,7 @@ public class ViewGroupUtils {
         }
     }
 
+    @NonNull
     private static final BaseViewGroupUtils IMPL;
 
     static {
@@ -119,7 +123,7 @@ public class ViewGroupUtils {
         }
     }
 
-    public static void suppressLayout(ViewGroup group, boolean suppress) {
+    public static void suppressLayout(@Nullable ViewGroup group, boolean suppress) {
         if (group != null) {
             IMPL.suppressLayout(group, suppress);
         }
@@ -128,7 +132,11 @@ public class ViewGroupUtils {
     /**
      * @return is cancel performed
      */
-    public static boolean cancelLayoutTransition(ViewGroup group) {
-        return IMPL.cancelLayoutTransition(group);
+    public static boolean cancelLayoutTransition(@Nullable ViewGroup group) {
+        if (group != null) {
+            return IMPL.cancelLayoutTransition(group);
+        } else {
+            return true;
+        }
     }
 }

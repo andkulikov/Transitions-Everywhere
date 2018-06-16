@@ -24,6 +24,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Matrix;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Property;
 import android.view.View;
@@ -65,13 +67,14 @@ public class ChangeTransform extends Transition {
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             ANIMATION_MATRIX_PROPERTY = new Property<View, Matrix>(Matrix.class, "animationMatrix") {
+                @Nullable
                 @Override
                 public Matrix get(View object) {
                     return null;
                 }
 
                 @Override
-                public void set(View object, Matrix value) {
+                public void set(@NonNull View object, Matrix value) {
                     ViewUtils.setAnimationMatrix(object, value);
                 }
             };
@@ -82,11 +85,12 @@ public class ChangeTransform extends Transition {
 
     private boolean mUseOverlay = true;
     private boolean mReparent = true;
+    @NonNull
     private Matrix mTempMatrix = new Matrix();
 
     public ChangeTransform() {}
 
-    public ChangeTransform(Context context, AttributeSet attrs) {
+    public ChangeTransform(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ChangeTransform);
         mUseOverlay = a.getBoolean(R.styleable.ChangeTransform_reparentWithOverlay, true);
@@ -165,12 +169,13 @@ public class ChangeTransform extends Transition {
         mReparent = reparent;
     }
 
+    @Nullable
     @Override
     public String[] getTransitionProperties() {
         return sTransitionProperties;
     }
 
-    private void captureValues(TransitionValues transitionValues) {
+    private void captureValues(@NonNull TransitionValues transitionValues) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
@@ -202,18 +207,19 @@ public class ChangeTransform extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
+    @Nullable
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(@NonNull ViewGroup sceneRoot, @Nullable TransitionValues startValues,
+                                   @Nullable TransitionValues endValues) {
         if (startValues == null || endValues == null ||
                 Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ||
                 !startValues.values.containsKey(PROPNAME_PARENT) ||
@@ -282,6 +288,7 @@ public class ChangeTransform extends Transition {
 
         AnimatorListenerAdapter listener = new AnimatorListenerAdapter() {
             private boolean mIsCanceled;
+            @NonNull
             private Matrix mTempMatrix = new Matrix();
 
             @Override
@@ -327,7 +334,7 @@ public class ChangeTransform extends Transition {
         return animator;
     }
 
-    private boolean parentsMatch(ViewGroup startParent, ViewGroup endParent) {
+    private boolean parentsMatch(@NonNull ViewGroup startParent, ViewGroup endParent) {
         boolean parentsMatch = false;
         if (!isValidTarget(startParent) || !isValidTarget(endParent)) {
             parentsMatch = startParent == endParent;
@@ -340,7 +347,7 @@ public class ChangeTransform extends Transition {
         return parentsMatch;
     }
 
-    private void createGhostView(final ViewGroup sceneRoot, TransitionValues startValues,
+    private void createGhostView(@NonNull final ViewGroup sceneRoot, @NonNull TransitionValues startValues,
                                  TransitionValues endValues) {
         View view = endValues.view;
 
@@ -384,7 +391,7 @@ public class ChangeTransform extends Transition {
         startLocal.postConcat(toLocal);
     }
 
-    private static void setIdentityTransforms(View view) {
+    private static void setIdentityTransforms(@NonNull View view) {
         setTransforms(view, 0, 0, 0, 1, 1, 0, 0, 0);
     }
 
@@ -422,7 +429,7 @@ public class ChangeTransform extends Transition {
             rotationZ = view.getRotation();
         }
 
-        public void restore(View view) {
+        public void restore(@NonNull View view) {
             setTransforms(view, translationX, translationY, translationZ, scaleX, scaleY,
                     rotationX, rotationY, rotationZ);
         }
@@ -456,7 +463,7 @@ public class ChangeTransform extends Transition {
         }
 
         @Override
-        public void onTransitionEnd(Transition transition) {
+        public void onTransitionEnd(@NonNull Transition transition) {
             transition.removeListener(this);
             ViewUtils.removeGhostView(mView);
             mView.setTag(R.id.transitionTransform, null);
@@ -464,12 +471,12 @@ public class ChangeTransform extends Transition {
         }
 
         @Override
-        public void onTransitionPause(Transition transition) {
+        public void onTransitionPause(@NonNull Transition transition) {
             mGhostView.setVisibility(View.INVISIBLE);
         }
 
         @Override
-        public void onTransitionResume(Transition transition) {
+        public void onTransitionResume(@NonNull Transition transition) {
             mGhostView.setVisibility(View.VISIBLE);
         }
     }

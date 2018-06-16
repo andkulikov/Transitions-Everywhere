@@ -21,6 +21,8 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,17 +39,17 @@ public class ChangeScroll extends Transition {
 
     public ChangeScroll() {}
 
-    public ChangeScroll(Context context, AttributeSet attrs) {
+    public ChangeScroll(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
@@ -56,9 +58,10 @@ public class ChangeScroll extends Transition {
         transitionValues.values.put(PROPNAME_SCROLL_Y, transitionValues.view.getScrollY());
     }
 
+    @Nullable
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(@NonNull ViewGroup sceneRoot, @Nullable TransitionValues startValues,
+                                   @Nullable TransitionValues endValues) {
         if (startValues == null || endValues == null ||
                 Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return null;

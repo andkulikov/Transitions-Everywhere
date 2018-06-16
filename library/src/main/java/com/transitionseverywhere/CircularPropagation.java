@@ -18,6 +18,8 @@ package com.transitionseverywhere;
 import android.annotation.TargetApi;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -57,8 +59,8 @@ public class CircularPropagation extends VisibilityPropagation {
     }
 
     @Override
-    public long getStartDelay(ViewGroup sceneRoot, Transition transition,
-                              TransitionValues startValues, TransitionValues endValues) {
+    public long getStartDelay(@NonNull ViewGroup sceneRoot, @NonNull Transition transition,
+                              @Nullable TransitionValues startValues, @Nullable TransitionValues endValues) {
         if (startValues == null && endValues == null) {
             return 0;
         }

@@ -21,6 +21,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -63,12 +64,10 @@ public class Scale extends Visibility {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         super.captureStartValues(transitionValues);
-        if (transitionValues.view != null) {
-            transitionValues.values.put(PROPNAME_SCALE_X, transitionValues.view.getScaleX());
-            transitionValues.values.put(PROPNAME_SCALE_Y, transitionValues.view.getScaleY());
-        }
+        transitionValues.values.put(PROPNAME_SCALE_X, transitionValues.view.getScaleX());
+        transitionValues.values.put(PROPNAME_SCALE_Y, transitionValues.view.getScaleY());
     }
 
     /**
@@ -77,6 +76,7 @@ public class Scale extends Visibility {
      *                         transitions, for example Scale and Fade
      * @return This Scale object.
      */
+    @NonNull
     public Scale setDisappearedScale(float disappearedScale) {
         if (disappearedScale < 0f) {
             throw new IllegalArgumentException("disappearedScale cannot be negative!");
@@ -85,7 +85,7 @@ public class Scale extends Visibility {
         return this;
     }
 
-    public Scale(Context context, AttributeSet attrs) {
+    public Scale(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Scale);
         setDisappearedScale(a.getFloat(R.styleable.Scale_disappearedScale, mDisappearedScale));
@@ -93,7 +93,7 @@ public class Scale extends Visibility {
     }
 
     @Nullable
-    private Animator createAnimation(final View view, float startScale, float endScale, TransitionValues values) {
+    private Animator createAnimation(@NonNull final View view, float startScale, float endScale, @Nullable TransitionValues values) {
         final float initialScaleX = view.getScaleX();
         final float initialScaleY = view.getScaleY();
         float startScaleX = initialScaleX * startScale;
@@ -124,7 +124,7 @@ public class Scale extends Visibility {
             ObjectAnimator.ofFloat(view, View.SCALE_Y, startScaleY, endScaleY));
         addListener(new TransitionListenerAdapter() {
             @Override
-            public void onTransitionEnd(Transition transition) {
+            public void onTransitionEnd(@NonNull Transition transition) {
                 view.setScaleX(initialScaleX);
                 view.setScaleY(initialScaleY);
                 transition.removeListener(this);
@@ -133,15 +133,16 @@ public class Scale extends Visibility {
         return animator;
     }
 
+    @Nullable
     @Override
-    public Animator onAppear(ViewGroup sceneRoot, final View view, TransitionValues startValues,
-                             TransitionValues endValues) {
+    public Animator onAppear(@NonNull ViewGroup sceneRoot, @NonNull final View view, @Nullable TransitionValues startValues,
+                             @Nullable TransitionValues endValues) {
         return createAnimation(view, mDisappearedScale, 1f, startValues);
     }
 
     @Override
-    public Animator onDisappear(ViewGroup sceneRoot, final View view, TransitionValues startValues,
-                                TransitionValues endValues) {
+    public Animator onDisappear(@NonNull ViewGroup sceneRoot, @NonNull final View view, @Nullable TransitionValues startValues,
+                                @Nullable TransitionValues endValues) {
         return createAnimation(view, 1f, mDisappearedScale, startValues);
     }
 

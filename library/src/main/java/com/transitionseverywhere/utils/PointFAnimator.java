@@ -18,6 +18,8 @@ package com.transitionseverywhere.utils;
 import android.annotation.TargetApi;
 import android.graphics.PointF;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Created by Andrey Kulikov on 17.08.15.
@@ -27,11 +29,12 @@ public class PointFAnimator extends BasePointFAnimator {
 
     private float mStartTop, mStartLeft, mEndTop, mEndLeft;
 
-    protected PointFAnimator(Object target, PointFProperty pointFProperty) {
+    protected PointFAnimator(@NonNull Object target, @NonNull PointFProperty pointFProperty) {
         super(target, pointFProperty);
     }
 
-    public static <T> PointFAnimator ofPointF(T target, PointFProperty<T> property, float startLeft,
+    @Nullable
+    public static <T> PointFAnimator ofPointF(@Nullable T target, @Nullable PointFProperty<T> property, float startLeft,
                                               float startTop, float endLeft, float endTop) {
         PointFAnimator animator = null;
         if (target != null && property != null) {
@@ -44,7 +47,7 @@ public class PointFAnimator extends BasePointFAnimator {
         return animator;
     }
 
-    protected void applyAnimatedFraction(PointF holder, float fraction) {
+    protected void applyAnimatedFraction(@NonNull PointF holder, float fraction) {
         holder.x = interpolate(fraction, mStartLeft, mEndLeft);
         holder.y = interpolate(fraction, mStartTop, mEndTop);
     }

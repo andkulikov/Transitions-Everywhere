@@ -19,6 +19,8 @@ package com.transitionseverywhere.utils;
 import android.annotation.TargetApi;
 import android.graphics.Matrix;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,60 +32,68 @@ import java.lang.reflect.Method;
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class ViewUtilsLollipop extends ViewUtils.ViewUtilsKitKat {
 
+    @Nullable
     private static final Class CLASS_GhostView = ReflectionUtils.getClass("android.view.GhostView");
+    @Nullable
     private static final Method METHOD_addGhost = ReflectionUtils.getMethod(CLASS_GhostView,
             "addGhost", View.class, ViewGroup.class, Matrix.class);
+    @Nullable
     private static final Method METHOD_removeGhost = ReflectionUtils.getMethod(CLASS_GhostView,
             "removeGhost", View.class);
+    @Nullable
     private static final Method METHOD_transformMatrixToGlobal =
             ReflectionUtils.getMethod(View.class, "transformMatrixToGlobal", Matrix.class);
+    @Nullable
     private static final Method METHOD_transformMatrixToLocal =
             ReflectionUtils.getMethod(View.class, "transformMatrixToLocal", Matrix.class);
+    @Nullable
     private static final Method METHOD_setAnimationMatrix =
             ReflectionUtils.getMethod(View.class, "setAnimationMatrix", Matrix.class);
 
     @Override
-    public void transformMatrixToGlobal(View view, Matrix matrix) {
+    public void transformMatrixToGlobal(@NonNull View view, @NonNull Matrix matrix) {
         ReflectionUtils.invoke(view, null, METHOD_transformMatrixToGlobal, matrix);
     }
 
     @Override
-    public void transformMatrixToLocal(View view, Matrix matrix) {
+    public void transformMatrixToLocal(@NonNull View view, @NonNull Matrix matrix) {
         ReflectionUtils.invoke(view, null, METHOD_transformMatrixToLocal, matrix);
     }
 
     @Override
-    public void setAnimationMatrix(View view, Matrix matrix) {
+    public void setAnimationMatrix(@NonNull View view, @Nullable Matrix matrix) {
         ReflectionUtils.invoke(view, null, METHOD_setAnimationMatrix, matrix);
     }
 
     @Override
-    public View addGhostView(View view, ViewGroup viewGroup, Matrix matrix) {
+    @Nullable
+    public View addGhostView(@NonNull View view, @NonNull ViewGroup viewGroup, @Nullable Matrix matrix) {
         return (View) ReflectionUtils.invoke(null, null, METHOD_addGhost, view, viewGroup, matrix);
     }
 
     @Override
-    public void removeGhostView(View view) {
+    public void removeGhostView(@NonNull View view) {
         ReflectionUtils.invoke(view, null, METHOD_removeGhost, view);
     }
 
     @Override
-    public void setTransitionName(View v, String name) {
+    public void setTransitionName(@NonNull View v, @Nullable String name) {
         v.setTransitionName(name);
     }
 
     @Override
-    public String getTransitionName(View v) {
+    @Nullable
+    public String getTransitionName(@NonNull View v) {
         return v.getTransitionName();
     }
 
     @Override
-    public float getTranslationZ(View view) {
+    public float getTranslationZ(@NonNull View view) {
         return view.getTranslationZ();
     }
 
     @Override
-    public void setTranslationZ(View view, float z) {
+    public void setTranslationZ(@NonNull View view, float z) {
         view.setTranslationZ(z);
     }
 }

@@ -21,6 +21,8 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.graphics.Path;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Property;
 import android.view.View;
 
@@ -30,38 +32,42 @@ public class AnimatorUtils {
 
     static class BaseAnimatorCompat {
 
-        public void addPauseListener(Animator animator, AnimatorPauseListener listener) {
+        public void addPauseListener(@NonNull Animator animator, @NonNull AnimatorPauseListener listener) {
         }
 
-        public void pause(Animator animator) {
+        public void pause(@NonNull Animator animator) {
         }
 
-        public void resume(Animator animator) {
+        public void resume(@NonNull Animator animator) {
         }
 
-        public <T> Animator ofPointF(T target, PointFProperty<T> property, float startLeft,
+        @Nullable
+        public <T> Animator ofPointF(@Nullable T target, @NonNull PointFProperty<T> property, float startLeft,
                                      float startTop, float endLeft, float endTop) {
             return null;
         }
 
-        public <T> Animator ofPointF(T target, PointFProperty<T> property, Path path) {
+        @Nullable
+        public <T> Animator ofPointF(@Nullable T target, @NonNull PointFProperty<T> property, @Nullable Path path) {
             return null;
         }
 
-        public boolean isAnimatorStarted(Animator anim) {
+        public boolean isAnimatorStarted(@NonNull Animator anim) {
             return false;
         }
 
-        public boolean hasOverlappingRendering(View view) {
+        public boolean hasOverlappingRendering(@NonNull View view) {
             return true;
         }
 
-        public ObjectAnimator ofFloat(View view, Property<View, Float> property,
+        @Nullable
+        public ObjectAnimator ofFloat(@Nullable View view, @NonNull Property<View, Float> property,
                                       float startFraction, float endFraction) {
             return null;
         }
 
-        public ObjectAnimator ofInt(View view, Property<View, Integer> property,
+        @Nullable
+        public ObjectAnimator ofInt(@Nullable View view, @NonNull Property<View, Integer> property,
                                     float startFraction, float endFraction) {
             return null;
         }
@@ -71,28 +77,31 @@ public class AnimatorUtils {
     static class IceCreamSandwichAnimatorCompat extends BaseAnimatorCompat {
 
         @Override
-        public void pause(Animator animator) {
+        public void pause(@NonNull Animator animator) {
             animator.cancel();
         }
 
         @Override
-        public <T> Animator ofPointF(T target, PointFProperty<T> property, float startLeft,
+        @Nullable
+        public <T> Animator ofPointF(@Nullable T target, @NonNull PointFProperty<T> property, float startLeft,
                                      float startTop, float endLeft, float endTop) {
             return PointFAnimator.ofPointF(target, property, startLeft, startTop, endLeft, endTop);
         }
 
         @Override
-        public <T> Animator ofPointF(final T target, final PointFProperty<T> property, final Path path) {
+        @Nullable
+        public <T> Animator ofPointF(@Nullable final T target, @NonNull final PointFProperty<T> property, final @Nullable Path path) {
             return PathAnimatorCompat.ofPointF(target, property, path);
         }
 
         @Override
-        public boolean isAnimatorStarted(Animator anim) {
+        public boolean isAnimatorStarted(@NonNull Animator anim) {
             return anim.isStarted();
         }
 
         @Override
-        public ObjectAnimator ofFloat(View view, Property<View, Float> property,
+        @Nullable
+        public ObjectAnimator ofFloat(@Nullable View view, @NonNull Property<View, Float> property,
                                       float startFraction, float endFraction) {
             float start = property.get(view) * startFraction;
             float end = property.get(view) * endFraction;
@@ -104,7 +113,8 @@ public class AnimatorUtils {
         }
 
         @Override
-        public ObjectAnimator ofInt(View view, Property<View, Integer> property,
+        @Nullable
+        public ObjectAnimator ofInt(@Nullable View view, @NonNull Property<View, Integer> property,
                                     float startFraction, float endFraction) {
             int start = (int) (property.get(view) * startFraction);
             int end = (int) (property.get(view) * endFraction);
@@ -119,7 +129,7 @@ public class AnimatorUtils {
     @TargetApi(VERSION_CODES.JELLY_BEAN)
     static class JellyBeanCompat extends IceCreamSandwichAnimatorCompat {
         @Override
-        public boolean hasOverlappingRendering(View view) {
+        public boolean hasOverlappingRendering(@NonNull View view) {
             return view.hasOverlappingRendering();
         }
     }
@@ -127,17 +137,17 @@ public class AnimatorUtils {
     @TargetApi(VERSION_CODES.KITKAT)
     static class KitKatAnimatorCompat extends JellyBeanCompat {
         @Override
-        public void addPauseListener(Animator animator, final AnimatorPauseListener listener) {
+        public void addPauseListener(@NonNull Animator animator, @NonNull final AnimatorPauseListener listener) {
             animator.addPauseListener(listener);
         }
 
         @Override
-        public void pause(Animator animator) {
+        public void pause(@NonNull Animator animator) {
             animator.pause();
         }
 
         @Override
-        public void resume(Animator animator) {
+        public void resume(@NonNull Animator animator) {
             animator.resume();
         }
     }
@@ -146,12 +156,13 @@ public class AnimatorUtils {
     static class LollipopAnimatorCompat extends KitKatAnimatorCompat {
 
         @Override
-        public <T> Animator ofPointF(T target, PointFProperty<T> property, Path path) {
+        public <T> Animator ofPointF(@Nullable T target, @NonNull PointFProperty<T> property, Path path) {
             return ObjectAnimator.ofObject(target, property, null, path);
         }
 
     }
 
+    @NonNull
     private static final BaseAnimatorCompat IMPL;
 
     static {
@@ -169,25 +180,27 @@ public class AnimatorUtils {
         }
     }
 
-    public static void addPauseListener(Animator animator, AnimatorPauseListener listener) {
+    public static void addPauseListener(@NonNull Animator animator, @NonNull AnimatorPauseListener listener) {
         IMPL.addPauseListener(animator, listener);
     }
 
-    public static void pause(Animator animator) {
+    public static void pause(@NonNull Animator animator) {
         IMPL.pause(animator);
     }
 
-    public static void resume(Animator animator) {
+    public static void resume(@NonNull Animator animator) {
         IMPL.resume(animator);
     }
 
-    public static <T> Animator ofPointF(T target, PointFProperty<T> property,
+    @Nullable
+    public static <T> Animator ofPointF(@Nullable T target, @NonNull PointFProperty<T> property,
                                         float startLeft, float startTop,
                                         float endLeft, float endTop) {
         return IMPL.ofPointF(target, property, startLeft, startTop, endLeft, endTop);
     }
 
-    public static <T> Animator ofPointF(T target, PointFProperty<T> property, Path path) {
+    @Nullable
+    public static <T> Animator ofPointF(@Nullable T target, @NonNull PointFProperty<T> property, @Nullable Path path) {
         if (path != null) {
             return IMPL.ofPointF(target, property, path);
         } else {
@@ -195,7 +208,8 @@ public class AnimatorUtils {
         }
     }
 
-    public static <T> Animator ofPointF(T target, PointFProperty<T> property, PathMotion pathMotion,
+    @Nullable
+    public static <T> Animator ofPointF(@Nullable T target, @NonNull PointFProperty<T> property, @Nullable PathMotion pathMotion,
                                         float startLeft, float startTop, float endLeft, float endTop) {
         if (startLeft != endLeft || startTop != endTop) {
             if (pathMotion == null || pathMotion.equals(PathMotion.STRAIGHT_PATH_MOTION)) {
@@ -209,20 +223,22 @@ public class AnimatorUtils {
         }
     }
 
-    public static boolean isAnimatorStarted(Animator anim) {
+    public static boolean isAnimatorStarted(@NonNull Animator anim) {
         return IMPL.isAnimatorStarted(anim);
     }
 
-    public static boolean hasOverlappingRendering(View view) {
+    public static boolean hasOverlappingRendering(@NonNull View view) {
         return IMPL.hasOverlappingRendering(view);
     }
 
-    public static ObjectAnimator ofFloat(View view, Property<View, Float> property,
+    @Nullable
+    public static ObjectAnimator ofFloat(@Nullable View view, @NonNull Property<View, Float> property,
                                          float startFraction, float endFraction) {
         return IMPL.ofFloat(view, property, startFraction, endFraction);
     }
 
-    public static ObjectAnimator ofInt(View view, Property<View, Integer> property,
+    @Nullable
+    public static ObjectAnimator ofInt(@Nullable View view, @NonNull Property<View, Integer> property,
                                        float startFraction, float endFraction) {
         return IMPL.ofInt(view, property, startFraction, endFraction);
     }

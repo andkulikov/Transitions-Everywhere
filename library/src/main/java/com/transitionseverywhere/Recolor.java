@@ -24,6 +24,8 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Property;
 import android.view.View;
@@ -47,7 +49,9 @@ public class Recolor extends Transition {
     private static final String PROPNAME_BACKGROUND = "android:recolor:background";
     private static final String PROPNAME_TEXT_COLOR = "android:recolor:textColor";
 
+    @Nullable
     public static final Property<TextView, Integer> TEXTVIEW_TEXT_COLOR;
+    @Nullable
     public static final Property<ColorDrawable, Integer> COLORDRAWABLE_COLOR;
 
     static {
@@ -55,10 +59,11 @@ public class Recolor extends Transition {
             TEXTVIEW_TEXT_COLOR = new IntProperty<TextView>() {
 
                 @Override
-                public void setValue(TextView object, int value) {
+                public void setValue(@NonNull TextView object, int value) {
                     object.setTextColor(value);
                 }
 
+                @NonNull
                 @Override
                 public Integer get(TextView object) {
                     return 0;
@@ -67,12 +72,13 @@ public class Recolor extends Transition {
             }.optimize();
             COLORDRAWABLE_COLOR = new IntProperty<ColorDrawable>() {
                 @Override
-                public void setValue(ColorDrawable object, int value) {
+                public void setValue(@NonNull ColorDrawable object, int value) {
                     object.setColor(value);
                 }
 
+                @NonNull
                 @Override
-                public Integer get(ColorDrawable object) {
+                public Integer get(@NonNull ColorDrawable object) {
                     return object.getColor();
                 }
             }.optimize();
@@ -84,7 +90,7 @@ public class Recolor extends Transition {
 
     public Recolor() {}
 
-    public Recolor(Context context, AttributeSet attrs) {
+    public Recolor(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -97,18 +103,19 @@ public class Recolor extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
+    @Nullable
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(@NonNull ViewGroup sceneRoot, @Nullable TransitionValues startValues,
+                                   @Nullable TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
         }

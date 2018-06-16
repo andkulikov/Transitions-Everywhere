@@ -20,6 +20,8 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Created by Andrey Kulikov on 17.08.15.
@@ -30,13 +32,15 @@ public class PathAnimatorCompat extends BasePointFAnimator {
     private PathMeasure mPathMeasure;
     private float mPathLength;
 
+    @NonNull
     private float[] mTempArray = new float[2];
 
-    private PathAnimatorCompat(Object target, PointFProperty pointFProperty) {
+    private PathAnimatorCompat(@NonNull Object target, @NonNull PointFProperty pointFProperty) {
         super(target, pointFProperty);
     }
 
-    public static <T> PathAnimatorCompat ofPointF(T target, PointFProperty<T> property, Path path) {
+    @Nullable
+    public static <T> PathAnimatorCompat ofPointF(@Nullable T target, @Nullable PointFProperty<T> property, @Nullable Path path) {
         PathAnimatorCompat animator = null;
         if (target != null && property != null && path != null) {
             animator = new PathAnimatorCompat(target, property);
@@ -47,7 +51,7 @@ public class PathAnimatorCompat extends BasePointFAnimator {
     }
 
     @Override
-    protected void applyAnimatedFraction(PointF holder, float fraction) {
+    protected void applyAnimatedFraction(@NonNull PointF holder, float fraction) {
         if (fraction < 0) {
             fraction = 0;
         }

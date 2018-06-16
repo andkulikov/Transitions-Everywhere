@@ -18,6 +18,8 @@ package android.util;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Dummy class. Permits to extend same hidden class from android framework.
@@ -29,16 +31,20 @@ import android.os.Build;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public abstract class FloatProperty<T> extends Property<T, Float> {
 
-    public FloatProperty(String name) {
+    public FloatProperty(@Nullable String name) {
         super(Float.class, name);
     }
 
-    public abstract void setValue(T object, float value);
+    public abstract void setValue(@NonNull T object, float value);
 
     @SuppressLint("NewApi")
     @Override
-    final public void set(T object, Float value) {
+    final public void set(@NonNull T object, @NonNull Float value) {
         setValue(object, value);
     }
+
+    @Override
+    @NonNull
+    public abstract Float get(@NonNull T object);
 
 }

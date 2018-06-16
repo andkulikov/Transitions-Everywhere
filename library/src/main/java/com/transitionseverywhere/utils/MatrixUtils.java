@@ -21,6 +21,8 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import java.lang.reflect.Field;
@@ -30,6 +32,7 @@ import java.lang.reflect.Field;
  */
 public class MatrixUtils {
 
+    @NonNull
     public static Matrix IDENTITY_MATRIX = new Matrix() {
         void oops() {
             throw new IllegalStateException("Matrix can not be modified");
@@ -211,9 +214,10 @@ public class MatrixUtils {
         }
     };
 
+    @Nullable
     private static final Field FIELD_DRAW_MATRIX = ReflectionUtils.getPrivateField(ImageView.class, "mDrawMatrix");
 
-    public static void animateTransform(ImageView imageView, Matrix matrix) {
+    public static void animateTransform(@NonNull ImageView imageView, @Nullable Matrix matrix) {
         Drawable drawable = imageView.getDrawable();
         if (drawable == null) {
             return;
@@ -236,14 +240,16 @@ public class MatrixUtils {
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public static class MatrixEvaluator implements TypeEvaluator<Matrix> {
 
+        @NonNull
         float[] mTempStartValues = new float[9];
-
+        @NonNull
         float[] mTempEndValues = new float[9];
-
+        @NonNull
         Matrix mTempMatrix = new Matrix();
 
         @Override
-        public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
+        @Nullable
+        public Matrix evaluate(float fraction, @NonNull Matrix startValue, @NonNull Matrix endValue) {
             startValue.getValues(mTempStartValues);
             endValue.getValues(mTempEndValues);
             for (int i = 0; i < 9; i++) {
@@ -258,6 +264,7 @@ public class MatrixUtils {
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public static class NullMatrixEvaluator implements TypeEvaluator<Matrix> {
         @Override
+        @Nullable
         public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
             return null;
         }

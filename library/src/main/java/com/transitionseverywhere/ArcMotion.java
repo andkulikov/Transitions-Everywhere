@@ -18,6 +18,7 @@ package com.transitionseverywhere;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Path;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 
 /**
@@ -59,7 +60,7 @@ public class ArcMotion extends PathMotion {
 
     public ArcMotion() {}
 
-    public ArcMotion(Context context, AttributeSet attrs) {
+    public ArcMotion(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ArcMotion);
         float minimumVerticalAngle = a.getFloat(R.styleable.ArcMotion_minimumVerticalAngle,
@@ -176,6 +177,7 @@ public class ArcMotion extends PathMotion {
     }
 
     @Override
+    @NonNull
     public Path getPath(float startX, float startY, float endX, float endY) {
         // Here's a little ascii art to show how this is calculated:
         // c---------- b

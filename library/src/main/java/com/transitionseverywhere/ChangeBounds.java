@@ -30,6 +30,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,36 +81,38 @@ public class ChangeBounds extends Transition {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             DRAWABLE_ORIGIN_PROPERTY = new PointFProperty<Drawable>() {
 
+                @NonNull
                 private Rect mBounds = new Rect();
 
                 @Override
-                public void set(Drawable object, PointF value) {
+                public void set(@NonNull Drawable object, @NonNull PointF value) {
                     object.copyBounds(mBounds);
                     mBounds.offsetTo(Math.round(value.x), Math.round(value.y));
                     object.setBounds(mBounds);
                 }
 
                 @Override
-                public PointF get(Drawable object) {
+                @NonNull
+                public PointF get(@NonNull Drawable object) {
                     object.copyBounds(mBounds);
                     return new PointF(mBounds.left, mBounds.top);
                 }
             };
             TOP_LEFT_PROPERTY = new PointFProperty<ViewBounds>() {
                 @Override
-                public void set(ViewBounds viewBounds, PointF topLeft) {
+                public void set(@NonNull ViewBounds viewBounds, @NonNull PointF topLeft) {
                     viewBounds.setTopLeft(topLeft);
                 }
             };
             BOTTOM_RIGHT_PROPERTY = new PointFProperty<ViewBounds>() {
                 @Override
-                public void set(ViewBounds viewBounds, PointF bottomRight) {
+                public void set(@NonNull ViewBounds viewBounds, @NonNull PointF bottomRight) {
                     viewBounds.setBottomRight(bottomRight);
                 }
             };
             BOTTOM_RIGHT_ONLY_PROPERTY = new PointFProperty<View>() {
                 @Override
-                public void set(View view, PointF bottomRight) {
+                public void set(@NonNull View view, @NonNull PointF bottomRight) {
                     int left = view.getLeft();
                     int top = view.getTop();
                     int right = Math.round(bottomRight.x);
@@ -118,7 +122,7 @@ public class ChangeBounds extends Transition {
             };
             TOP_LEFT_ONLY_PROPERTY = new PointFProperty<View>() {
                 @Override
-                public void set(View view, PointF topLeft) {
+                public void set(@NonNull View view, @NonNull PointF topLeft) {
                     int left = Math.round(topLeft.x);
                     int top = Math.round(topLeft.y);
                     int right = view.getRight();
@@ -128,7 +132,7 @@ public class ChangeBounds extends Transition {
             };
             POSITION_PROPERTY = new PointFProperty<View>() {
                 @Override
-                public void set(View view, PointF topLeft) {
+                public void set(@NonNull View view, @NonNull PointF topLeft) {
                     int left = Math.round(topLeft.x);
                     int top = Math.round(topLeft.y);
                     int right = left + view.getWidth();
@@ -146,6 +150,7 @@ public class ChangeBounds extends Transition {
         }
     }
 
+    @NonNull
     int[] tempLocation = new int[2];
     boolean mResizeClip = false;
     boolean mReparent = false;
@@ -155,7 +160,7 @@ public class ChangeBounds extends Transition {
 
     public ChangeBounds() {}
 
-    public ChangeBounds(Context context, AttributeSet attrs) {
+    public ChangeBounds(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ChangeBounds);
@@ -164,6 +169,7 @@ public class ChangeBounds extends Transition {
         setResizeClip(resizeClip);
     }
 
+    @Nullable
     @Override
     public String[] getTransitionProperties() {
         return sTransitionProperties;
@@ -233,16 +239,16 @@ public class ChangeBounds extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
-    private boolean parentMatches(View startParent, View endParent) {
+    private boolean parentMatches(@NonNull View startParent, View endParent) {
         boolean parentMatches = true;
         if (mReparent) {
             TransitionValues endValues = getMatchedTransitionValues(startParent, true);
@@ -255,9 +261,10 @@ public class ChangeBounds extends Transition {
         return parentMatches;
     }
 
+    @Nullable
     @Override
-    public Animator createAnimator(final ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(@NonNull final ViewGroup sceneRoot, @Nullable TransitionValues startValues,
+                                   @Nullable TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
         }
@@ -378,13 +385,13 @@ public class ChangeBounds extends Transition {
                         boolean mCanceled = false;
 
                         @Override
-                        public void onTransitionCancel(Transition transition) {
+                        public void onTransitionCancel(@NonNull Transition transition) {
                             ViewGroupUtils.suppressLayout(parent, false);
                             mCanceled = true;
                         }
 
                         @Override
-                        public void onTransitionEnd(Transition transition) {
+                        public void onTransitionEnd(@NonNull Transition transition) {
                             if (!mCanceled) {
                                 ViewGroupUtils.suppressLayout(parent, false);
                             }
@@ -392,12 +399,12 @@ public class ChangeBounds extends Transition {
                         }
 
                         @Override
-                        public void onTransitionPause(Transition transition) {
+                        public void onTransitionPause(@NonNull Transition transition) {
                             ViewGroupUtils.suppressLayout(parent, false);
                         }
 
                         @Override
-                        public void onTransitionResume(Transition transition) {
+                        public void onTransitionResume(@NonNull Transition transition) {
                             ViewGroupUtils.suppressLayout(parent, true);
                         }
                     };
@@ -455,7 +462,7 @@ public class ChangeBounds extends Transition {
             mView = view;
         }
 
-        public void setTopLeft(PointF topLeft) {
+        public void setTopLeft(@NonNull PointF topLeft) {
             mLeft = Math.round(topLeft.x);
             mTop = Math.round(topLeft.y);
             mTopLeftCalls++;
@@ -464,7 +471,7 @@ public class ChangeBounds extends Transition {
             }
         }
 
-        public void setBottomRight(PointF bottomRight) {
+        public void setBottomRight(@NonNull PointF bottomRight) {
             mRight = Math.round(bottomRight.x);
             mBottom = Math.round(bottomRight.y);
             mBottomRightCalls++;

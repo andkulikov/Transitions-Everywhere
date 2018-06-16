@@ -27,6 +27,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -123,6 +125,7 @@ public class Crossfade extends Transition {
      * @param fadeBehavior The type of fading animation to use when this
      *                     transition is run.
      */
+    @NonNull
     public Crossfade setFadeBehavior(int fadeBehavior) {
         if (fadeBehavior >= FADE_BEHAVIOR_CROSSFADE && fadeBehavior <= FADE_BEHAVIOR_OUT_IN) {
             mFadeBehavior = fadeBehavior;
@@ -148,6 +151,7 @@ public class Crossfade extends Transition {
      * @param resizeBehavior The type of resizing behavior to use when this
      *                       transition is run.
      */
+    @NonNull
     public Crossfade setResizeBehavior(int resizeBehavior) {
         if (resizeBehavior >= RESIZE_BEHAVIOR_NONE && resizeBehavior <= RESIZE_BEHAVIOR_SCALE) {
             mResizeBehavior = resizeBehavior;
@@ -165,9 +169,10 @@ public class Crossfade extends Transition {
         return mResizeBehavior;
     }
 
+    @Nullable
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(@NonNull ViewGroup sceneRoot, @Nullable TransitionValues startValues,
+                                   @Nullable TransitionValues endValues) {
         if (startValues == null || endValues == null ||
                 Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return null;
@@ -255,7 +260,7 @@ public class Crossfade extends Transition {
         }
     }
 
-    private void captureValues(TransitionValues transitionValues) {
+    private void captureValues(@NonNull TransitionValues transitionValues) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return;
         }
@@ -285,12 +290,12 @@ public class Crossfade extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 }

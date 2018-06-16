@@ -23,6 +23,8 @@ import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -104,6 +106,7 @@ public class ChangeText extends Transition {
      *                       transition is run.
      * @return this textChange object.
      */
+    @NonNull
     public ChangeText setChangeBehavior(int changeBehavior) {
         if (changeBehavior >= CHANGE_BEHAVIOR_KEEP && changeBehavior <= CHANGE_BEHAVIOR_OUT_IN) {
             mChangeBehavior = changeBehavior;
@@ -111,6 +114,7 @@ public class ChangeText extends Transition {
         return this;
     }
 
+    @Nullable
     @Override
     public String[] getTransitionProperties() {
         return sTransitionProperties;
@@ -143,18 +147,19 @@ public class ChangeText extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
+    @Nullable
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(@NonNull ViewGroup sceneRoot, @Nullable TransitionValues startValues,
+                                   @Nullable TransitionValues endValues) {
         if (startValues == null || endValues == null ||
                 !(startValues.view instanceof TextView) || !(endValues.view instanceof TextView)) {
             return null;
@@ -214,7 +219,7 @@ public class ChangeText extends Transition {
                     outAnim = ValueAnimator.ofInt(Color.alpha(startColor), 0);
                     outAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
+                        public void onAnimationUpdate(@NonNull ValueAnimator animation) {
                             int currAlpha = (Integer) animation.getAnimatedValue();
                             view.setTextColor(currAlpha << 24 | startColor & 0xff0000 |
                                     startColor & 0xff00 | startColor & 0xff);
@@ -241,7 +246,7 @@ public class ChangeText extends Transition {
                     inAnim = ValueAnimator.ofInt(0, Color.alpha(endColor));
                     inAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
+                        public void onAnimationUpdate(@NonNull ValueAnimator animation) {
                             int currAlpha = (Integer) animation.getAnimatedValue();
                             view.setTextColor(currAlpha << 24 | Color.red(endColor) << 16 |
                                     Color.green(endColor) << 8 | Color.blue(endColor));
@@ -269,7 +274,7 @@ public class ChangeText extends Transition {
                 int mPausedColor = 0;
 
                 @Override
-                public void onTransitionPause(Transition transition) {
+                public void onTransitionPause(@NonNull Transition transition) {
                     if (mChangeBehavior != CHANGE_BEHAVIOR_IN) {
                         view.setText(endText);
                         if (view instanceof EditText) {
@@ -283,7 +288,7 @@ public class ChangeText extends Transition {
                 }
 
                 @Override
-                public void onTransitionResume(Transition transition) {
+                public void onTransitionResume(@NonNull Transition transition) {
                     if (mChangeBehavior != CHANGE_BEHAVIOR_IN) {
                         view.setText(startText);
                         if (view instanceof EditText) {
@@ -296,7 +301,7 @@ public class ChangeText extends Transition {
                 }
 
                 @Override
-                public void onTransitionEnd(Transition transition) {
+                public void onTransitionEnd(@NonNull Transition transition) {
                     transition.removeListener(this);
                 }
             };
@@ -309,7 +314,7 @@ public class ChangeText extends Transition {
         return null;
     }
 
-    private void setSelection(EditText editText, int start, int end) {
+    private void setSelection(@NonNull EditText editText, int start, int end) {
         if (start >= 0 && end >= 0) {
             editText.setSelection(start, end);
         }

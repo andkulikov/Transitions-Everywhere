@@ -21,6 +21,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,13 +47,14 @@ public class Explode extends Visibility {
     private static final String TAG = "Explode";
     private static final String PROPNAME_SCREEN_BOUNDS = "android:explode:screenBounds";
 
+    @NonNull
     private int[] mTempLoc = new int[2];
 
     public Explode() {
         setPropagation(new CircularPropagation());
     }
 
-    public Explode(Context context, AttributeSet attrs) {
+    public Explode(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         setPropagation(new CircularPropagation());
     }
@@ -67,20 +70,21 @@ public class Explode extends Visibility {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         super.captureStartValues(transitionValues);
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(@NonNull TransitionValues transitionValues) {
         super.captureEndValues(transitionValues);
         captureValues(transitionValues);
     }
 
+    @Nullable
     @Override
-    public Animator onAppear(ViewGroup sceneRoot, View view,
-                             TransitionValues startValues, TransitionValues endValues) {
+    public Animator onAppear(@NonNull ViewGroup sceneRoot, @NonNull View view,
+                             @Nullable TransitionValues startValues, @Nullable TransitionValues endValues) {
         if (endValues == null) {
             return null;
         }
@@ -96,8 +100,8 @@ public class Explode extends Visibility {
     }
 
     @Override
-    public Animator onDisappear(ViewGroup sceneRoot, View view,
-                                TransitionValues startValues, TransitionValues endValues) {
+    public Animator onDisappear(@NonNull ViewGroup sceneRoot, @NonNull View view,
+                                @Nullable TransitionValues startValues, @Nullable TransitionValues endValues) {
         if (startValues == null) {
             return null;
         }
@@ -124,7 +128,7 @@ public class Explode extends Visibility {
                 viewPosX, viewPosY, startX, startY, endX, endY, sAccelerate, this);
     }
 
-    private void calculateOut(View sceneRoot, Rect bounds, int[] outVector) {
+    private void calculateOut(View sceneRoot, @NonNull Rect bounds, int[] outVector) {
         sceneRoot.getLocationOnScreen(mTempLoc);
         int sceneRootX = mTempLoc[0];
         int sceneRootY = mTempLoc[1];

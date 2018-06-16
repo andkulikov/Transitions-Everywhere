@@ -19,18 +19,19 @@ package com.transitionseverywhere.utils;
 import android.annotation.TargetApi;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 public class ViewOverlayUtils {
 
     static class BaseViewOverlayUtils {
 
-        public void addOverlay(ViewGroup sceneRoot, Drawable drawable) {
+        public void addOverlay(@NonNull ViewGroup sceneRoot, @NonNull Drawable drawable) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
             viewOverlay.addDrawable(drawable);
         }
 
-        public void removeOverlay(ViewGroup sceneRoot, Drawable drawable) {
+        public void removeOverlay(@NonNull ViewGroup sceneRoot, @NonNull Drawable drawable) {
             ViewOverlayPreJellybean viewOverlay = ViewOverlayPreJellybean.getOverlay(sceneRoot);
             viewOverlay.removeDrawable(drawable);
         }
@@ -40,16 +41,17 @@ public class ViewOverlayUtils {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     static class JellyBeanMR2ViewUtils extends BaseViewOverlayUtils {
         @Override
-        public void addOverlay(ViewGroup sceneRoot, Drawable drawable) {
+        public void addOverlay(@NonNull ViewGroup sceneRoot, @NonNull Drawable drawable) {
             sceneRoot.getOverlay().add(drawable);
         }
 
         @Override
-        public void removeOverlay(ViewGroup sceneRoot, Drawable drawable) {
+        public void removeOverlay(@NonNull ViewGroup sceneRoot, @NonNull Drawable drawable) {
             sceneRoot.getOverlay().remove(drawable);
         }
     }
 
+    @NonNull
     private static final BaseViewOverlayUtils IMPL;
 
     static {
@@ -60,11 +62,11 @@ public class ViewOverlayUtils {
         }
     }
 
-    public static void addOverlay(ViewGroup sceneRoot, Drawable drawable) {
+    public static void addOverlay(@NonNull ViewGroup sceneRoot, @NonNull Drawable drawable) {
         IMPL.addOverlay(sceneRoot, drawable);
     }
 
-    public static void removeOverlay(ViewGroup sceneRoot, Drawable drawable) {
+    public static void removeOverlay(@NonNull ViewGroup sceneRoot, @NonNull Drawable drawable) {
         IMPL.removeOverlay(sceneRoot, drawable);
     }
 }

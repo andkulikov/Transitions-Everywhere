@@ -16,15 +16,20 @@
 
 package com.transitionseverywhere;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.util.LongSparseArray;
 import android.util.SparseArray;
 import android.view.View;
 
 class TransitionValuesMaps {
+    @NonNull
     ArrayMap<View, TransitionValues> viewValues =
             new ArrayMap<View, TransitionValues>();
+    @NonNull
     SparseArray<View> idValues = new SparseArray<View>();
+    @NonNull
     LongSparseArray<View> itemIdValues = new LongSparseArray<View>();
+    @NonNull
     ArrayMap<String, View> nameValues = new ArrayMap<String, View>();
 }

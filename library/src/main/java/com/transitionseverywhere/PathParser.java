@@ -17,6 +17,8 @@ package com.transitionseverywhere;
 import android.annotation.TargetApi;
 import android.graphics.Path;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -32,7 +34,8 @@ public class PathParser {
      * @param pathData The string representing a path, the same as "d" string in svg file.
      * @return the generated Path object.
      */
-    public static Path createPathFromPathData(String pathData) {
+    @Nullable
+    public static Path createPathFromPathData(@Nullable String pathData) {
         Path path = new Path();
         PathDataNode[] nodes = createNodesFromPathData(pathData);
         if (nodes != null) {
@@ -49,7 +52,8 @@ public class PathParser {
      * @param pathData The string representing a path, the same as "d" string in svg file.
      * @return an array of the PathDataNode.
      */
-    public static PathDataNode[] createNodesFromPathData(String pathData) {
+    @Nullable
+    public static PathDataNode[] createNodesFromPathData(@Nullable String pathData) {
         if (pathData == null) {
             return null;
         }
@@ -75,7 +79,8 @@ public class PathParser {
      * @param source The array of PathDataNode to be duplicated.
      * @return a deep copy of the <code>source</code>.
      */
-    public static PathDataNode[] deepCopyNodes(PathDataNode[] source) {
+    @Nullable
+    public static PathDataNode[] deepCopyNodes(@Nullable PathDataNode[] source) {
         if (source == null) {
             return null;
         }
@@ -90,7 +95,7 @@ public class PathParser {
      * @param nodesTo The target path represented in an array of PathDataNode
      * @return whether the <code>nodesFrom</code> can morph into <code>nodesTo</code>
      */
-    public static boolean canMorph(PathDataNode[] nodesFrom, PathDataNode[] nodesTo) {
+    public static boolean canMorph(@Nullable PathDataNode[] nodesFrom, @Nullable PathDataNode[] nodesTo) {
         if (nodesFrom == null || nodesTo == null) {
             return false;
         }
@@ -112,7 +117,7 @@ public class PathParser {
      * @param target The target path represented in an array of PathDataNode
      * @param source The source path represented in an array of PathDataNode
      */
-    public static void updateNodes(PathDataNode[] target, PathDataNode[] source) {
+    public static void updateNodes(@NonNull PathDataNode[] target, @NonNull PathDataNode[] source) {
         for (int i = 0; i < source.length; i ++) {
             target[i].mType = source[i].mType;
             for (int j = 0; j < source[i].mParams.length; j ++) {
@@ -120,7 +125,7 @@ public class PathParser {
             }
         }
     }
-    private static int nextStart(String s, int end) {
+    private static int nextStart(@NonNull String s, int end) {
         char c;
         while (end < s.length()) {
             c = s.charAt(end);
@@ -259,7 +264,7 @@ public class PathParser {
          * @param node The source array of PathDataNode.
          * @param path The target Path object.
          */
-        public static void nodesToPath(PathDataNode[] node, Path path) {
+        public static void nodesToPath(PathDataNode[] node, @NonNull Path path) {
             float[] current = new float[6];
             char previousCommand = 'm';
             for (int i = 0; i < node.length; i++) {
@@ -276,15 +281,15 @@ public class PathParser {
          * @param nodeTo The end value as a PathDataNode
          * @param fraction The fraction to interpolate.
          */
-        public void interpolatePathDataNode(PathDataNode nodeFrom,
-                                            PathDataNode nodeTo, float fraction) {
+        public void interpolatePathDataNode(@NonNull PathDataNode nodeFrom,
+                                            @NonNull PathDataNode nodeTo, float fraction) {
             for (int i = 0; i < nodeFrom.mParams.length; i++) {
                 mParams[i] = nodeFrom.mParams[i] * (1 - fraction)
                     + nodeTo.mParams[i] * fraction;
             }
         }
-        private static void addCommand(Path path, float[] current,
-                                       char previousCmd, char cmd, float[] val) {
+        private static void addCommand(@NonNull Path path, float[] current,
+                                       char previousCmd, char cmd, @NonNull float[] val) {
             int incr = 2;
             float currentX = current[0];
             float currentY = current[1];
@@ -526,7 +531,7 @@ public class PathParser {
             current[4] = currentSegmentStartX;
             current[5] = currentSegmentStartY;
         }
-        private static void drawArc(Path p,
+        private static void drawArc(@NonNull Path p,
                                     float x0,
                                     float y0,
                                     float x1,
@@ -609,7 +614,7 @@ public class PathParser {
          * @param start The start angle of the arc on the ellipse
          * @param sweep The angle (positive or negative) of the sweep of the arc on the ellipse
          */
-        private static void arcToBezier(Path p,
+        private static void arcToBezier(@NonNull Path p,
                                         double cx,
                                         double cy,
                                         double a,

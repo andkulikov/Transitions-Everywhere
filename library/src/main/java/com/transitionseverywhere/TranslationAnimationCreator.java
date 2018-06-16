@@ -21,6 +21,8 @@ import android.animation.TimeInterpolator;
 import android.annotation.TargetApi;
 import android.graphics.PointF;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.transitionseverywhere.utils.AnimatorUtils;
@@ -34,13 +36,14 @@ import com.transitionseverywhere.utils.PointFProperty;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class TranslationAnimationCreator {
 
+    @Nullable
     public static final PointFProperty<View> TRANSLATIONS_PROPERTY;
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             TRANSLATIONS_PROPERTY = new PointFProperty<View>() {
                 @Override
-                public void set(View view, PointF topLeft) {
+                public void set(@NonNull View view, @NonNull PointF topLeft) {
                     view.setTranslationX(topLeft.x);
                     view.setTranslationY(topLeft.y);
                 }
@@ -66,9 +69,13 @@ public class TranslationAnimationCreator {
      * @return An animator that moves from (startX, startY) to (endX, endY) unless there was
      * a previous interruption, in which case it moves from the current position to (endX, endY).
      */
+    @Nullable
     public static Animator createAnimation(View view, TransitionValues values, int viewPosX, int viewPosY,
-                                    float startX, float startY, float endX, float endY, TimeInterpolator interpolator,
-                                    Transition transition) {
+                                           float startX, float startY, float endX, float endY, TimeInterpolator interpolator,
+                                           @NonNull Transition transition) {
+        if (TRANSLATIONS_PROPERTY == null) {
+            return null;
+        }
         float terminalX = view.getTranslationX();
         float terminalY = view.getTranslationY();
         int[] startPosition = (int[]) values.view.getTag(R.id.transitionPosition);
@@ -152,25 +159,25 @@ public class TranslationAnimationCreator {
         }
 
         @Override
-        public void onTransitionStart(Transition transition) {
+        public void onTransitionStart(@NonNull Transition transition) {
         }
 
         @Override
-        public void onTransitionEnd(Transition transition) {
+        public void onTransitionEnd(@NonNull Transition transition) {
             mMovingView.setTranslationX(mTerminalX);
             mMovingView.setTranslationY(mTerminalY);
         }
 
         @Override
-        public void onTransitionCancel(Transition transition) {
+        public void onTransitionCancel(@NonNull Transition transition) {
         }
 
         @Override
-        public void onTransitionPause(Transition transition) {
+        public void onTransitionPause(@NonNull Transition transition) {
         }
 
         @Override
-        public void onTransitionResume(Transition transition) {
+        public void onTransitionResume(@NonNull Transition transition) {
         }
     }
 

@@ -21,6 +21,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Property;
 import android.view.View;
@@ -45,6 +47,7 @@ public class ChangeClipBounds extends Transition {
             PROPNAME_CLIP,
     };
 
+    @Nullable
     public static final Property<View, Rect> VIEW_CLIP_BOUNDS;
 
     static {
@@ -52,12 +55,13 @@ public class ChangeClipBounds extends Transition {
             VIEW_CLIP_BOUNDS = new Property<View, Rect>(Rect.class, "clipBounds") {
 
                 @Override
-                public void set(View object, Rect value) {
+                public void set(@NonNull View object, Rect value) {
                     ViewUtils.setClipBounds(object, value);
                 }
 
+                @Nullable
                 @Override
-                public Rect get(View object) {
+                public Rect get(@NonNull View object) {
                     return ViewUtils.getClipBounds(object);
                 }
 
@@ -69,10 +73,11 @@ public class ChangeClipBounds extends Transition {
 
     public ChangeClipBounds() {}
 
-    public ChangeClipBounds(Context context, AttributeSet attrs) {
+    public ChangeClipBounds(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
     }
 
+    @Nullable
     @Override
     public String[] getTransitionProperties() {
         return sTransitionProperties;
@@ -93,18 +98,19 @@ public class ChangeClipBounds extends Transition {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(@NonNull TransitionValues transitionValues) {
         captureValues(transitionValues);
     }
 
+    @Nullable
     @Override
-    public Animator createAnimator(final ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(@NonNull final ViewGroup sceneRoot, @Nullable TransitionValues startValues,
+                                   @Nullable TransitionValues endValues) {
         if (startValues == null || endValues == null
                 || !startValues.values.containsKey(PROPNAME_CLIP)
                 || !endValues.values.containsKey(PROPNAME_CLIP)) {

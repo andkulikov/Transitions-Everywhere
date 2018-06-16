@@ -20,11 +20,10 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.TransitionValues;
 
 /**
  * This transition captures the rotation property of targets before and after
@@ -36,18 +35,19 @@ public class Rotate extends Transition {
     private static final String PROPNAME_ROTATION = "android:rotate:rotation";
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         transitionValues.values.put(PROPNAME_ROTATION, transitionValues.view.getRotation());
     }
 
     @Override
-    public void captureEndValues(TransitionValues transitionValues) {
+    public void captureEndValues(@NonNull TransitionValues transitionValues) {
         transitionValues.values.put(PROPNAME_ROTATION, transitionValues.view.getRotation());
     }
 
+    @Nullable
     @Override
-    public Animator createAnimator(ViewGroup sceneRoot, TransitionValues startValues,
-                                   TransitionValues endValues) {
+    public Animator createAnimator(@NonNull ViewGroup sceneRoot, @Nullable TransitionValues startValues,
+                                   @Nullable TransitionValues endValues) {
         if (startValues == null || endValues == null) {
             return null;
         }

@@ -17,6 +17,8 @@
 package com.transitionseverywhere;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +33,16 @@ import android.view.ViewGroup;
  */
 public final class Scene {
 
+    @Nullable
     private Context mContext;
     private int mLayoutId = -1;
+    @NonNull
     private ViewGroup mSceneRoot;
     private View mLayout; // alternative to layoutId
-    Runnable mEnterAction, mExitAction;
+    @Nullable
+    Runnable mEnterAction;
+    @Nullable
+    Runnable mExitAction;
 
     /**
      * Returns a Scene described by the resource file associated with the given
@@ -51,7 +58,8 @@ public final class Scene {
      *                  the layout resource.
      * @return
      */
-    public static Scene getSceneForLayout(ViewGroup sceneRoot, int layoutId, Context context) {
+    @NonNull
+    public static Scene getSceneForLayout(@NonNull ViewGroup sceneRoot, int layoutId, @NonNull Context context) {
         SparseArray<Scene> scenes = (SparseArray<Scene>) sceneRoot.getTag(R.id.scene_layoutid_cache);
         if (scenes == null) {
             scenes = new SparseArray<Scene>();
@@ -77,7 +85,7 @@ public final class Scene {
      * @param sceneRoot The root of the hierarchy in which scene changes
      *                  and transitions will take place.
      */
-    public Scene(ViewGroup sceneRoot) {
+    public Scene(@NonNull ViewGroup sceneRoot) {
         mSceneRoot = sceneRoot;
     }
 
@@ -96,7 +104,7 @@ public final class Scene {
      * @param context   The context used in the process of inflating
      *                  the layout resource.
      */
-    private Scene(ViewGroup sceneRoot, int layoutId, Context context) {
+    private Scene(@NonNull ViewGroup sceneRoot, int layoutId, @NonNull Context context) {
         mContext = context;
         mSceneRoot = sceneRoot;
         mLayoutId = layoutId;
@@ -112,7 +120,7 @@ public final class Scene {
      * @param layout    The view hierarchy of this scene, added as a child
      *                  of sceneRoot when this scene is entered.
      */
-    public Scene(ViewGroup sceneRoot, View layout) {
+    public Scene(@NonNull ViewGroup sceneRoot, @Nullable View layout) {
         mSceneRoot = sceneRoot;
         mLayout = layout;
     }
@@ -120,7 +128,7 @@ public final class Scene {
     /**
      * You can use {@link #Scene(ViewGroup, View)}.
      */
-    public Scene(ViewGroup sceneRoot, ViewGroup layout) {
+    public Scene(@NonNull ViewGroup sceneRoot, @Nullable ViewGroup layout) {
         mSceneRoot = sceneRoot;
         mLayout = layout;
     }
@@ -132,6 +140,7 @@ public final class Scene {
      *
      * @return The root of the view hierarchy affected by this scene.
      */
+    @NonNull
     public ViewGroup getSceneRoot() {
         return mSceneRoot;
     }
@@ -191,8 +200,8 @@ public final class Scene {
      *
      * @param view The view on which the current scene is being set
      */
-    static void setCurrentScene(View view, Scene scene) {
-        view.setTag(com.transitionseverywhere.R.id.current_scene, scene);
+    static void setCurrentScene(@NonNull View view, @Nullable Scene scene) {
+        view.setTag(R.id.current_scene, scene);
     }
 
     /**
@@ -202,8 +211,9 @@ public final class Scene {
      * @return The current Scene set on this view. A value of null indicates that
      * no Scene is currently set.
      */
-    public static Scene getCurrentScene(View view) {
-        return (Scene) view.getTag(com.transitionseverywhere.R.id.current_scene);
+    @Nullable
+    public static Scene getCurrentScene(@NonNull View view) {
+        return (Scene) view.getTag(R.id.current_scene);
     }
 
     /**
@@ -224,7 +234,7 @@ public final class Scene {
      * @see Scene#Scene(ViewGroup, int, Context)
      * @see Scene#Scene(ViewGroup, ViewGroup)
      */
-    public void setEnterAction(Runnable action) {
+    public void setEnterAction(@Nullable Runnable action) {
         mEnterAction = action;
     }
 
@@ -245,7 +255,7 @@ public final class Scene {
      * @see Scene#Scene(ViewGroup, int, Context)
      * @see Scene#Scene(ViewGroup, ViewGroup)
      */
-    public void setExitAction(Runnable action) {
+    public void setExitAction(@Nullable Runnable action) {
         mExitAction = action;
     }
 

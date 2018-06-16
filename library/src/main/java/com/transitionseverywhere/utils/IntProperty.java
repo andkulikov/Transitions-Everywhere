@@ -18,6 +18,7 @@ package com.transitionseverywhere.utils;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Property;
 
 /**
@@ -38,10 +39,10 @@ public abstract class IntProperty<T> extends Property<T, Integer> {
         super(Integer.class, null);
     }
 
-    public abstract void setValue(T object, int value);
+    public abstract void setValue(@NonNull T object, int value);
 
     @Override
-    final public void set(T object, Integer value) {
+    final public void set(@NonNull T object, @NonNull Integer value) {
         setValue(object, value);
     }
 
@@ -49,21 +50,24 @@ public abstract class IntProperty<T> extends Property<T, Integer> {
      * Just default realisation. Some of properties can have no getter. Override for real getter
      */
     @Override
+    @NonNull
     public Integer get(T object) {
-        return null;
+        return 0;
     }
 
     @SuppressLint("NewApi")
+    @NonNull
     public Property<T, Integer> optimize() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
             return new android.util.IntProperty<T>(null) {
                 @Override
-                public void setValue(T object, int value) {
+                public void setValue(@NonNull T object, int value) {
                     IntProperty.this.setValue(object, value);
                 }
 
                 @Override
-                public Integer get(T object) {
+                @NonNull
+                public Integer get(@NonNull T object) {
                     return IntProperty.this.get(object);
                 }
             };

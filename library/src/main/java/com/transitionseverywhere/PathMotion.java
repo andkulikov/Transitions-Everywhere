@@ -17,6 +17,7 @@ package com.transitionseverywhere;
 
 import android.content.Context;
 import android.graphics.Path;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 
 /**
@@ -41,6 +42,7 @@ public abstract class PathMotion {
 
     public static final PathMotion STRAIGHT_PATH_MOTION = new PathMotion() {
         @Override
+        @NonNull
         public Path getPath(float startX, float startY, float endX, float endY) {
             Path path = new Path();
             path.moveTo(startX, startY);
@@ -51,7 +53,7 @@ public abstract class PathMotion {
 
     public PathMotion() {}
 
-    public PathMotion(Context context, AttributeSet attrs) {}
+    public PathMotion(@NonNull Context context, @NonNull AttributeSet attrs) {}
 
     /**
      * Provide a Path to interpolate between two points <code>(startX, startY)</code> and
@@ -65,5 +67,6 @@ public abstract class PathMotion {
      * must start at point <code>(startX, startY)</code>, typically using
      * {@link android.graphics.Path#moveTo(float, float)} and end at <code>(endX, endY)</code>.
      */
+    @NonNull
     public abstract Path getPath(float startX, float startY, float endX, float endY);
 }

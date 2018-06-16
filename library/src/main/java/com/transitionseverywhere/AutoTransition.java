@@ -17,6 +17,7 @@
 package com.transitionseverywhere;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 
 /**
@@ -38,7 +39,7 @@ public class AutoTransition extends TransitionSet {
         init();
     }
 
-    public AutoTransition(Context context, AttributeSet attrs) {
+    public AutoTransition(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
         init();
     }

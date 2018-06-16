@@ -18,6 +18,8 @@ package com.transitionseverywhere.utils;
 import android.annotation.TargetApi;
 import android.graphics.PointF;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Property;
 
 /**
@@ -36,7 +38,8 @@ public abstract class PointFProperty<T> extends Property<T, PointF> {
      * Just default realisation. Some of properties can have no getter. Override for real getter
      */
     @Override
-    public PointF get(T object) {
+    @Nullable
+    public PointF get(@NonNull T object) {
         return null;
     }
 

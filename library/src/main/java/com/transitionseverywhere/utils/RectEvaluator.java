@@ -19,6 +19,8 @@ import android.animation.TypeEvaluator;
 import android.annotation.TargetApi;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * This evaluator can be used to perform type interpolation between <code>Rect</code> values.
@@ -30,6 +32,7 @@ public class RectEvaluator implements TypeEvaluator<Rect> {
      * When null, a new Rect is returned on every evaluate call. When non-null,
      * mRect will be modified and returned on every evaluate.
      */
+    @Nullable
     private Rect mRect;
 
     /**
@@ -51,7 +54,7 @@ public class RectEvaluator implements TypeEvaluator<Rect> {
      *
      * @param reuseRect A Rect to be modified and returned by evaluate.
      */
-    public RectEvaluator(Rect reuseRect) {
+    public RectEvaluator(@Nullable Rect reuseRect) {
         mRect = reuseRect;
     }
 
@@ -73,7 +76,8 @@ public class RectEvaluator implements TypeEvaluator<Rect> {
      *         <code>fraction</code> parameter.
      */
     @Override
-    public Rect evaluate(float fraction, Rect startValue, Rect endValue) {
+    @NonNull
+    public Rect evaluate(float fraction, @NonNull Rect startValue, @NonNull Rect endValue) {
         int left = startValue.left + (int) ((endValue.left - startValue.left) * fraction);
         int top = startValue.top + (int) ((endValue.top - startValue.top) * fraction);
         int right = startValue.right + (int) ((endValue.right - startValue.right) * fraction);

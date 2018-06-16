@@ -23,6 +23,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +99,7 @@ public class Fade extends Visibility {
         setMode(fadingMode);
     }
 
-    public Fade(Context context, AttributeSet attrs) {
+    public Fade(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Fade);
         @VisibilityMode int fadingMode = a.getInt(R.styleable.Fade_fadingMode, getMode());
@@ -106,17 +108,15 @@ public class Fade extends Visibility {
     }
 
     @Override
-    public void captureStartValues(TransitionValues transitionValues) {
+    public void captureStartValues(@NonNull TransitionValues transitionValues) {
         super.captureStartValues(transitionValues);
-        if (transitionValues.view != null) {
-            transitionValues.values.put(PROPNAME_ALPHA, transitionValues.view.getAlpha());
-        }
+        transitionValues.values.put(PROPNAME_ALPHA, transitionValues.view.getAlpha());
     }
 
     /**
      * Utility method to handle creating and running the Animator.
      */
-    private Animator createAnimation(final View view, float startAlpha, float endAlpha, TransitionValues values) {
+    private Animator createAnimation(final View view, float startAlpha, float endAlpha, @Nullable TransitionValues values) {
         final float curAlpha = view.getAlpha();
         startAlpha = curAlpha * startAlpha;
         endAlpha = curAlpha * endAlpha;
@@ -138,7 +138,7 @@ public class Fade extends Visibility {
         anim.addListener(listener);
         addListener(new TransitionListenerAdapter() {
             @Override
-            public void onTransitionEnd(Transition transition) {
+            public void onTransitionEnd(@NonNull Transition transition) {
                 view.setAlpha(curAlpha);
                 transition.removeListener(this);
             }
@@ -146,16 +146,17 @@ public class Fade extends Visibility {
         return anim;
     }
 
+    @Nullable
     @Override
-    public Animator onAppear(ViewGroup sceneRoot, View view,
-                             TransitionValues startValues,
-                             TransitionValues endValues) {
+    public Animator onAppear(@NonNull ViewGroup sceneRoot, @NonNull View view,
+                             @Nullable TransitionValues startValues,
+                             @Nullable TransitionValues endValues) {
         return createAnimation(view, 0, 1, startValues);
     }
 
     @Override
-    public Animator onDisappear(ViewGroup sceneRoot, final View view, TransitionValues startValues,
-                                TransitionValues endValues) {
+    public Animator onDisappear(@NonNull ViewGroup sceneRoot, @NonNull final View view, @Nullable TransitionValues startValues,
+                                @Nullable TransitionValues endValues) {
         return createAnimation(view, 1, 0, startValues);
     }
 

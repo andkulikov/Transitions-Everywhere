@@ -19,6 +19,8 @@ package com.transitionseverywhere.utils;
 import android.annotation.TargetApi;
 import android.graphics.PointF;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Property;
 import android.view.View;
 
@@ -28,6 +30,7 @@ import android.view.View;
 @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 class ViewUtilsLollipopMr1 extends ViewUtilsLollipop {
 
+    @Nullable
     private static final Property<View, PointF> POSITION_PROPERTY, BOTTOM_RIGHT_PROPERTY;
     private static final PointF TEMP_POINT_F = new PointF();
 
@@ -57,7 +60,7 @@ class ViewUtilsLollipopMr1 extends ViewUtilsLollipop {
     }
 
     @Override
-    public void setLeftTopRightBottom(View v, int left, int top, int right, int bottom) {
+    public void setLeftTopRightBottom(@NonNull View v, int left, int top, int right, int bottom) {
         if (POSITION_PROPERTY != null && BOTTOM_RIGHT_PROPERTY != null) {
             TEMP_POINT_F.set(left, top);
             POSITION_PROPERTY.set(v, TEMP_POINT_F);

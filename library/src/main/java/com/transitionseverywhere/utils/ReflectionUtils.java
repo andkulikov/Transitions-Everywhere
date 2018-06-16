@@ -16,6 +16,8 @@
 
 package com.transitionseverywhere.utils;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -30,7 +32,8 @@ public class ReflectionUtils {
         // This utility class is not publicly instantiable.
     }
 
-    public static Class<?> getClass(final String className) {
+    @Nullable
+    public static Class<?> getClass(final @NonNull String className) {
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
@@ -38,7 +41,8 @@ public class ReflectionUtils {
         }
     }
 
-    public static Method getMethod(final Class<?> targetClass, final String name,
+    @Nullable
+    public static Method getMethod(final @Nullable Class<?> targetClass, final @Nullable String name,
                                    final Class<?>... parameterTypes) {
         if (targetClass == null || TextUtils.isEmpty(name)) return null;
         try {
@@ -51,7 +55,8 @@ public class ReflectionUtils {
         return null;
     }
 
-    public static Method getPrivateMethod(final Class<?> targetClass, final String name,
+    @Nullable
+    public static Method getPrivateMethod(final @Nullable Class<?> targetClass, final @Nullable String name,
                                    final Class<?>... parameterTypes) {
         if (targetClass == null || TextUtils.isEmpty(name)) return null;
         try {
@@ -66,8 +71,9 @@ public class ReflectionUtils {
         return null;
     }
 
-    public static Object invoke(final Object receiver, final Object defaultValue,
-                                final Method method, final Object... args) {
+    @Nullable
+    public static Object invoke(final @Nullable Object receiver, final @Nullable Object defaultValue,
+                                final @Nullable Method method, final Object... args) {
         if (method == null) return defaultValue;
         try {
             return method.invoke(receiver, args);
@@ -77,7 +83,8 @@ public class ReflectionUtils {
         return defaultValue;
     }
 
-    public static Field getPrivateField(final Class<?> targetClass, final String name) {
+    @Nullable
+    public static Field getPrivateField(final @Nullable Class<?> targetClass, final @Nullable String name) {
         if (targetClass == null || TextUtils.isEmpty(name)) return null;
         try {
             Field field = targetClass.getDeclaredField(name);
@@ -93,7 +100,7 @@ public class ReflectionUtils {
         return null;
     }
 
-    public static void setFieldValue(final Object receiver, final Field field, final Object value) {
+    public static void setFieldValue(final @Nullable Object receiver, final @Nullable Field field, final @Nullable Object value) {
         if (field == null) return;
         try {
             field.set(receiver, value);
@@ -102,8 +109,9 @@ public class ReflectionUtils {
         }
     }
 
-    public static Object getFieldValue(final Object receiver, final Object defaultValue,
-                                       final Field field) {
+    @Nullable
+    public static Object getFieldValue(final @Nullable Object receiver, final @Nullable Object defaultValue,
+                                       final @Nullable Field field) {
         if (field == null) return defaultValue;
         try {
             return field.get(receiver);
@@ -122,19 +130,22 @@ public class ReflectionUtils {
     private static final Object[] THREE_OBJECTS_ARRAY = new Object[3];
     private static final Object[] FOUR_OBJECTS_ARRAY = new Object[4];
 
-    public static Object invoke(Object receiver, Object defaultValue, Method method) {
+    @Nullable
+    public static Object invoke(@Nullable Object receiver, @Nullable Object defaultValue, @Nullable Method method) {
         return invoke(receiver, defaultValue, method, EMPTY_ARRAY);
     }
 
-    public static Object invoke(Object receiver, Object defaultValue, Method method, Object firstArg) {
+    @Nullable
+    public static Object invoke(@Nullable Object receiver, @Nullable Object defaultValue, @Nullable Method method, @Nullable Object firstArg) {
         ONE_OBJECT_ARRAY[0] = firstArg;
         Object result = invoke(receiver, defaultValue, method, ONE_OBJECT_ARRAY);
         ONE_OBJECT_ARRAY[0] = null;
         return result;
     }
 
-    public static Object invoke(Object receiver, Object defaultValue, Method method,
-                                Object firstArg, Object secondArg) {
+    @Nullable
+    public static Object invoke(@Nullable Object receiver, @Nullable Object defaultValue, @Nullable Method method,
+                                @Nullable Object firstArg, @Nullable Object secondArg) {
         TWO_OBJECTS_ARRAY[0] = firstArg;
         TWO_OBJECTS_ARRAY[1] = secondArg;
         Object result = invoke(receiver, defaultValue, method, TWO_OBJECTS_ARRAY);
@@ -143,9 +154,9 @@ public class ReflectionUtils {
         return result;
     }
 
-
-    public static Object invoke(Object receiver, Object defaultValue, Method method,
-                                Object firstArg, Object secondArg, Object thirdArg) {
+    @Nullable
+    public static Object invoke(@Nullable Object receiver, @Nullable Object defaultValue, @Nullable Method method,
+                                @Nullable Object firstArg, @Nullable Object secondArg, @Nullable Object thirdArg) {
         THREE_OBJECTS_ARRAY[0] = firstArg;
         THREE_OBJECTS_ARRAY[1] = secondArg;
         THREE_OBJECTS_ARRAY[2] = thirdArg;
@@ -156,9 +167,10 @@ public class ReflectionUtils {
         return result;
     }
 
-    public static Object invoke(Object receiver, Object defaultValue, Method method,
-                                Object firstArg, Object secondArg,
-                                Object thirdArg, Object fourthArg) {
+    @Nullable
+    public static Object invoke(@Nullable Object receiver, @Nullable Object defaultValue, @Nullable Method method,
+                                @Nullable Object firstArg, @Nullable Object secondArg,
+                                @Nullable Object thirdArg, @Nullable Object fourthArg) {
         FOUR_OBJECTS_ARRAY[0] = firstArg;
         FOUR_OBJECTS_ARRAY[1] = secondArg;
         FOUR_OBJECTS_ARRAY[2] = thirdArg;

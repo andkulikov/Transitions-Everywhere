@@ -15,6 +15,8 @@
  */
 package com.transitionseverywhere;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
 /**
@@ -44,8 +46,8 @@ public abstract class TransitionPropagation {
      * used in the Transition so that the smallest delay will be 0. Returned values may be
      * negative.
      */
-    public abstract long getStartDelay(ViewGroup sceneRoot, Transition transition,
-                                       TransitionValues startValues, TransitionValues endValues);
+    public abstract long getStartDelay(@NonNull ViewGroup sceneRoot, @NonNull Transition transition,
+                                       @Nullable TransitionValues startValues, @Nullable TransitionValues endValues);
 
     /**
      * Captures the values in the start or end scene for the properties that this
@@ -73,7 +75,7 @@ public abstract class TransitionPropagation {
      *                         view.getRotation())</code>. The target view will already be stored in
      *                         the transitionValues structure when this method is called.
      */
-    public abstract void captureValues(TransitionValues transitionValues);
+    public abstract void captureValues(@NonNull TransitionValues transitionValues);
 
     /**
      * Returns the set of property names stored in the {@link TransitionValues}
@@ -87,5 +89,6 @@ public abstract class TransitionPropagation {
      * @return An array of property names as described in the class documentation for
      * {@link TransitionValues}.
      */
+    @NonNull
     public abstract String[] getPropagationProperties();
 }

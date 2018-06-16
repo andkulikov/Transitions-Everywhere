@@ -20,9 +20,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.util.AttributeSet;
-import android.util.SparseArray;
 import android.util.Xml;
 import android.view.InflateException;
 import android.view.ViewGroup;
@@ -47,22 +48,25 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class TransitionInflater {
 
+    @NonNull
     private static final Class<?>[] sConstructorSignature = new Class[] {
             Context.class, AttributeSet.class};
+    @NonNull
     private final static ArrayMap<String, Constructor> sConstructors =
             new ArrayMap<String, Constructor>();
 
-
+    @NonNull
     private Context mContext;
 
-    private TransitionInflater(Context context) {
+    private TransitionInflater(@NonNull Context context) {
         mContext = context;
     }
 
     /**
      * Obtains the TransitionInflater from the given context.
      */
-    public static TransitionInflater from(Context context) {
+    @NonNull
+    public static TransitionInflater from(@NonNull Context context) {
         return new TransitionInflater(context);
     }
 
@@ -74,6 +78,7 @@ public class TransitionInflater {
      * @throws android.content.res.Resources.NotFoundException when the
      *                                                         transition cannot be loaded
      */
+    @Nullable
     public Transition inflateTransition(int resource) {
         XmlResourceParser parser = mContext.getResources().getXml(resource);
         try {
@@ -101,7 +106,8 @@ public class TransitionInflater {
      * @throws android.content.res.Resources.NotFoundException when the
      *                                                         transition manager cannot be loaded
      */
-    public TransitionManager inflateTransitionManager(int resource, ViewGroup sceneRoot) {
+    @Nullable
+    public TransitionManager inflateTransitionManager(int resource, @NonNull ViewGroup sceneRoot) {
         XmlResourceParser parser = mContext.getResources().getXml(resource);
         try {
             return createTransitionManagerFromXml(parser, Xml.asAttributeSet(parser), sceneRoot);
@@ -123,8 +129,10 @@ public class TransitionInflater {
     //
     // Transition loading
     //
-    private Transition createTransitionFromXml(XmlPullParser parser,
-                                               AttributeSet attrs, Transition parent)
+    @Nullable
+    private Transition createTransitionFromXml(@NonNull XmlPullParser parser,
+                                               @NonNull AttributeSet attrs,
+                                               @Nullable Transition parent)
             throws XmlPullParserException, IOException {
 
         Transition transition = null;
@@ -172,13 +180,13 @@ public class TransitionInflater {
                 transition = new TranslationTransition(mContext, attrs);
             } else if ("transition".equals(name)) {
                 transition = (Transition) createCustom(attrs, Transition.class, "transition");
-            } else if ("targets".equals(name)) {
+            } else if ("targets".equals(name) && parent != null) {
                 getTargetIds(parser, attrs, parent);
-            } else if ("arcMotion".equals(name)) {
+            } else if ("arcMotion".equals(name) && parent != null) {
                 parent.setPathMotion(new ArcMotion(mContext, attrs));
-            } else if ("pathMotion".equals(name)) {
+            } else if ("pathMotion".equals(name) && parent != null) {
                 parent.setPathMotion((PathMotion)createCustom(attrs, PathMotion.class, "pathMotion"));
-            } else if ("patternPathMotion".equals(name)) {
+            } else if ("patternPathMotion".equals(name) && parent != null) {
                 parent.setPathMotion(new PatternPathMotion(mContext, attrs));
             } else {
                 throw new RuntimeException("Unknown scene name: " + parser.getName());
@@ -199,7 +207,8 @@ public class TransitionInflater {
         return transition;
     }
 
-    private Object createCustom(AttributeSet attrs, Class expectedType, String tag) {
+    @NonNull
+    private Object createCustom(@NonNull AttributeSet attrs, @NonNull Class expectedType, @NonNull String tag) {
         String className = attrs.getAttributeValue(null, "class");
 
         if (className == null) {
@@ -241,8 +250,9 @@ public class TransitionInflater {
         }
     }
 
-    private void getTargetIds(XmlPullParser parser,
-                              AttributeSet attrs, Transition transition) throws XmlPullParserException, IOException {
+    private void getTargetIds(@NonNull XmlPullParser parser,
+                              @NonNull AttributeSet attrs,
+                              @NonNull Transition transition) throws XmlPullParserException, IOException {
 
         // Make sure we are on a start tag.
         int type;
@@ -295,8 +305,10 @@ public class TransitionInflater {
     //
     // TransitionManager loading
     //
-    private TransitionManager createTransitionManagerFromXml(XmlPullParser parser,
-                                                             AttributeSet attrs, ViewGroup sceneRoot) throws XmlPullParserException, IOException {
+    @Nullable
+    private TransitionManager createTransitionManagerFromXml(@NonNull XmlPullParser parser,
+                                                             @NonNull AttributeSet attrs,
+                                                             @NonNull ViewGroup sceneRoot) throws XmlPullParserException, IOException {
 
         // Make sure we are on a start tag.
         int type;
@@ -322,8 +334,9 @@ public class TransitionInflater {
         return transitionManager;
     }
 
-    private void loadTransition(AttributeSet attrs, ViewGroup sceneRoot,
-                                TransitionManager transitionManager) throws Resources.NotFoundException {
+    private void loadTransition(@NonNull AttributeSet attrs,
+                                @NonNull ViewGroup sceneRoot,
+                                @NonNull TransitionManager transitionManager) throws Resources.NotFoundException {
 
         TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.TransitionManager);
         int transitionId = a.getResourceId(R.styleable.TransitionManager_transition, -1);
