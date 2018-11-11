@@ -128,6 +128,7 @@ public class Recolor extends Transition {
             ColorDrawable endColor = (ColorDrawable) endBackground;
             if (startColor.getColor() != endColor.getColor()) {
                 final int finalColor = endColor.getColor();
+                endColor = (ColorDrawable) endColor.mutate();
                 endColor.setColor(startColor.getColor());
                 bgAnimator = ObjectAnimator.ofInt(endColor, COLORDRAWABLE_COLOR, startColor.getColor(), finalColor);
                 bgAnimator.setEvaluator(new ArgbEvaluator());
