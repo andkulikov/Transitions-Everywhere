@@ -186,6 +186,9 @@ public class Crossfade extends Transition {
         Map<String, Object> endVals = endValues.values;
         Rect startBounds = (Rect) startVals.get(PROPNAME_BOUNDS);
         Rect endBounds = (Rect) endVals.get(PROPNAME_BOUNDS);
+        if (startBounds == null || endBounds == null) {
+            return null;
+        }
         Bitmap startBitmap = (Bitmap) startVals.get(PROPNAME_BITMAP);
         Bitmap endBitmap = (Bitmap) endVals.get(PROPNAME_BITMAP);
         final BitmapDrawable startDrawable = (BitmapDrawable) startVals.get(PROPNAME_DRAWABLE);
@@ -265,6 +268,9 @@ public class Crossfade extends Transition {
             return;
         }
         View view = transitionValues.view;
+        if (view.getWidth() <= 0 || view.getHeight() <= 0) {
+            return;
+        }
         Rect bounds = new Rect(0, 0, view.getWidth(), view.getHeight());
         if (mFadeBehavior != FADE_BEHAVIOR_REVEAL) {
             bounds.offset(view.getLeft(), view.getTop());
