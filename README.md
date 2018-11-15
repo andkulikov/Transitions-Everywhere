@@ -24,7 +24,7 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.8.0"
+    compile "com.andkulikov:transitionseverywhere:1.8.1"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
@@ -32,8 +32,13 @@ Use transition classes from package `com.transitionseverywhere.*` instead of `an
 Changelog
 ============
 
+
+
+<b>1.8.1</b><br>
+Bug fixes for Crossfade and Recolor transitions. Thanks to [evant][14] and [DummyCo][15]
+
 <b>1.8.0</b><br>
-Provides @NonNull and @Nullable annotations for all the methods to make the library more Kotlin friendly
+Provide @NonNull and @Nullable annotations for all the methods to make the library more Kotlin friendly
 
 <b>1.7.9</b><br>
 Fix bug with typo in restoring paused Visibility transition when it is using an overlay
@@ -99,3 +104,5 @@ Bug fixes and performance optimizations.
 [11]: https://github.com/passsy
 [12]: https://issuetracker.google.com/issues/65688271
 [13]: https://github.com/lukaville
+[14]: https://github.com/evant
+[15]: https://github.com/DummyCo
