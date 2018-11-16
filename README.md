@@ -24,7 +24,7 @@ Quick start
 ============
 ```groovy
 dependencies {
-    compile "com.andkulikov:transitionseverywhere:1.8.1"
+    implementation "com.andkulikov:transitionseverywhere:1.8.1"
 }
 ```
 Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
