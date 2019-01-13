@@ -16,9 +16,10 @@
 package android.util;
 
 import android.annotation.SuppressLint;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Dummy class. Permits to extend same hidden class from android framework.
@@ -27,6 +28,7 @@ import androidx.annotation.Nullable;
  *
  * Created by Andrey Kulikov on 18.08.15.
  */
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public abstract class FloatProperty<T> extends Property<T, Float> {
 
     public FloatProperty(@Nullable String name) {

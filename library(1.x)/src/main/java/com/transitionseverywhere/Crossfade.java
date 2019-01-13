@@ -20,7 +20,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.RectEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
@@ -28,18 +27,18 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOverlay;
+
+import com.transitionseverywhere.utils.RectEvaluator;
+import com.transitionseverywhere.utils.ViewGroupOverlayUtils;
 
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.transition.Transition;
-import androidx.transition.TransitionValues;
 
 /**
  * This transition captures bitmap representations of target views before and
@@ -48,7 +47,7 @@ import androidx.transition.TransitionValues;
  * <p>Note: This transition is not compatible with {@link TextureView}
  * or {@link SurfaceView}.</p>
  */
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Crossfade extends Transition {
     // TODO: Add a hook that lets a Transition call user code to query whether it should run on
     // a given target view. This would save bitmap comparisons in this transition, for example.
@@ -175,7 +174,7 @@ public class Crossfade extends Transition {
     public Animator createAnimator(@NonNull ViewGroup sceneRoot, @Nullable TransitionValues startValues,
                                    @Nullable TransitionValues endValues) {
         if (startValues == null || endValues == null ||
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return null;
         }
         if (sRectEvaluator == null) {
@@ -194,14 +193,13 @@ public class Crossfade extends Transition {
         Bitmap endBitmap = (Bitmap) endVals.get(PROPNAME_BITMAP);
         final BitmapDrawable startDrawable = (BitmapDrawable) startVals.get(PROPNAME_DRAWABLE);
         final BitmapDrawable endDrawable = (BitmapDrawable) endVals.get(PROPNAME_DRAWABLE);
-
+        if (Transition.DBG) {
+            Log.d(LOG_TAG, "StartBitmap.sameAs(endBitmap) = " + startBitmap.sameAs(endBitmap) +
+                    " for start, end: " + startBitmap + ", " + endBitmap);
+        }
         if (startDrawable != null && endDrawable != null && !startBitmap.sameAs(endBitmap)) {
-            ViewOverlay overlay = useParentOverlay ?
-                    ((ViewGroup) view.getParent()).getOverlay() : view.getOverlay();
-            if (mFadeBehavior == FADE_BEHAVIOR_REVEAL) {
-                overlay.add(endDrawable);
-            }
-            overlay.add(startDrawable);
+            ViewGroupOverlayUtils.addCrossfadeOverlay(useParentOverlay, view,
+                    mFadeBehavior, startDrawable, endDrawable);
             // The transition works by placing the end drawable under the start drawable and
             // gradually fading out the start drawable. So it's not really a cross-fade, but rather
             // a reveal of the end scene over time. Also, animate the bounds of both drawables
@@ -227,15 +225,15 @@ public class Crossfade extends Transition {
             } else if (mFadeBehavior == FADE_BEHAVIOR_CROSSFADE) {
                 anim1 = ObjectAnimator.ofFloat(view, View.ALPHA, 0, 1);
             }
+            if (Transition.DBG) {
+                Log.d(LOG_TAG, "Crossfade: created anim " + anim + " for start, end values " +
+                        startValues + ", " + endValues);
+            }
             anim.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    ViewOverlay overlay = useParentOverlay ?
-                            ((ViewGroup) view.getParent()).getOverlay() : view.getOverlay();
-                    overlay.remove(startDrawable);
-                    if (mFadeBehavior == FADE_BEHAVIOR_REVEAL) {
-                        overlay.remove(endDrawable);
-                    }
+                    ViewGroupOverlayUtils.removeCrossfadeOverlay(useParentOverlay, view,
+                            mFadeBehavior, startDrawable, endDrawable);
                 }
             });
             AnimatorSet set = new AnimatorSet();
@@ -244,6 +242,10 @@ public class Crossfade extends Transition {
                 set.playTogether(anim1);
             }
             if (mResizeBehavior == RESIZE_BEHAVIOR_SCALE && !startBounds.equals(endBounds)) {
+                if (Transition.DBG) {
+                    Log.d(LOG_TAG, "animating from startBounds to endBounds: " +
+                            startBounds + ", " + endBounds);
+                }
                 Animator anim2 = ObjectAnimator.ofObject(startDrawable, "bounds",
                         sRectEvaluator, startBounds, endBounds);
                 set.playTogether(anim2);
@@ -262,7 +264,7 @@ public class Crossfade extends Transition {
     }
 
     private void captureValues(@NonNull TransitionValues transitionValues) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return;
         }
         View view = transitionValues.view;
@@ -275,6 +277,9 @@ public class Crossfade extends Transition {
         }
         transitionValues.values.put(PROPNAME_BOUNDS, bounds);
 
+        if (Transition.DBG) {
+            Log.d(LOG_TAG, "Captured bounds " + transitionValues.values.get(PROPNAME_BOUNDS));
+        }
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
                 Bitmap.Config.ARGB_8888);
         if (view instanceof TextureView) {

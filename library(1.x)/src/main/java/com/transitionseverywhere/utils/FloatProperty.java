@@ -16,8 +16,7 @@
 package com.transitionseverywhere.utils;
 
 import android.annotation.SuppressLint;
-
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 /**
  * It's great idea to extend it for any properties that works with float fields
@@ -35,7 +34,7 @@ public abstract class FloatProperty<T> extends android.util.FloatProperty<T> {
     }
 
     /**
-     * Just default implementation. Some of properties can have no getter. Override for real getter
+     * Just default realisation. Some of properties can have no getter. Override for real getter
      */
     @Override
     @NonNull

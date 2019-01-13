@@ -20,18 +20,17 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.transition.Transition;
-import androidx.transition.TransitionListenerAdapter;
-import androidx.transition.TransitionValues;
 
 /**
  * This transition tracks changes to the text in TextView targets. If the text
@@ -40,7 +39,10 @@ import androidx.transition.TransitionValues;
  * to the end text.  This is useful in situations where you want to resize a
  * text view to its new size before displaying the text that goes there.
  */
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ChangeText extends Transition {
+
+    private static final String LOG_TAG = "TextChange";
 
     private static final String PROPNAME_TEXT = "android:textchange:text";
     private static final String PROPNAME_TEXT_SELECTION_START =
@@ -304,6 +306,9 @@ public class ChangeText extends Transition {
                 }
             };
             addListener(transitionListener);
+            if (DBG) {
+                Log.d(LOG_TAG, "createAnimator returning " + anim);
+            }
             return anim;
         }
         return null;

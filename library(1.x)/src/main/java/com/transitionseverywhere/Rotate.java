@@ -18,18 +18,18 @@ package com.transitionseverywhere;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.transition.Transition;
-import androidx.transition.TransitionValues;
 
 /**
  * This transition captures the rotation property of targets before and after
  * the scene change and animates any changes.
  */
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Rotate extends Transition {
 
     private static final String PROPNAME_ROTATION = "android:rotate:rotation";

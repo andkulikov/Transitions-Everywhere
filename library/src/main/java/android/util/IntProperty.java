@@ -23,10 +23,9 @@
 package android.util;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Dummy class. Permits to extend same hidden class from android framework.
@@ -35,7 +34,6 @@ import android.support.annotation.Nullable;
  *
  * Created by Andrey Kulikov on 18.08.15.
  */
-@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public abstract class IntProperty<T> extends Property<T, Integer> {
 
     public IntProperty(@Nullable String name) {

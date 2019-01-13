@@ -17,21 +17,21 @@ package com.transitionseverywhere.extra;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.transitionseverywhere.R;
-import com.transitionseverywhere.utils.TransitionUtils;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.transition.Transition;
-import androidx.transition.TransitionListenerAdapter;
-import androidx.transition.TransitionValues;
-import androidx.transition.Visibility;
+import com.transitionseverywhere.Transition;
+import com.transitionseverywhere.TransitionUtils;
+import com.transitionseverywhere.TransitionValues;
+import com.transitionseverywhere.Visibility;
 
 /**
  * This transition tracks changes to the visibility of target views in the
@@ -43,6 +43,7 @@ import androidx.transition.Visibility;
  * <p/>
  * Created by Andrey Kulikov on 13/03/16.
  */
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class Scale extends Visibility {
 
     static final String PROPNAME_SCALE_X = "scale:scaleX";

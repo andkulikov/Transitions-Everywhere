@@ -18,9 +18,8 @@ package com.transitionseverywhere.utils;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Property;
-
-import androidx.annotation.NonNull;
 
 /**
  * Helper class for properties with int values.
@@ -48,7 +47,7 @@ public abstract class IntProperty<T> extends Property<T, Integer> {
     }
 
     /**
-     * Just default implementation. Some of properties can have no getter. Override for real getter
+     * Just default realisation. Some of properties can have no getter. Override for real getter
      */
     @Override
     @NonNull

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-    implementation project(':library')
+    implementation project(':library(1.x)')
     implementation 'com.android.support:appcompat-v7:27.0.0'
     implementation 'com.android.support:recyclerview-v7:27.0.0'
 }

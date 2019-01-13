@@ -1,0 +1,20 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion parent.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.8.1"
+    }
+}
+
+dependencies {
+    implementation ('com.android.support:support-annotations:24.2.0')
+    implementation ('com.android.support:support-compat:24.2.0')
+}
+
+//apply from: rootProject.file('library/gradle-mvn-push.gradle')
