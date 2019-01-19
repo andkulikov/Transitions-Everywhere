@@ -18,7 +18,7 @@ dependencies {
     implementation "com.andkulikov:transitionseverywhere:2.0.0-alpha01"
 }
 ```
-This version based on <b>androidx.transition:transition:1.1.0-alpha01</b>.
+This version is based on <b>androidx.transition:transition:1.1.0-alpha01</b>.
 
 Migration from 1.x guide
 ============
