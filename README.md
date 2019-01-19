@@ -1,108 +1,49 @@
 Transitions Everywhere
 ============
-Backport of [Android Transitions API][1]. Animations backported to <b>Android 4.0+</b>. API compatible with <b>Android 2.3+</b>
+Set of extra Transitions on top of [AndroidX Transitions Library][1].
 
 About
 ============
-[Article about transitions and library. More info here][2]<br>
-[Russian version][3]<br>
-Chinese: [version 1][5], [version 2][6]<br>
-
-[Article about Support Library for Transitions. Overview and comparison with Transitions-Everywhere][7]
-
-Simple example
-============
-```java
-TransitionManager.beginDelayedTransition(transitionsContainer);
-text.setVisibility(visible ? View.VISIBLE : View.GONE);      
-```
-<img src="https://habrastorage.org/files/c51/b1e/b26/c51b1eb26fb941698ad5a1368d06603b.gif"/>
-
-<br>[Article][2] and sample application contain a lot of examples how to use transitions.
+[Article about transitions and library][2]<br>
+Originally this library was a full backport of Android Platform's Transitions API.
+Then all the bug fixes from the library were ported into AndroidX Transitions (previously Support library).
+Now this lib contains some transitions which are not a part of the official set:
+1) Internal Transitions that was marked as @hide in framework: Recolor, Rotate, ChangeText and Crossfade.
+2) Two extra transitions: Scale and Translation.
+New minSdk version is 14 (Android 4.0 ICS).
 
 Quick start
 ============
 ```groovy
 dependencies {
-    implementation "com.andkulikov:transitionseverywhere:1.8.1"
+    implementation "com.andkulikov:transitionseverywhere:2.0.0-alpha01"
 }
 ```
-Use transition classes from package `com.transitionseverywhere.*` instead of `android.transition.*` from android framework Transitions API.<br>
+This version based on <b>androidx.transition:transition:1.1.0-alpha01</b>.
 
-Changelog
+Migration from 1.x guide
+============
+1) Migrate to <b>AndroidX</b>! Support libraries are not updating anymore, to get all the bug fixes you have to use AndroidX transitions.
+2) Replace imports from <b>com.transitionseverywhere.*</b> to <b>androidx.transition.*</b> for all the classes which are a part of the AndroidX lib.
+3) If you were using <b>TransitionListenerAdapter</b> class, now please use <b>Transition.TransitionListenerAdapter</b> now.
+4) Instead of <b>TransitionManager.setTransitionName()</b> use <b>ViewCompat.setTransitionName()</b>.
+5) If you were inflating transitions via xml move your files from <b>anim</b> folder to <b>transition</b> and use <b>android:</b> namespace instead of <b>app:</b>.
+6) Some setters in AndroidX transitions are not following the builder pattern, please rewrite this usages with introducing a helper variable if you encounter the issue.
+7) Instead of <b>TranslationTransition()/b> use <b>Translation/b>.
+
+[Changelog for version 1.x][4]
 ============
 
+Articles about the version 1.x
+============
+[Article about transitions and library][2]<br>
+[Russian version][3]<br>
+Chinese: [version 1][5], [version 2][6]<br>
 
-
-<b>1.8.1</b><br>
-Bug fixes for Crossfade and Recolor transitions. Thanks to [evant][14] and [DummyCo][15]
-
-<b>1.8.0</b><br>
-Provide @NonNull and @Nullable annotations for all the methods to make the library more Kotlin friendly
-
-<b>1.7.9</b><br>
-Fix bug with typo in restoring paused Visibility transition when it is using an overlay
-
-<b>1.7.8</b><br>
-Fix for ChangeBounds sometimes not applying the latest values. Thanks to [lukaville][13]
-
-<b>1.7.7</b><br>
-Fix version resolving issue when use together with the latest suppport libs
-
-<b>1.7.6</b><br>
-Fix for the case when Visibility transition is removing the view from the previous scene. [Framework bug for it][12]
-
-<b>1.7.4, 1.7.5</b><br>
-Fixes for color change in ChangeText. Thanks to [droidluv][10] and [passsy][11]
-
-<b>1.7.3</b><br>
-Fix for TranslationTransition, fix for Visibility transition cancelation when it is using an overlay 
-
-<b>1.7.1, 1.7.2</b><br>
-Npe fix, WindowId backport, update PathParser version
-
-<b>1.7.0</b><br>
-Bug fix for rare NPE. Thanks to [TealOcean][9]
-
-<b>1.6.9</b><br>
-Bug fix for Scenes when we pass null transition
-
-<b>1.6.8</b><br>
-Bug fix for Recolor. Thanks to [twyatt][8]
-
-<b>1.6.7</b><br>
-Merge with Android 7.0. Some internal improvements
-
-<b>1.6.5</b><br>
-Optimizations for ChangeBounds and Fade
-
-<b>1.6.4</b><br>
-Bug fix. Thanks to [raycoarana][4]
-
-<b>1.6.3</b><br>
-Hidden transitions are moved in the main package. Proguard rules are removed. Some internal fixes.
-
-<b>1.6.2</b><br>
-Fixed issue with incorrect disappearing when set of more than one Visibility transitions animates the same view
-<br>Added two "extra" transitions: Scale (for scaled appearing & disappearing) and TranslationTransition (animates changes of translationX and translationY)
-
-<b>1.6.0</b><br>
-Merge with final Android Marshmallow SDK<br>
-PathMotion aka Curved motion is backported!<br>
-Bug fixes and performance optimizations.
-
-[1]: http://developer.android.com/reference/android/transition/package-summary.html
+[1]: https://developer.android.com/reference/androidx/transition/package-summary
 [2]: https://medium.com/@andkulikov/animate-all-the-things-transitions-in-android-914af5477d50
 [3]: http://habrahabr.ru/post/243363/
-[4]: https://github.com/raycoarana
+[4]: https://github.com/andkulikov/Transitions-Everywhere/blob/master/library(1.x)/CHANGELOG.md
 [5]: https://yanlu.me/animate-all-the-things-transitions-in-android/
 [6]: http://www.jianshu.com/p/98f2ec280945
 [7]: https://medium.com/@andkulikov/support-library-for-transitions-overview-and-comparison-c41be713cf8c
-[8]: https://github.com/twyatt
-[9]: https://github.com/TealOcean
-[10]: https://github.com/droidluv
-[11]: https://github.com/passsy
-[12]: https://issuetracker.google.com/issues/65688271
-[13]: https://github.com/lukaville
-[14]: https://github.com/evant
-[15]: https://github.com/DummyCo
