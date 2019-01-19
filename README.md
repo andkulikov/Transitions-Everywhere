@@ -9,7 +9,7 @@ Originally this library was a full backport of Android Platform's Transitions AP
 Then all the bug fixes from the library were ported into AndroidX Transitions (previously Support library).
 Now this lib contains some transitions which are not a part of the official set:
 1) Internal Transitions that was marked as @hide in the platform: <b>Recolor</b>, <b>Rotate</b>, <b>ChangeText</b> and <b>Crossfade</b>.
-2) Two extra transitions: <b>Scale</b> and <b>Translation</b>.
+2) Two extra transitions: <b>Scale</b> and <b>Translation</b>.<br>
 New minSdk version is <b>14</b> (Android 4.0 ICS).
 
 Quick start
