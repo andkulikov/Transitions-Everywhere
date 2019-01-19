@@ -5,8 +5,8 @@ Set of extra Transitions on top of [AndroidX Transitions Library][1].
 About
 ============
 [Article about transitions and library][2]<br>
-Originally this library was a full backport of Android Platform's Transitions API.
-Then all the bug fixes from the library were ported into AndroidX Transitions (previously Support library).
+Originally this library was a full backport of Android Platform's Transitions API.<br>
+Then all the bug fixes from the library were ported into AndroidX Transitions (previously Support library).<br>
 Now this lib has minSdk version <b>14</b> (Android 4.0 ICS) and contains some transitions which are not a part of the official set:
 1) Internal Transitions that was marked as @hide in the platform: <b>Recolor</b>, <b>Rotate</b>, <b>ChangeText</b> and <b>Crossfade</b>.
 2) Two extra transitions: <b>Scale</b> and <b>Translation</b>.<br><br>
