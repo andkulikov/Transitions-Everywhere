@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-    implementation project(':library(1.x)')
-    implementation 'com.android.support:appcompat-v7:27.0.0'
-    implementation 'com.android.support:recyclerview-v7:27.0.0'
+    implementation project(':library')
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }
 
 android {

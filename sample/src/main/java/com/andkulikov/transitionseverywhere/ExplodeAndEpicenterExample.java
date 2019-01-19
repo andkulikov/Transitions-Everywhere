@@ -17,19 +17,20 @@ package com.andkulikov.transitionseverywhere;
 
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.transitionseverywhere.Explode;
-import com.transitionseverywhere.Fade;
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.TransitionManager;
-import com.transitionseverywhere.TransitionSet;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Explode;
+import androidx.transition.Fade;
+import androidx.transition.Transition;
+import androidx.transition.TransitionListenerAdapter;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 
 /**
  * Created by Andrey Kulikov on 25/03/16.
@@ -54,15 +55,18 @@ public class ExplodeAndEpicenterExample extends Fragment {
         final Rect viewRect = new Rect();
         clickedView.getGlobalVisibleRect(viewRect);
 
+        final Explode explode = new Explode();
+        explode.setEpicenterCallback(new Transition.EpicenterCallback() {
+            @Override
+            public Rect onGetEpicenter(Transition transition) {
+                return viewRect;
+            }
+        });
+        explode.excludeTarget(clickedView, true);
         TransitionSet set = new TransitionSet()
-            .addTransition(new Explode().setEpicenterCallback(new Transition.EpicenterCallback() {
-                @Override
-                public Rect onGetEpicenter(Transition transition) {
-                    return viewRect;
-                }
-            }).excludeTarget(clickedView, true))
+            .addTransition(explode)
             .addTransition(new Fade().addTarget(clickedView))
-            .addListener(new Transition.TransitionListenerAdapter() {
+            .addListener(new TransitionListenerAdapter() {
                 @Override
                 public void onTransitionEnd(Transition transition) {
                     transition.removeListener(this);

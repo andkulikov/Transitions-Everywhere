@@ -18,18 +18,19 @@ package com.andkulikov.transitionseverywhere;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Property;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.TransitionManager;
-import com.transitionseverywhere.TransitionValues;
 import com.transitionseverywhere.utils.IntProperty;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionValues;
 
 /**
  * Created by Andrey Kulikov on 17/04/16.
@@ -44,8 +45,8 @@ public class CustomTransitionSample extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_custom, container, false);
 
-        mTransitionsContainer = (ViewGroup) view.findViewById(R.id.transitions_container);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        mTransitionsContainer = view.findViewById(R.id.transitions_container);
+        mProgressBar = view.findViewById(R.id.progress_bar);
 
         view.findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
             @Override

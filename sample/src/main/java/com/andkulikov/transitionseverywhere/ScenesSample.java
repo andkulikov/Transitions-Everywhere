@@ -16,20 +16,20 @@
 package com.andkulikov.transitionseverywhere;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
-import com.transitionseverywhere.ChangeBounds;
-import com.transitionseverywhere.Scene;
-import com.transitionseverywhere.Slide;
-import com.transitionseverywhere.TransitionInflater;
-import com.transitionseverywhere.TransitionManager;
-import com.transitionseverywhere.TransitionSet;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.transition.ChangeBounds;
+import androidx.transition.Scene;
+import androidx.transition.Slide;
+import androidx.transition.TransitionInflater;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 
 /**
  * Created by Andrey Kulikov on 20/03/16.
@@ -73,7 +73,7 @@ public class ScenesSample extends Fragment implements RadioGroup.OnCheckedChange
         // We create a custom TransitionManager for Scene 3, in which ChangeBounds, Fade and
         // ChangeImageTransform take place at the same time.
         mTransitionManagerForScene3 = TransitionInflater.from(getContext())
-            .inflateTransitionManager(R.anim.scene3_transition_manager, mSceneRoot);
+            .inflateTransitionManager(R.transition.scene3_transition_manager, mSceneRoot);
 
         return view;
     }

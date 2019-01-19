@@ -16,19 +16,20 @@
 package com.andkulikov.transitionseverywhere;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.transitionseverywhere.Fade;
-import com.transitionseverywhere.TransitionManager;
-import com.transitionseverywhere.TransitionSet;
 import com.transitionseverywhere.extra.Scale;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
+import androidx.transition.Fade;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 
 /**
  * Created by Andrey Kulikov on 24/03/16.
@@ -40,8 +41,8 @@ public class ScaleSample extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scale, container, false);
 
-        final ViewGroup transitionsContainer = (ViewGroup) view.findViewById(R.id.transitions_container);
-        final TextView text1 = (TextView) transitionsContainer.findViewById(R.id.text1);
+        final ViewGroup transitionsContainer = view.findViewById(R.id.transitions_container);
+        final TextView text1 = transitionsContainer.findViewById(R.id.text1);
 
         transitionsContainer.findViewById(R.id.button1).setOnClickListener(new VisibleToggleClickListener() {
 
@@ -53,7 +54,7 @@ public class ScaleSample extends Fragment {
 
         });
 
-        final TextView text2 = (TextView) transitionsContainer.findViewById(R.id.text2);
+        final TextView text2 = transitionsContainer.findViewById(R.id.text2);
 
         transitionsContainer.findViewById(R.id.button2).setOnClickListener(new VisibleToggleClickListener() {
 

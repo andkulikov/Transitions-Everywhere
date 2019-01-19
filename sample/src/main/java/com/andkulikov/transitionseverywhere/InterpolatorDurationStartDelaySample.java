@@ -18,9 +18,6 @@ package com.andkulikov.transitionseverywhere;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +25,12 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 
-import com.transitionseverywhere.ChangeBounds;
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.TransitionManager;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.transition.ChangeBounds;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
 
 /**
  * Created by Andrey Kulikov on 17/04/16.
@@ -43,7 +43,7 @@ public class InterpolatorDurationStartDelaySample extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_interpolator, container, false);
 
-        final ViewGroup transitionsContainer = (ViewGroup) view.findViewById(R.id.transitions_container);
+        final ViewGroup transitionsContainer = view.findViewById(R.id.transitions_container);
         final View button = transitionsContainer.findViewById(R.id.button);
 
         button.setOnClickListener(new View.OnClickListener() {

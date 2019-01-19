@@ -17,20 +17,21 @@ package com.andkulikov.transitionseverywhere;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.transitionseverywhere.ChangeBounds;
-import com.transitionseverywhere.TransitionManager;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.transition.ChangeBounds;
+import androidx.transition.TransitionManager;
 
 /**
  * Created by Andrey Kulikov on 12/05/16.
@@ -43,8 +44,8 @@ public class TransitionNameSample extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_names, container, false);
 
-        final ViewGroup layout = (ViewGroup) view.findViewById(R.id.transitions_container);
-        final Button button = (Button) view.findViewById(R.id.button1);
+        final ViewGroup layout = view.findViewById(R.id.transitions_container);
+        final Button button = view.findViewById(R.id.button1);
 
         final List<String> titles = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -71,7 +72,7 @@ public class TransitionNameSample extends Fragment {
         for (String title : titles) {
             TextView textView = (TextView) inflater.inflate(R.layout.fragment_names_item, layout, false);
             textView.setText(title);
-            TransitionManager.setTransitionName(textView, title);
+            ViewCompat.setTransitionName(textView, title);
             layout.addView(textView);
         }
     }

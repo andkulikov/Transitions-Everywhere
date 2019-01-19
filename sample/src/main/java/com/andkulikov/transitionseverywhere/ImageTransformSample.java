@@ -16,17 +16,17 @@
 package com.andkulikov.transitionseverywhere;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.transitionseverywhere.ChangeBounds;
-import com.transitionseverywhere.ChangeImageTransform;
-import com.transitionseverywhere.TransitionManager;
-import com.transitionseverywhere.TransitionSet;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.transition.ChangeBounds;
+import androidx.transition.ChangeImageTransform;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 
 /**
  * Created by Andrey Kulikov on 20/03/16.
@@ -38,8 +38,8 @@ public class ImageTransformSample extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_transform, container, false);
 
-        final ViewGroup transitionsContainer = (ViewGroup) view.findViewById(R.id.transitions_container);
-        final ImageView imageView = (ImageView) transitionsContainer.findViewById(R.id.image);
+        final ViewGroup transitionsContainer = view.findViewById(R.id.transitions_container);
+        final ImageView imageView = transitionsContainer.findViewById(R.id.image);
 
         imageView.setOnClickListener(new View.OnClickListener() {
 

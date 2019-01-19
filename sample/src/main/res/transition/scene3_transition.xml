@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="400"
+    android:transitionOrdering="together">
+    <changeBounds>
+        <arcMotion />
+    </changeBounds>
+    <changeImageTransform />
+    <fade
+        android:fadingMode="fade_in"
+        android:startDelay="200">
+        <targets>
+            <target android:targetId="@id/transition_title" />
+        </targets>
+    </fade>
+</transitionSet>

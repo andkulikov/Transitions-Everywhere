@@ -16,15 +16,16 @@
 package com.andkulikov.transitionseverywhere;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.transitionseverywhere.TransitionManager;
 import com.transitionseverywhere.ChangeText;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.transition.TransitionManager;
 
 /**
  * Created by Andrey Kulikov on 17/04/16.
@@ -39,8 +40,8 @@ public class ChangeTextSample extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_change_text, container, false);
 
-        final ViewGroup transitionsContainer = (ViewGroup) view.findViewById(R.id.transitions_container);
-        final TextView textView = (TextView) transitionsContainer.findViewById(R.id.text1);
+        final ViewGroup transitionsContainer = view.findViewById(R.id.transitions_container);
+        final TextView textView = transitionsContainer.findViewById(R.id.text1);
 
         textView.setText(TEXT_1);
         textView.setOnClickListener(new View.OnClickListener() {
