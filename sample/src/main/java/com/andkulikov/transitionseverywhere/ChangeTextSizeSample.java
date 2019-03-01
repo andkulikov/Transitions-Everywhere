@@ -25,7 +25,7 @@ public class ChangeTextSizeSample extends Fragment {
         final ViewGroup transitionsContainer = view.findViewById(R.id.transitions_container);
         final TextView textView = transitionsContainer.findViewById(R.id.text1);
 
-        textView.setText("Sample text");
+        textView.setText("Would you tap me, sir?");
         textView.setTextSize(14);
         textView.setOnClickListener(new View.OnClickListener() {
 
