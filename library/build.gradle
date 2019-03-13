@@ -13,8 +13,18 @@ android {
 }
 
 dependencies {
-    api ('androidx.annotation:annotation:1.0.1')
-    api ('androidx.transition:transition:1.1.0-alpha01')
+    api ('androidx.transition:transition:1.1.0-alpha02') {
+        // This version is using alpha version of core and collection libraries, but
+        // doesn't really use any of the new functionality from them.
+        // This will be fixed in the next release of the transition lib.
+        // For now we can replace it with stable versions manually so when developers
+        // will use transitions-everywhere they would not be forced to work with
+        // alphas of other libraries.
+        transitive = false
+    }
+    api ('androidx.annotation:annotation:1.1.0-alpha02')
+    api ('androidx.core:core:1.0.1')
+    implementation ("androidx.collection:collection:1.0.0")
 }
 
 //apply from: rootProject.file('library/gradle-mvn-push.gradle')
