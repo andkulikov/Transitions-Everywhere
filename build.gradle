@@ -12,7 +12,7 @@ buildscript {
         minSdkVersion = 14
         targetSdkVersion = 28
 
-        versionName = "2.0.0-alpha02"
+        versionName = "2.0.0-beta01"
     }
 }
 
