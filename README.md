@@ -15,10 +15,10 @@ Quick start
 ============
 ```groovy
 dependencies {
-    implementation "com.andkulikov:transitionseverywhere:2.0.0-alpha02"
+    implementation "com.andkulikov:transitionseverywhere:2.0.0-beta01"
 }
 ```
-This version is based on <b>androidx.transition:transition:1.1.0-alpha02</b>.
+This version is based on <b>androidx.transition:transition:1.1.0-beta01</b>.
 
 Migration from 1.x guide
 ============
