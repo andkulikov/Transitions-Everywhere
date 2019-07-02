@@ -13,8 +13,8 @@ android {
 }
 
 dependencies {
-    api ('androidx.annotation:annotation:1.0.1')
-    api ('androidx.transition:transition:1.1.0-beta01')
+    api ('androidx.annotation:annotation:1.1.0')
+    api ('androidx.transition:transition:1.1.0')
 }
 
 //apply from: rootProject.file('library/gradle-mvn-push.gradle')
