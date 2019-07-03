@@ -40,7 +40,7 @@ Migration from 1.x guide
 4) Instead of <b>TransitionManager.setTransitionName()</b> use <b>ViewCompat.setTransitionName()</b>.
 5) If you were inflating transitions via xml move your files from <b>anim</b> folder to <b>transition</b> and use <b>android:</b> namespace instead of <b>app:</b>
 6) Some setters in AndroidX transitions are not following the builder pattern, please rewrite this usages with introducing a helper variable if you encounter the issue.
-7) Instead of <b>TranslationTransition()</b> use <b>Translation</b>.
+7) Instead of <b>TranslationTransition</b> use <b>Translation</b>.
 
 Articles about the version 1.x
 ============
