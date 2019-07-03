@@ -14,14 +14,14 @@ Now this lib has minSdk version <b>14</b> (Android 4.0 ICS) and consist of some 
 Quick start
 ============
 
-This version should be used if you are specifying 29 as a compileSdkVersion: .
+This version should be used if you are specifying 29 (Q) as a compileSdkVersion: .
 
 ```groovy
 dependencies {
     implementation "com.andkulikov:transitionseverywhere:2.1.0-beta01"
 }
 ```
-Otherwise, if you specify 29 (Q) as targetSdkVersion some of the transitions will not work properly. Instead of the reflection calls this version uses the new public methods added in API Level 29. It is based on <b>androidx.transition:transition:1.2.0-beta01</b>.
+Otherwise, if you specify 29 as targetSdkVersion some of the transitions will not work properly. Instead of the reflection calls this version uses the new public methods added in API Level 29. It is based on <b>androidx.transition:transition:1.2.0-beta01</b>.
 
 Previous version if you are not yet on 29 (Q) SDK:
 
