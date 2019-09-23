@@ -28,13 +28,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.transitionseverywhere.utils.IntProperty;
-import com.transitionseverywhere.utils.TransitionUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.transition.Transition;
 import androidx.transition.TransitionValues;
+
+import com.transitionseverywhere.utils.IntProperty;
+import com.transitionseverywhere.utils.TransitionUtils;
 
 /**
  * This transition tracks changes during scene changes to the
@@ -49,6 +49,10 @@ public class Recolor extends Transition {
 
     private static final String PROPNAME_BACKGROUND = "android:recolor:background";
     private static final String PROPNAME_TEXT_COLOR = "android:recolor:textColor";
+    private static final String[] sTransitionProperties = {
+            PROPNAME_BACKGROUND,
+            PROPNAME_TEXT_COLOR
+    };
 
     @NonNull
     public static final Property<TextView, Integer> TEXTVIEW_TEXT_COLOR;
@@ -88,6 +92,12 @@ public class Recolor extends Transition {
 
     public Recolor(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Nullable
+    @Override
+    public String[] getTransitionProperties() {
+        return sTransitionProperties;
     }
 
     private void captureValues(TransitionValues transitionValues) {

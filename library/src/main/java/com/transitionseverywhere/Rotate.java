@@ -33,6 +33,15 @@ import androidx.transition.TransitionValues;
 public class Rotate extends Transition {
 
     private static final String PROPNAME_ROTATION = "android:rotate:rotation";
+    private static final String[] sTransitionProperties = {
+            PROPNAME_ROTATION
+    };
+
+    @Nullable
+    @Override
+    public String[] getTransitionProperties() {
+        return sTransitionProperties;
+    }
 
     @Override
     public void captureStartValues(@NonNull TransitionValues transitionValues) {

@@ -27,12 +27,12 @@ import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.transitionseverywhere.utils.TransitionUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.transition.Transition;
 import androidx.transition.TransitionValues;
+
+import com.transitionseverywhere.utils.TransitionUtils;
 
 /**
  * This transition tracks changes to the translationX and translationY of
@@ -45,6 +45,10 @@ public class Translation extends Transition {
 
     private static final String TRANSLATION_X = "Translation:translationX";
     private static final String TRANSLATION_Y = "Translation:translationY";
+    private static final String[] sTransitionProperties = {
+            TRANSLATION_X,
+            TRANSLATION_Y
+    };
 
     @Nullable
     private static final Property<View, PointF> TRANSLATION_PROPERTY;
@@ -74,6 +78,12 @@ public class Translation extends Transition {
 
     public Translation(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Nullable
+    @Override
+    public String[] getTransitionProperties() {
+        return sTransitionProperties;
     }
 
     private void captureValues(@NonNull TransitionValues transitionValues) {
