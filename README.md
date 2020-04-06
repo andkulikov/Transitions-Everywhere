@@ -36,7 +36,7 @@ Migration from 1.x guide
 ============
 1) Migrate to <b>AndroidX</b>! Support libraries are not updating anymore, to get all the bug fixes you have to use AndroidX transitions.
 2) Replace imports from <b>com.transitionseverywhere.</b> to <b>androidx.transition.</b> for all the classes which are a part of the AndroidX lib.
-3) If you were using <b>TransitionListenerAdapter</b> class use <b>Transition.TransitionListenerAdapter</b> now.
+3) If you were using <b>Transition.TransitionListenerAdapter</b> class use <b>TransitionListenerAdapter</b> now.
 4) Instead of <b>TransitionManager.setTransitionName()</b> use <b>ViewCompat.setTransitionName()</b>.
 5) If you were inflating transitions via xml move your files from <b>anim</b> folder to <b>transition</b> and use <b>android:</b> namespace instead of <b>app:</b>
 6) Some setters in AndroidX transitions are not following the builder pattern, please rewrite this usages with introducing a helper variable if you encounter the issue.
